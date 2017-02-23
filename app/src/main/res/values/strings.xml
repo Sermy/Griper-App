@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">Griper</string>
+    <string name="string_error_facebook_login_cancelled">Either Login through Facebook or via Email</string>
+    <string name="string_error_facebook_login">Not able to login to Facebook, please try again</string>
+    <string name="string_error_no_network">No Network</string>
+    <string name="string_error_graph_api_failed">Not able to fetch data from Facebook, please try again</string>
+    <string name="string_error_something_went_wrong">Something went wrong</string>
+    <string name="string_login_with_facebook">Log in with Facebook</string>
+    <string name="string_login_with_email">Or try your Email</string>
+    <string name="string_facebook_app_id">1163524873773043</string>
+    <string name="string_welcome_user">Welcome</string>
+    <string name="string_welcome_login_screen_title">Take control of your neighbourhood in your hands</string>
+
+    <string-array name="string_array_fb_permissions">
+        <item>public_profile</item>
+        <item>email</item>
+    </string-array>
+
+</resources>

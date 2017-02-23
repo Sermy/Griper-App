@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_welcome"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.griper.griperapp.getstarted.activities.FacebookLoginActivity">
+
+    <LinearLayout
+        android:id="@+id/buttonLinearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/linearLayoutFacebook"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dimen_60dp"
+            android:layout_margin="@dimen/dimen_8dp"
+            android:background="@drawable/drawable_facebook_button"
+            android:clickable="true"
+            android:orientation="vertical"
+            android:visibility="visible"
+            tools:visibility="visible">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:drawableLeft="@drawable/ic_facebook"
+                android:drawablePadding="@dimen/dimen_15dp"
+                android:drawableStart="@drawable/ic_facebook"
+                android:gravity="center"
+                android:maxLines="1"
+                android:text="@string/string_login_with_facebook"
+                android:textColor="@color/color_white"
+                android:textSize="@dimen/dimen_17sp" />
+        </LinearLayout>
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/buttonEmail"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dimen_55dp"
+            android:layout_marginBottom="@dimen/dimen_25dp"
+            android:layout_marginLeft="@dimen/dimen_8dp"
+            android:layout_marginRight="@dimen/dimen_8dp"
+            android:background="@drawable/drawable_email_button"
+            android:text="@string/string_login_with_email"
+            android:textAllCaps="false"
+            android:textSize="@dimen/dimen_17sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/imageLinearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/buttonLinearLayout"
+        android:paddingTop="@dimen/dimen_10dp"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/dimen_60dp">
+
+        <com.griper.griperapp.widgets.AppTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:ems="13"
+            android:gravity="center"
+            android:paddingBottom="@dimen/dimen_20dp"
+            android:paddingTop="@dimen/dimen_20dp"
+            android:text="@string/string_welcome_login_screen_title"
+            android:textColor="@color/color_black"
+            android:textSize="@dimen/dimen_18sp"
+            app:textStyle="@integer/PT_SANS_WEB_REGULAR" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:src="@drawable/griper_image" />
+
+    </LinearLayout>
+
+
+    <include
+        layout="@layout/layout_progress_bar_full_screen"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:visibility="gone"
+        tools:visibility="visible" />
+
+
+</RelativeLayout>
