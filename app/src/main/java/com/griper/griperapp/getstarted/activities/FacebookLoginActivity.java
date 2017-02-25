@@ -62,10 +62,19 @@ public class FacebookLoginActivity extends BaseActivity implements FacebookLogin
         goToFacebookLogin();
     }
 
+    /*
+        Called as a result of default FacebookActivity to request callback
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         callbackManager.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @OnClick(R.id.buttonEmail)
+    public void onClickEmailLogin() {
+        Intent intent = new Intent(FacebookLoginActivity.this, EmailProfileActivity.class);
+        startActivity(intent);
     }
 
     @Override

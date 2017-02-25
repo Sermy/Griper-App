@@ -16,6 +16,7 @@ import com.griper.griperapp.getstarted.interfaces.FacebookLoginContract;
 import com.griper.griperapp.getstarted.interfaces.GetStartedWebServiceInterface;
 import com.griper.griperapp.getstarted.parsers.SignUpRequestDataParser;
 import com.griper.griperapp.getstarted.parsers.SignUpResponseParser;
+import com.griper.griperapp.utils.AppConstants;
 import com.griper.griperapp.utils.Utils;
 
 import org.json.JSONException;
@@ -40,6 +41,9 @@ import timber.log.Timber;
 
 public class FacebookLoginPresenter implements FacebookLoginContract.Presenter {
 
+    /*
+        Injecting the required stuff
+     */
     @Inject
     Context context;
 
@@ -143,7 +147,11 @@ public class FacebookLoginPresenter implements FacebookLoginContract.Presenter {
 
                 @Override
                 public void onNext(SignUpResponseParser signUpResponseParser) {
-                    onCreateProfileApiSuccess(signUpResponseParser, signUpRequestDataParser);
+                    if (signUpResponseParser.getSuccess().equals(AppConstants.API_RESPONSE_SUCCESS)) {
+                        onCreateProfileApiSuccess(signUpResponseParser, signUpRequestDataParser);
+                    } else {
+                        onCreateProfileApiFailure(signUpResponseParser.getMessage());
+                    }
                 }
             });
         }

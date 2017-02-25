@@ -39,7 +39,7 @@
                 android:textSize="@dimen/dimen_17sp" />
         </LinearLayout>
 
-        <android.support.v7.widget.AppCompatButton
+        <com.griper.griperapp.widgets.AppButton
             android:id="@+id/buttonEmail"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dimen_55dp"

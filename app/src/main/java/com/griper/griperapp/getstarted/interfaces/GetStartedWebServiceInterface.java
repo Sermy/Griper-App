@@ -17,12 +17,17 @@ import rx.Observable;
  */
 
 public interface GetStartedWebServiceInterface {
+    /*
+        Form Url Encoded request - JSON response retrieval
+     */
 
     @FormUrlEncoded
     @POST("signupemail.php")
     Observable<SignUpResponseParser> createProfile(@Field("name") String name, @Field("email") String email, @Field("isfb") String isfb, @Field("pass") String pass,
                                                    @Field("userdp") String userdp);
 
+    @FormUrlEncoded
     @POST("loginemail.php")
-    Observable<LoginResponseParser> signIn(@Body LoginRequestDataParser loginRequestDataParser);
+    Observable<LoginResponseParser> signIn(@Field("email") String email, @Field("pass") String pass);
+
 }

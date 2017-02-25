@@ -6,6 +6,7 @@ import com.activeandroid.annotation.Table;
 import com.activeandroid.query.Delete;
 import com.activeandroid.query.Select;
 import com.griper.griperapp.getstarted.parsers.LoginResponseParser;
+import com.griper.griperapp.getstarted.parsers.LoginUserResponseParser;
 import com.griper.griperapp.getstarted.parsers.SignUpRequestDataParser;
 import com.griper.griperapp.getstarted.parsers.SignUpResponseParser;
 
@@ -56,17 +57,23 @@ public class UserProfileData extends Model {
         this.lastKnownLongitude = lastKnownLongitude;
     }
 
-    public static void saveUserProfileData(LoginResponseParser loginResponseParser) {
-
-        UserProfileData userProfileData = new UserProfileData(loginResponseParser.getUser().getUid(), loginResponseParser.getUser().getName(),
-                loginResponseParser.getUser().getEmail(), loginResponseParser.getUser().getUserdp());
-        userProfileData.save();
+    public static void saveUserData(LoginResponseParser loginResponseParser) {
+        LoginUserResponseParser userResponseParser = loginResponseParser.getUser();
+        if (userResponseParser != null) {
+            deleteUserData();
+            UserProfileData userProfileData = new UserProfileData(loginResponseParser.getUser().getUid(), loginResponseParser.getUser().getName(),
+                    loginResponseParser.getUser().getEmail(), loginResponseParser.getUser().getUserdp());
+            userProfileData.save();
+        }
     }
 
     public static void saveUserData(SignUpRequestDataParser requestDataParser, SignUpResponseParser responseParser) {
-        UserProfileData userProfileData = new UserProfileData(responseParser.getUid(), requestDataParser.getName(), requestDataParser.getEmail(),
-                requestDataParser.getUserdp());
-        userProfileData.save();
+        if (requestDataParser != null && responseParser != null) {
+            deleteUserData();
+            UserProfileData userProfileData = new UserProfileData(responseParser.getUid(), requestDataParser.getName(), requestDataParser.getEmail(),
+                    requestDataParser.getUserdp());
+            userProfileData.save();
+        }
     }
 
     public static UserProfileData getUserData() {

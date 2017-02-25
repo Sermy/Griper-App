@@ -4,10 +4,23 @@
     <color name="colorPrimaryDark">#FE327E</color>
     <color name="colorAccent">#FFFFFF</color>
     <color name="color_white">#FFFFFF</color>
+    <color name="color_transparent_white">#B3FFFFFF</color>
+
     <color name="color_facebook_button_background">#3B5998</color>
     <color name="color_facebook_button_start_color">#394398</color>
     <color name="color_facebook_button_end_color">#337dba</color>
+
     <color name="color_email_button_end_color">#f967a1</color>
     <color name="color_email_button_start_color">#F73380</color>
+
     <color name="color_black">#000000</color>
+    <color name="color_black_secondary">#1D1D26</color>
+
+    <color name="color_email_background_fill">#60FAFAFA</color>
+    <color name="color_edit_text_background">#60DDDDDD</color>
+
+    <color name="transparent">#00000000</color>
+    <color name="color_hint_grey">#6F7579</color>
+    <color name="color_grey">#c5c5c5</color>
+    <color name="color_grey_ripple">#E1E1E1</color>
 </resources>

@@ -1,5 +1,7 @@
 package com.griper.griperapp.injections.components;
 
+import com.griper.griperapp.getstarted.presenters.EmailLoginPresenter;
+import com.griper.griperapp.getstarted.presenters.EmailSignUpPresenter;
 import com.griper.griperapp.getstarted.presenters.FacebookLoginPresenter;
 import com.griper.griperapp.injections.modules.ApiModule;
 
@@ -15,4 +17,8 @@ import dagger.Subcomponent;
 public interface ApiComponent {
 
     void inject(FacebookLoginPresenter facebookLoginPresenter);
+
+    void inject(EmailSignUpPresenter emailSignUpPresenter);
+
+    void inject(EmailLoginPresenter emailLoginPresenter);
 }
