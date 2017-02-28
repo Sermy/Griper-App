@@ -10,6 +10,7 @@ import com.griper.griperapp.R;
 import com.griper.griperapp.dbmodels.UserPreferencesData;
 import com.griper.griperapp.dbmodels.UserProfileData;
 import com.griper.griperapp.getstarted.interfaces.SplashScreenContract;
+import com.griper.griperapp.homescreen.activities.HomeScreenActivity;
 import com.griper.griperapp.utils.AppConstants;
 import com.griper.griperapp.utils.Utils;
 
@@ -33,8 +34,7 @@ public class SplashActivity extends BaseActivity implements SplashScreenContract
         if (!preferencesData.isUserLoggedIn()) {
             showFacebookLoginScreen();
         } else {
-//            showHomeScreen();
-            showFacebookLoginScreen();
+            showHomeScreen();
         }
     }
 
@@ -54,6 +54,15 @@ public class SplashActivity extends BaseActivity implements SplashScreenContract
 
     @Override
     public void showHomeScreen() {
-
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (!isFinishing()) {
+                    Intent intent = new Intent(SplashActivity.this, HomeScreenActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
+            }
+        }, AppConstants.SPLASH_SCREEN_DURATION);
     }
 }

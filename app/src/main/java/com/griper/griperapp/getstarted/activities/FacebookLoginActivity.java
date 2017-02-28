@@ -1,8 +1,13 @@
 package com.griper.griperapp.getstarted.activities;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -17,14 +22,17 @@ import com.griper.griperapp.BaseActivity;
 import com.griper.griperapp.R;
 import com.griper.griperapp.getstarted.interfaces.FacebookLoginContract;
 import com.griper.griperapp.getstarted.presenters.FacebookLoginPresenter;
+import com.griper.griperapp.homescreen.activities.HomeScreenActivity;
 import com.griper.griperapp.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import okhttp3.internal.Util;
 import timber.log.Timber;
 
 /**
@@ -32,6 +40,9 @@ import timber.log.Timber;
  */
 
 public class FacebookLoginActivity extends BaseActivity implements FacebookLoginContract.View {
+
+    private static final int REQUEST_CAMERA_PERMISSIONS = 931;
+    private static final int CAPTURE_MEDIA = 368;
 
     @Bind(R.id.layoutProgressBar)
     protected LinearLayout progressBar;
@@ -134,7 +145,25 @@ public class FacebookLoginActivity extends BaseActivity implements FacebookLogin
     }
 
     @Override
+    public void showHomeScreen() {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+
+                if (!isViewDestroyed()) {
+                    Intent intent = new Intent(FacebookLoginActivity.this, HomeScreenActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+                    overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
+                }
+            }
+        });
+
+    }
+
+    @Override
     public boolean isViewDestroyed() {
         return isFinishing();
     }
+
 }

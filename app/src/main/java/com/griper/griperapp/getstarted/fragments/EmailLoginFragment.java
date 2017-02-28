@@ -1,6 +1,7 @@
 package com.griper.griperapp.getstarted.fragments;
 
 import android.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
@@ -17,6 +18,7 @@ import com.griper.griperapp.getstarted.interfaces.EmailSignUpContract;
 import com.griper.griperapp.getstarted.parsers.LoginRequestDataParser;
 import com.griper.griperapp.getstarted.presenters.EmailLoginPresenter;
 import com.griper.griperapp.getstarted.presenters.EmailSignUpPresenter;
+import com.griper.griperapp.homescreen.activities.HomeScreenActivity;
 import com.griper.griperapp.utils.Utils;
 import com.griper.griperapp.widgets.AppButton;
 import com.griper.griperapp.widgets.AppEditText;
@@ -30,6 +32,9 @@ import butterknife.OnClick;
  */
 
 public class EmailLoginFragment extends android.support.v4.app.Fragment implements EmailLoginContract.View {
+
+    private static final int REQUEST_CAMERA_PERMISSIONS = 931;
+    private static final int CAPTURE_MEDIA = 368;
 
     @Bind(R.id.etLoginEmail)
     AppEditText editTextEmail;
@@ -98,6 +103,21 @@ public class EmailLoginFragment extends android.support.v4.app.Fragment implemen
         } else {
             progressBar.setVisibility(View.GONE);
         }
+    }
+
+    @Override
+    public void showHomeScreen() {
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+
+                Intent intent = new Intent(getActivity(), HomeScreenActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+                getActivity().overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
+            }
+        });
+
     }
 
     @OnClick(R.id.buttonEmailLogin)

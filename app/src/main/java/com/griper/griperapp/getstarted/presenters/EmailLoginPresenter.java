@@ -85,13 +85,14 @@ public class EmailLoginPresenter implements EmailLoginContract.Presenter {
     @Override
     public void onEmailLoginApiSuccess(LoginResponseParser loginResponseParser) {
         view.showProgressBar(false);
-        Utils.showSnackBar(view.getParentView(),
-                context.getString(R.string.string_welcome_user).concat(" ").concat(loginResponseParser.getUser().getName()));
+//        Utils.showSnackBar(view.getParentView(),
+//                context.getString(R.string.string_welcome_user).concat(" ").concat(loginResponseParser.getUser().getName()));
         UserProfileData.saveUserData(loginResponseParser);
         UserProfileData userProfileData = UserProfileData.getUserData();
         if (userProfileData != null) {
             setUserLoggedinStatus(true);
         }
+        view.showHomeScreen();
     }
 
     private void setUserLoggedinStatus(boolean isLoggedIn) {

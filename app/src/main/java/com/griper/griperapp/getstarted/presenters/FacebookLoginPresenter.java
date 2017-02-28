@@ -162,8 +162,8 @@ public class FacebookLoginPresenter implements FacebookLoginContract.Presenter {
         UserProfileData.saveUserData(requestDataParser, responseParser);
         setUserLoggedinStatus(true);
         facebookLoginView.showProgressBar(false);
-        Utils.showToast(context, context.getString(R.string.string_welcome_user).concat(" ").concat(requestDataParser.getName()));
-
+//        Utils.showToast(context, context.getString(R.string.string_welcome_user).concat(" ").concat(requestDataParser.getName()));
+        facebookLoginView.showHomeScreen();
     }
 
     private void setUserLoggedinStatus(boolean isLoggedIn) {

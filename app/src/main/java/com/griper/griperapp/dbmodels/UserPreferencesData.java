@@ -3,6 +3,7 @@ package com.griper.griperapp.dbmodels;
 import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
+import com.activeandroid.query.Delete;
 import com.activeandroid.query.Select;
 
 import java.util.List;
@@ -38,6 +39,10 @@ public class UserPreferencesData extends Model {
     public void setUserLoggedIn(boolean userLoggedIn) {
         isUserLoggedIn = userLoggedIn;
         this.save();
+    }
+
+    public static void deleteUserPreferencesData() {
+        new Delete().from(UserPreferencesData.class).execute();
     }
 
 }

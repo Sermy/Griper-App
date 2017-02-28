@@ -4,6 +4,7 @@
     <color name="colorPrimaryDark">#FE327E</color>
     <color name="colorAccent">#FFFFFF</color>
     <color name="color_white">#FFFFFF</color>
+    <color name="color_white_secondary">#FAFAFA</color>
     <color name="color_transparent_white">#B3FFFFFF</color>
 
     <color name="color_facebook_button_background">#3B5998</color>
@@ -23,4 +24,9 @@
     <color name="color_hint_grey">#6F7579</color>
     <color name="color_grey">#c5c5c5</color>
     <color name="color_grey_ripple">#E1E1E1</color>
+    <color name="color_grey_dark">#82000000</color>
+    <color name="color_bottom_navbar_background">#F7F7F7</color>
+    <color name="color_circle_border">#C7C7CC</color>
+    <color name="color_pink_ripple">#42FE327E</color>
+    <color name="color_pink">#99FE327E</color>
 </resources>

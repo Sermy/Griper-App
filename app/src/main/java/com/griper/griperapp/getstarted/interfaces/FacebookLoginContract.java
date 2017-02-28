@@ -22,6 +22,8 @@ public interface FacebookLoginContract {
 
         void showFacebookErrorMessage(String errorMessage);
 
+        void showHomeScreen();
+
         boolean isViewDestroyed();
     }
 

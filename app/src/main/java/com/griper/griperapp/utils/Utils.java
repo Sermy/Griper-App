@@ -1,14 +1,18 @@
 package com.griper.griperapp.utils;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Typeface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.design.widget.Snackbar;
+import android.util.TypedValue;
 import android.view.View;
 import android.widget.Toast;
 
 import com.griper.griperapp.BaseApplication;
+import com.griper.griperapp.dbmodels.UserPreferencesData;
+import com.griper.griperapp.dbmodels.UserProfileData;
 
 /**
  * Created by Sarthak on 20-02-2017
@@ -55,8 +59,19 @@ public class Utils {
         Snackbar.make(viewById, msgString, Snackbar.LENGTH_SHORT).show();
     }
 
+    public static int convertDipToPixels(Context context, int dip) {
+        Resources resources = context.getResources();
+        float px = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dip, resources.getDisplayMetrics());
+        return (int) px;
+    }
+
     public static boolean isApplicationInBackGround(Context context) {
         return ((BaseApplication) context).getResumeCount()
                 == ((BaseApplication) context).getPauseCount();
+    }
+
+    public static void deleteDbTables() {
+        UserPreferencesData.deleteUserPreferencesData();
+        UserProfileData.deleteUserData();
     }
 }

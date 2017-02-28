@@ -19,6 +19,8 @@ public interface EmailLoginContract {
         CoordinatorLayout getParentView();
 
         void showProgressBar(boolean show);
+
+        void showHomeScreen();
     }
 
     interface Presenter {
