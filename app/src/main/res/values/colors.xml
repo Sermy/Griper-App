@@ -29,4 +29,10 @@
     <color name="color_circle_border">#C7C7CC</color>
     <color name="color_pink_ripple">#42FE327E</color>
     <color name="color_pink">#99FE327E</color>
+
+    <!-- Camera -->
+    <color name="color_category_white">#99FFFFFF</color>
+    <color name="color_category_pink">#99CA3D73</color>
+    <color name="color_black_transparent">#B31D1D26</color>
+    <color name="color_preview_white">#B3F7F7F7</color>
 </resources>

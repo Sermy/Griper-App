@@ -34,6 +34,10 @@ public class UserProfileData extends Model {
     private double lastKnownLatitude;
     @Column(name = "last_known_longitude")
     private double lastKnownLongitude;
+    @Column(name = "last_known_address")
+    private String lastKnownAddress;
+    @Column(name = "post_code")
+    private String postCode;
 
     public UserProfileData() {
         super();
@@ -57,6 +61,15 @@ public class UserProfileData extends Model {
         this.lastKnownLongitude = lastKnownLongitude;
     }
 
+    public UserProfileData(String uid, String name, String email, String imageUrl, double lastKnownLatitude, double lastKnownLongitude) {
+        this.uid = uid;
+        this.email = email;
+        this.name = name;
+        this.imageUrl = imageUrl;
+        this.lastKnownLatitude = lastKnownLatitude;
+        this.lastKnownLongitude = lastKnownLongitude;
+    }
+
     public static void saveUserData(LoginResponseParser loginResponseParser) {
         LoginUserResponseParser userResponseParser = loginResponseParser.getUser();
         if (userResponseParser != null) {
@@ -74,6 +87,12 @@ public class UserProfileData extends Model {
                     requestDataParser.getUserdp());
             userProfileData.save();
         }
+    }
+
+    public static void saveUserDataWithLocation(String uid, String name, String email, String userDp, double lastKnownLatitude, double lastKnownLongitude) {
+        deleteUserData();
+        UserProfileData userProfileData = new UserProfileData(uid, name, email, userDp, lastKnownLatitude, lastKnownLongitude);
+        userProfileData.save();
     }
 
     public static UserProfileData getUserData() {
@@ -134,6 +153,7 @@ public class UserProfileData extends Model {
 
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
+        this.save();
     }
 
     public double getLastKnownLatitude() {
@@ -142,6 +162,7 @@ public class UserProfileData extends Model {
 
     public void setLastKnownLatitude(double lastKnownLatitude) {
         this.lastKnownLatitude = lastKnownLatitude;
+        this.save();
     }
 
     public double getLastKnownLongitude() {
@@ -150,5 +171,24 @@ public class UserProfileData extends Model {
 
     public void setLastKnownLongitude(double lastKnownLongitude) {
         this.lastKnownLongitude = lastKnownLongitude;
+        this.save();
+    }
+
+    public String getLastKnownAddress() {
+        return lastKnownAddress;
+    }
+
+    public void setLastKnownAddress(String lastKnownAddress) {
+        this.lastKnownAddress = lastKnownAddress;
+        this.save();
+    }
+
+    public String getPostCode() {
+        return postCode;
+    }
+
+    public void setPostCode(String postCode) {
+        this.postCode = postCode;
+        this.save();
     }
 }

@@ -6,8 +6,10 @@ import android.graphics.Typeface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.design.widget.Snackbar;
+import android.text.TextUtils;
 import android.util.TypedValue;
 import android.view.View;
+import android.webkit.MimeTypeMap;
 import android.widget.Toast;
 
 import com.griper.griperapp.BaseApplication;
@@ -57,6 +59,20 @@ public class Utils {
 
     public static void showSnackBar(View viewById, String msgString) {
         Snackbar.make(viewById, msgString, Snackbar.LENGTH_SHORT).show();
+    }
+
+    public static String getMimeType(String url) {
+        String type = "";
+        String extension = MimeTypeMap.getFileExtensionFromUrl(url);
+        if (!TextUtils.isEmpty(extension)) {
+            type = MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension);
+        } else {
+            String reCheckExtension = MimeTypeMap.getFileExtensionFromUrl(url.replaceAll("\\s+", ""));
+            if (!TextUtils.isEmpty(reCheckExtension)) {
+                type = MimeTypeMap.getSingleton().getMimeTypeFromExtension(reCheckExtension);
+            }
+        }
+        return type;
     }
 
     public static int convertDipToPixels(Context context, int dip) {

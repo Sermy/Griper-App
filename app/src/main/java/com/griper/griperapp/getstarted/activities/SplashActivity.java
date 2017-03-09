@@ -31,7 +31,7 @@ public class SplashActivity extends BaseActivity implements SplashScreenContract
         UserPreferencesData preferencesData = UserPreferencesData.getUserPreferencesData();
         UserProfileData userProfileData = UserProfileData.getUserData();
 
-        if (!preferencesData.isUserLoggedIn()) {
+        if (!preferencesData.isUserLoggedIn() || userProfileData == null) {
             showFacebookLoginScreen();
         } else {
             showHomeScreen();

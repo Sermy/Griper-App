@@ -21,4 +21,17 @@ public abstract class BaseActivity extends AppCompatActivity {
     public ApiComponent getApiComponent() {
         return ((BaseApplication) getApplication()).getApplicationComponent().plusApiComponent(new ApiModule());
     }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        ((BaseApplication) getApplication()).updateResumeCount();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        ((BaseApplication) getApplication()).updatePauseCount();
+    }
 }

@@ -12,6 +12,8 @@ public interface HomeScreenContract {
         void enableCamera();
 
         void goToFacebookLoginScreen();
+
+        void startIntentService(double latitude, double longitude);
     }
 
     interface Presenter {

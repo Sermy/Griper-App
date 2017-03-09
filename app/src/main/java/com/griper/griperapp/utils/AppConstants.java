@@ -19,4 +19,16 @@ public class AppConstants {
     public static final int PT_SANS_WEB_REGULAR = 1;
     public static final int DOSIS_SEMI_BOLD = 2;
 
+    public static final int SUCCESS_RESULT = 0;
+    public static final int FAILURE_RESULT = 1;
+    public static final String PACKAGE_NAME =
+            "com.griper.griperapp";
+    public static final String RECEIVER = PACKAGE_NAME + ".RECEIVER";
+    public static final String RESULT_DATA_KEY = PACKAGE_NAME +
+            ".RESULT_DATA_KEY";
+    public static final String RESULT_DATA_POSTCODE_KEY = PACKAGE_NAME + ".RESULT_DATA_POSTCODE_KEY";
+    public static final String LOCATION_DATA_EXTRA = PACKAGE_NAME +
+            ".LOCATION_DATA_EXTRA";
+
+
 }

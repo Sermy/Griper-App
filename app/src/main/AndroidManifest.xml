@@ -6,6 +6,9 @@
         android:name="android.permission.INTERACT_ACROSS_USERS_FULL"
         android:protectionLevel="signature" />
 
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.FLASHLIGHT" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -59,21 +62,26 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
-            android:name="com.griper.griperapp.cam.internal.ui.camera.Camera1Activity"
+            android:name="com.griper.griperapp.internal.ui.camera.Camera1Activity"
             android:screenOrientation="portrait"
             android:theme="@style/FullScreenTheme" />
         <activity
-            android:name="com.griper.griperapp.cam.internal.ui.camera2.Camera2Activity"
+            android:name="com.griper.griperapp.internal.ui.camera2.Camera2Activity"
             android:screenOrientation="portrait"
             android:theme="@style/FullScreenTheme" />
         <activity
-            android:name="com.griper.griperapp.cam.internal.ui.preview.PreviewActivity"
+            android:name="com.griper.griperapp.internal.ui.preview.PreviewActivity"
             android:screenOrientation="portrait"
             android:theme="@style/FullScreenTheme" />
         <activity
             android:name=".homescreen.activities.HomeScreenActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
+
+        <service
+            android:name=".homescreen.service.FetchAddressIntentService"
+            android:exported="false" />
+
     </application>
 
 </manifest>
