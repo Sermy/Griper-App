@@ -9,30 +9,28 @@ import com.google.gson.annotations.SerializedName;
 
 public class LoginResponseParser {
 
-    @SerializedName("user")
+    @SerializedName("state")
     @Expose
-    private LoginUserResponseParser user = null;
-    @SerializedName("success")
-    @Expose
-    private Integer success;
-    @SerializedName("message")
+    private Integer state;
+    @SerializedName("msg")
     @Expose
     private String message;
+    @SerializedName("_id")
+    @Expose
+    private String _id;
+    @SerializedName("email")
+    @Expose
+    private String email;
+    @SerializedName("name")
+    @Expose
+    private String name;
 
-    public LoginUserResponseParser getUser() {
-        return user;
+    public Integer getState() {
+        return state;
     }
 
-    public void setUser(LoginUserResponseParser user) {
-        this.user = user;
-    }
-
-    public Integer getSuccess() {
-        return success;
-    }
-
-    public void setSuccess(Integer success) {
-        this.success = success;
+    public void setState(Integer state) {
+        this.state = state;
     }
 
     public String getMessage() {
@@ -43,4 +41,27 @@ public class LoginResponseParser {
         this.message = message;
     }
 
+    public void set_id(String _id) {
+        this._id = _id;
+    }
+
+    public String get_id() {
+        return _id;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
+    }
 }

@@ -9,9 +9,13 @@ public interface HomeScreenContract {
     interface View {
         void init();
 
+        void findDimensions();
+
+        void setupViewPager();
+
         void enableCamera();
 
-        void goToFacebookLoginScreen();
+        void disableHomeNavigationSelected();
 
         void startIntentService(double latitude, double longitude);
     }

@@ -6,7 +6,6 @@ import com.activeandroid.annotation.Table;
 import com.activeandroid.query.Delete;
 import com.activeandroid.query.Select;
 import com.griper.griperapp.getstarted.parsers.LoginResponseParser;
-import com.griper.griperapp.getstarted.parsers.LoginUserResponseParser;
 import com.griper.griperapp.getstarted.parsers.SignUpRequestDataParser;
 import com.griper.griperapp.getstarted.parsers.SignUpResponseParser;
 
@@ -18,8 +17,8 @@ import java.util.List;
 @Table(name = "user_profile_data")
 public class UserProfileData extends Model {
 
-    @Column(name = "uid")
-    private String uid;
+    @Column(name = "uId")
+    private String uId;
     @Column(name = "name")
     private String name;
     @Column(name = "email")
@@ -43,15 +42,14 @@ public class UserProfileData extends Model {
         super();
     }
 
-    public UserProfileData(String uid, String name, String email, String imageUrl) {
-        this.uid = uid;
+    public UserProfileData(String uId, String name, String email) {
+        this.uId = uId;
         this.name = name;
         this.email = email;
-        this.imageUrl = imageUrl;
     }
 
-    public UserProfileData(String uid, String name, String email, String gender, Integer age, String imageUrl, double lastKnownLatitude, double lastKnownLongitude) {
-        this.uid = uid;
+    public UserProfileData(String uId, String name, String email, String gender, Integer age, String imageUrl, double lastKnownLatitude, double lastKnownLongitude) {
+        this.uId = uId;
         this.email = email;
         this.name = name;
         this.gender = gender;
@@ -61,8 +59,8 @@ public class UserProfileData extends Model {
         this.lastKnownLongitude = lastKnownLongitude;
     }
 
-    public UserProfileData(String uid, String name, String email, String imageUrl, double lastKnownLatitude, double lastKnownLongitude) {
-        this.uid = uid;
+    public UserProfileData(String uId, String name, String email, String imageUrl, double lastKnownLatitude, double lastKnownLongitude) {
+        this.uId = uId;
         this.email = email;
         this.name = name;
         this.imageUrl = imageUrl;
@@ -71,20 +69,19 @@ public class UserProfileData extends Model {
     }
 
     public static void saveUserData(LoginResponseParser loginResponseParser) {
-        LoginUserResponseParser userResponseParser = loginResponseParser.getUser();
-        if (userResponseParser != null) {
+
+        if (loginResponseParser != null) {
             deleteUserData();
-            UserProfileData userProfileData = new UserProfileData(loginResponseParser.getUser().getUid(), loginResponseParser.getUser().getName(),
-                    loginResponseParser.getUser().getEmail(), loginResponseParser.getUser().getUserdp());
+            UserProfileData userProfileData = new UserProfileData(loginResponseParser.get_id(), loginResponseParser.getName(),
+                    loginResponseParser.getEmail());
             userProfileData.save();
         }
     }
 
-    public static void saveUserData(SignUpRequestDataParser requestDataParser, SignUpResponseParser responseParser) {
-        if (requestDataParser != null && responseParser != null) {
+    public static void saveUserData(SignUpResponseParser responseParser) {
+        if (responseParser != null) {
             deleteUserData();
-            UserProfileData userProfileData = new UserProfileData(responseParser.getUid(), requestDataParser.getName(), requestDataParser.getEmail(),
-                    requestDataParser.getUserdp());
+            UserProfileData userProfileData = new UserProfileData(responseParser.get_id(), responseParser.getName(), responseParser.getEmail());
             userProfileData.save();
         }
     }
@@ -108,11 +105,11 @@ public class UserProfileData extends Model {
     }
 
     public String getUid() {
-        return uid;
+        return uId;
     }
 
     public void setUid(String uid) {
-        this.uid = uid;
+        this.uId = uid;
     }
 
     public String getName() {

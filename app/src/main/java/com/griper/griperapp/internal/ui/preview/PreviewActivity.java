@@ -21,14 +21,17 @@ import android.widget.RelativeLayout;
 import com.griper.griperapp.BaseActivity;
 import com.griper.griperapp.R;
 import com.griper.griperapp.dbmodels.UserProfileData;
+import com.griper.griperapp.homescreen.activities.HomeScreenActivity;
 import com.griper.griperapp.internal.configuration.CamConfiguration;
 import com.griper.griperapp.internal.ui.BaseCamActivity;
 import com.griper.griperapp.internal.utils.CamImageLoader;
 import com.griper.griperapp.utils.Utils;
 import com.griper.griperapp.widgets.AppButton;
 import com.griper.griperapp.widgets.AppEditText;
+import com.griper.griperapp.widgets.AppTextView;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 import com.transitionseverywhere.Rotate;
+import com.transitionseverywhere.TransitionManager;
 
 import java.io.File;
 
@@ -73,6 +76,7 @@ public class PreviewActivity extends BaseActivity implements View.OnClickListene
     AppEditText etTitle;
     AppEditText etDescription;
     AppButton buttonGripe;
+    AppTextView tvGripeLocation;
 
     LinearLayout progressBar;
     SlidingUpPanelLayout mLayout;
@@ -95,6 +99,16 @@ public class PreviewActivity extends BaseActivity implements View.OnClickListene
         }
     }
 
+    @Override
+    public void goToHomeScreen() {
+        deleteMediaFile();
+        Intent intent = new Intent(this, HomeScreenActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
+        finish();
+    }
+
     public enum PanelState {
         EXPANDED,
         COLLAPSED,
@@ -112,18 +126,15 @@ public class PreviewActivity extends BaseActivity implements View.OnClickListene
     public void onPanelStateChanged(View panel, SlidingUpPanelLayout.PanelState previousState, SlidingUpPanelLayout.PanelState newState) {
 
         if (newState.equals(SlidingUpPanelLayout.PanelState.COLLAPSED)) {
-            if (Build.VERSION.SDK_INT > 19) {
-                com.transitionseverywhere.TransitionManager.beginDelayedTransition(layoutDrag, new Rotate());
-                imageSlideExpand.setRotation(360);
-            }
-//            Animation animRotate = AnimationUtils.loadAnimation(this, R.anim.rotate_around_central_point);
-//            imageSlideExpand.startAnimation(animRotate);
+
+            TransitionManager.beginDelayedTransition(layoutDrag, new Rotate());
+            imageSlideExpand.setRotation(360);
+
         } else if (newState.equals(SlidingUpPanelLayout.PanelState.EXPANDED)) {
 
-            if (Build.VERSION.SDK_INT > 19) {
-                com.transitionseverywhere.TransitionManager.beginDelayedTransition(layoutDrag, new Rotate());
-                imageSlideExpand.setRotation(180);
-            }
+            com.transitionseverywhere.TransitionManager.beginDelayedTransition(layoutDrag, new Rotate());
+            imageSlideExpand.setRotation(180);
+
         }
     }
 
@@ -214,6 +225,14 @@ public class PreviewActivity extends BaseActivity implements View.OnClickListene
         griperLitterLayout = (RelativeLayout) findViewById(R.id.griperLitter);
         griperOtherLayout = (RelativeLayout) findViewById(R.id.griperOther);
         buttonGripe = (AppButton) findViewById(R.id.gripeButton);
+        tvGripeLocation = (AppTextView) findViewById(R.id.gripeLocation);
+
+        UserProfileData userProfileData = UserProfileData.getUserData();
+        if (userProfileData != null && userProfileData.getLastKnownAddress() != null) {
+            tvGripeLocation.setText(userProfileData.getLastKnownAddress());
+        } else {
+            tvGripeLocation.setVisibility(View.GONE);
+        }
 
         griperOtherLayout.setOnClickListener(this);
         griperSprayLayout.setOnClickListener(this);
@@ -283,10 +302,7 @@ public class PreviewActivity extends BaseActivity implements View.OnClickListene
         if (view.getId() == R.id.confirm_media_result) {
             resultIntent.putExtra(RESPONSE_CODE_ARG, BaseCamActivity.ACTION_CONFIRM).putExtra(FILE_PATH_ARG, previewFilePath);
         } else if (view.getId() == R.id.re_take_media) {
-            deleteMediaFile();
-            resultIntent.putExtra(RESPONSE_CODE_ARG, BaseCamActivity.ACTION_RETAKE);
-            setResult(RESULT_OK, resultIntent);
-            finish();
+            onBackPressed();
         } else if (view.getId() == R.id.griperRoad) {
             categoryGripes = 0;
             griperRoadLayout.setSelected(true);
@@ -318,7 +334,7 @@ public class PreviewActivity extends BaseActivity implements View.OnClickListene
         } else if (view.getId() == R.id.gripeButton) {
             Timber.i("OnClick button");
             if ((griperRoadLayout.isSelected() || griperSprayLayout.isSelected() || griperLitterLayout.isSelected() ||
-                    griperOtherLayout.isSelected()) && !etTitle.getText().toString().isEmpty()) {
+                    griperOtherLayout.isSelected()) && !etTitle.getText().toString().isEmpty() && !etDescription.getText().toString().isEmpty()) {
                 Timber.i(categoryGripes + " | " + etTitle.getText() + " | " + etDescription.getText().toString());
                 UserProfileData userProfileData = UserProfileData.getUserData();
 
@@ -332,6 +348,8 @@ public class PreviewActivity extends BaseActivity implements View.OnClickListene
                 }
             } else if (etTitle.getText().toString().isEmpty()) {
                 Utils.showToast(this, getString(R.string.string_title_not_empty));
+            } else if(etDescription.getText().toString().isEmpty()) {
+                Utils.showToast(this, getString(R.string.string_description_not_empty));
             } else {
                 Utils.showToast(this, getString(R.string.string_category_not_empty));
             }
@@ -344,8 +362,10 @@ public class PreviewActivity extends BaseActivity implements View.OnClickListene
                 (mLayout.getPanelState() == SlidingUpPanelLayout.PanelState.EXPANDED || mLayout.getPanelState() == SlidingUpPanelLayout.PanelState.ANCHORED)) {
             mLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
         } else {
-            super.onBackPressed();
             deleteMediaFile();
+            super.onBackPressed();
+            overridePendingTransition(0, R.anim.push_down_out);
+
         }
     }
 

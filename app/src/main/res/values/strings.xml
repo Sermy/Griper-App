@@ -26,7 +26,7 @@
     <string name="string_name_length_error">Name cannot be less than 3 characters</string>
 
     <string name="string_accept_permissions">Please enable Camera and Storage Permissions from System Settings</string>
-
+    <string name="string_show_location">Turn on High Accuracy under Location Settings</string>
 
     <string-array name="string_array_fb_permissions">
         <item>public_profile</item>
@@ -49,5 +49,9 @@
 
     <string name="string_title_not_empty">Title field cannot be empty</string>
     <string name="string_category_not_empty">Please select one of the categories</string>
+    <string name="string_griper_app_name">Griper</string>
+    <string name="string_comments">Comments</string>
+    <string name="string_likes">Likes</string>
+    <string name="string_description_not_empty">Description cannot be empty</string>
 
 </resources>

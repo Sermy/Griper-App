@@ -261,9 +261,6 @@ public abstract class LocationRequestActivity extends BaseActivity implements Go
 
     @Override
     public void onLocationChanged(Location location) {
-        /*Utils.showToast(LocationRequestActivity.this, "" + location.getLatitude()
-                + ":" + location.getLongitude());*/
-
         stopLocationUpdates();
         onLocationSuccess(location.getLatitude(), location.getLongitude());
     }

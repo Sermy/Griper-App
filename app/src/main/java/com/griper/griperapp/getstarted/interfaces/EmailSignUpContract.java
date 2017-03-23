@@ -26,7 +26,7 @@ public interface EmailSignUpContract {
     interface Presenter {
         void callCreateProfileApi(SignUpRequestDataParser signUpRequestDataParser);
 
-        void onCreateProfileApiSuccess(SignUpResponseParser responseParser, SignUpRequestDataParser requestDataParser);
+        void onCreateProfileApiSuccess(SignUpResponseParser responseParser);
 
         void onCreateProfileApiFailure(String errorMessage);
     }

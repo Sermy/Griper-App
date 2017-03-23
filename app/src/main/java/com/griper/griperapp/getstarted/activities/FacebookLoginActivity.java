@@ -70,7 +70,7 @@ public class FacebookLoginActivity extends BaseActivity implements FacebookLogin
 
     @OnClick(R.id.linearLayoutFacebook)
     public void onClickFacebookLogin() {
-        goToFacebookLogin();
+//        goToFacebookLogin();
     }
 
     /*

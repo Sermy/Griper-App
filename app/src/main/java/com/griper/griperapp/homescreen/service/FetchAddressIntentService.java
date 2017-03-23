@@ -89,6 +89,9 @@ public class FetchAddressIntentService extends IntentService {
             for (int i = 0; i < address.getMaxAddressLineIndex(); i++) {
                 addressFragments.add(address.getAddressLine(i));
                 Log.i("Address", addressFragments.get(i));
+                if (i == 0) {
+                    continue;
+                }
                 if (i != (address.getMaxAddressLineIndex() - 1)) {
                     completeAddress += addressFragments.get(i) + ", ";
                 } else {

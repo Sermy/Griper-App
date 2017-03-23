@@ -24,8 +24,4 @@ public class HomeScreenPresenter implements HomeScreenContract.Presenter {
         this.homeScreenView = view;
     }
 
-
-
-
-
 }

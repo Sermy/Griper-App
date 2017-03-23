@@ -9,30 +9,37 @@ import com.google.gson.annotations.SerializedName;
 
 public class SignUpResponseParser {
 
-    @SerializedName("uid")
+    @SerializedName("_id")
     @Expose
-    private String uid;
-    @SerializedName("success")
+    private String _id;
+    @SerializedName("state")
     @Expose
-    private Integer success;
-    @SerializedName("message")
+    private Integer state;
+    @SerializedName("msg")
     @Expose
     private String message;
+    @SerializedName("name")
+    @Expose
+    private String name;
+    @SerializedName("email")
+    @Expose
+    private String email;
 
-    public String getUid() {
-        return uid;
+
+    public String get_id() {
+        return _id;
     }
 
-    public void setUid(String uid) {
-        this.uid = uid;
+    public void set_id(String uid) {
+        this._id = uid;
     }
 
-    public Integer getSuccess() {
-        return success;
+    public Integer getState() {
+        return state;
     }
 
-    public void setSuccess(Integer success) {
-        this.success = success;
+    public void setState(Integer state) {
+        this.state = state;
     }
 
     public String getMessage() {
@@ -43,4 +50,19 @@ public class SignUpResponseParser {
         this.message = message;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 }

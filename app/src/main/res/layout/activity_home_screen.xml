@@ -7,26 +7,79 @@
     android:layout_height="match_parent"
     tools:context="com.griper.griperapp.homescreen.activities.HomeScreenActivity">
 
-    <com.griper.griperapp.widgets.AppTextView
-        android:id="@+id/etLogOut"
-        android:layout_width="@dimen/dimen_120dp"
-        android:layout_height="@dimen/dimen_60dp"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginTop="@dimen/dimen_20dp"
-        android:background="@drawable/drawable_semi_circle_rectangle"
-        android:gravity="center"
-        android:text="@string/string_log_out"
-        android:textSize="@dimen/dimen_18sp"
-        app:textStyle="@integer/OPEN_SANS_REGULAR" />
 
     <LinearLayout
         android:id="@+id/linearLayoutNavBar"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dimen_40dp"
+        android:layout_height="@dimen/dimen_45dp"
         android:layout_alignParentBottom="true"
         android:background="@color/color_bottom_navbar_background"
-        android:orientation="horizontal" />
+        android:orientation="horizontal"
+        android:weightSum="5">
+
+        <LinearLayout
+            android:layout_width="@dimen/dimen_0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <ImageView
+                android:id="@+id/imageViewHome"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:background="@drawable/drawable_btn_nav_action"
+                android:padding="@dimen/dimen_10dp"
+                android:src="@drawable/home_menu_img" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="@dimen/dimen_0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <ImageView
+                android:id="@+id/imageViewMap"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:background="@drawable/drawable_btn_nav_action"
+                android:padding="@dimen/dimen_9dp"
+                android:src="@drawable/location_menu_img" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="@dimen/dimen_0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+
+        <LinearLayout
+            android:layout_width="@dimen/dimen_0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <ImageView
+                android:id="@+id/imageViewRecent"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:background="@drawable/drawable_btn_nav_action"
+                android:padding="@dimen/dimen_12dp"
+                android:src="@drawable/recent_fixed_menu_img" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <ImageView
+                android:id="@+id/imageViewProfile"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:background="@drawable/drawable_btn_nav_action"
+                android:padding="@dimen/dimen_11dp"
+                android:src="@drawable/profile_menu_img" />
+        </LinearLayout>
+
+    </LinearLayout>
 
     <View
         android:id="@+id/viewDivider"
@@ -34,6 +87,17 @@
         android:layout_height="@dimen/dimen_0.5dp"
         android:layout_above="@id/linearLayoutNavBar"
         android:background="@color/color_circle_border" />
+
+
+    <com.griper.griperapp.utils.CustomViewPager
+        android:id="@+id/viewPager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/linearLayoutNavBar"
+        android:clipToPadding="false"
+        android:overScrollMode="never">
+
+    </com.griper.griperapp.utils.CustomViewPager>
 
     <ImageView
         android:id="@+id/imageCameraAccess"
@@ -44,5 +108,4 @@
         android:layout_marginBottom="@dimen/dimen_below_7dp"
         android:background="@drawable/drawable_ripple_effect"
         android:src="@drawable/drawable_bottom_plus_circle" />
-
 </RelativeLayout>

@@ -15,21 +15,20 @@ public class SignUpRequestDataParser {
     @SerializedName("email")
     @Expose
     private String email;
-    @SerializedName("pass")
+    @SerializedName("password")
     @Expose
-    private String pass;
-    @SerializedName("userdp")
-    @Expose
-    private String userdp;
-    @SerializedName("isfb")
-    private String isfb;
+    private String password;
 
-    public SignUpRequestDataParser(String name, String email, String pass, String userdp, String isfb) {
+    public SignUpRequestDataParser(String name, String email, String pass) {
         this.name = name;
         this.email = email;
-        this.pass = pass;
-        this.userdp = userdp;
-        this.isfb = isfb;
+        this.password = pass;
+    }
+
+    public SignUpRequestDataParser(String name, String email, String pass, String imageUrl) {
+        this.name = name;
+        this.email = email;
+        this.password = pass;
     }
 
     public String getName() {
@@ -48,27 +47,12 @@ public class SignUpRequestDataParser {
         this.email = email;
     }
 
-    public String getPass() {
-        return pass;
+    public String getPassword() {
+        return password;
     }
 
-    public void setPass(String pass) {
-        this.pass = pass;
+    public void setPassword(String pass) {
+        this.password = pass;
     }
 
-    public String getUserdp() {
-        return userdp;
-    }
-
-    public void setUserdp(String userdp) {
-        this.userdp = userdp;
-    }
-
-    public String getIsfb() {
-        return isfb;
-    }
-
-    public void setIsfb(String isfb) {
-        this.isfb = isfb;
-    }
 }

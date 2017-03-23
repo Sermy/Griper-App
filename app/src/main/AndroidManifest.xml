@@ -52,7 +52,7 @@
             android:value="griper.db" />
         <meta-data
             android:name="AA_DB_VERSION"
-            android:value="1" />
+            android:value="2" />
         <meta-data
             android:name="AA_MODELS"
             android:value="com.griper.griperapp.dbmodels.UserProfileData, com.griper.griperapp.dbmodels.UserPreferencesData" />
@@ -62,15 +62,15 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
-            android:name="com.griper.griperapp.internal.ui.camera.Camera1Activity"
+            android:name=".internal.ui.camera.Camera1Activity"
             android:screenOrientation="portrait"
             android:theme="@style/FullScreenTheme" />
         <activity
-            android:name="com.griper.griperapp.internal.ui.camera2.Camera2Activity"
+            android:name=".internal.ui.camera2.Camera2Activity"
             android:screenOrientation="portrait"
             android:theme="@style/FullScreenTheme" />
         <activity
-            android:name="com.griper.griperapp.internal.ui.preview.PreviewActivity"
+            android:name=".internal.ui.preview.PreviewActivity"
             android:screenOrientation="portrait"
             android:theme="@style/FullScreenTheme" />
         <activity
@@ -82,6 +82,22 @@
             android:name=".homescreen.service.FetchAddressIntentService"
             android:exported="false" />
 
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="a499e7b3adf1355662baccb2cdf808e4f037bbcc" />
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyCqzhh3BXf3pl2ROy1lTI_RaDr650Mdlto" />
+
+        <activity
+            android:name=".homescreen.activities.ShowGripeDetailsActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/SwipeBackTheme">
+
+        </activity>
     </application>
 
 </manifest>

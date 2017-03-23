@@ -48,7 +48,7 @@ public class EmailLoginPresenter implements EmailLoginContract.Presenter {
     public void callLoginInApi(LoginRequestDataParser requestDataParser) {
         if (Utils.isNetworkAvailable(context)) {
             view.showProgressBar(true);
-            webServiceInterface.signIn(requestDataParser.getEmail(), requestDataParser.getPass()).subscribeOn(Schedulers.io())
+            webServiceInterface.signIn(requestDataParser).subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .onErrorResumeNext(new Func1<Throwable, Observable<? extends LoginResponseParser>>() {
                         @Override
@@ -69,7 +69,7 @@ public class EmailLoginPresenter implements EmailLoginContract.Presenter {
 
                 @Override
                 public void onNext(LoginResponseParser loginResponseParser) {
-                    if (loginResponseParser.getSuccess().equals(AppConstants.API_RESPONSE_SUCCESS)) {
+                    if (loginResponseParser.getState().equals(AppConstants.API_RESPONSE_SUCCESS)) {
                         onEmailLoginApiSuccess(loginResponseParser);
                     } else {
                         onEmailLoginApiFailure(loginResponseParser.getMessage());
@@ -85,8 +85,6 @@ public class EmailLoginPresenter implements EmailLoginContract.Presenter {
     @Override
     public void onEmailLoginApiSuccess(LoginResponseParser loginResponseParser) {
         view.showProgressBar(false);
-//        Utils.showSnackBar(view.getParentView(),
-//                context.getString(R.string.string_welcome_user).concat(" ").concat(loginResponseParser.getUser().getName()));
         UserProfileData.saveUserData(loginResponseParser);
         UserProfileData userProfileData = UserProfileData.getUserData();
         if (userProfileData != null) {

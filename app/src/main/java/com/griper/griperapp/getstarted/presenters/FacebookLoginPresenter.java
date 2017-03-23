@@ -103,7 +103,7 @@ public class FacebookLoginPresenter implements FacebookLoginContract.Presenter {
         SignUpRequestDataParser dataParser = null;
         try {
             dataParser = new SignUpRequestDataParser(responseJSON.getString("name"),
-                    responseJSON.getString("email"), "", "https://graph.facebook.com/" + responseJSON.getString("id") + "/picture?type=large", "1");
+                    responseJSON.getString("email"), "", "https://graph.facebook.com/" + responseJSON.getString("id") + "/picture?type=large");
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -125,8 +125,7 @@ public class FacebookLoginPresenter implements FacebookLoginContract.Presenter {
     public void callCreateProfileApi(final SignUpRequestDataParser signUpRequestDataParser, LoginResult loginResult, GraphResponse graphResponse) {
         Timber.i("Call create profile api");
         if (Utils.isNetworkAvailable(context)) {
-            getStartedWebServiceInterface.createProfile(signUpRequestDataParser.getName(), signUpRequestDataParser.getEmail(),
-                    signUpRequestDataParser.getIsfb(), signUpRequestDataParser.getPass(), signUpRequestDataParser.getUserdp()).subscribeOn(Schedulers.io())
+            getStartedWebServiceInterface.createProfile(signUpRequestDataParser).subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .onErrorResumeNext(new Func1<Throwable, Observable<? extends SignUpResponseParser>>() {
                         @Override
@@ -147,7 +146,7 @@ public class FacebookLoginPresenter implements FacebookLoginContract.Presenter {
 
                 @Override
                 public void onNext(SignUpResponseParser signUpResponseParser) {
-                    if (signUpResponseParser.getSuccess().equals(AppConstants.API_RESPONSE_SUCCESS)) {
+                    if (signUpResponseParser.getState().equals(AppConstants.API_RESPONSE_SUCCESS)) {
                         onCreateProfileApiSuccess(signUpResponseParser, signUpRequestDataParser);
                     } else {
                         onCreateProfileApiFailure(signUpResponseParser.getMessage());
@@ -159,7 +158,7 @@ public class FacebookLoginPresenter implements FacebookLoginContract.Presenter {
 
     @Override
     public void onCreateProfileApiSuccess(SignUpResponseParser responseParser, SignUpRequestDataParser requestDataParser) {
-        UserProfileData.saveUserData(requestDataParser, responseParser);
+        UserProfileData.saveUserData(responseParser);
         setUserLoggedinStatus(true);
         facebookLoginView.showProgressBar(false);
 //        Utils.showToast(context, context.getString(R.string.string_welcome_user).concat(" ").concat(requestDataParser.getName()));

@@ -9,30 +9,30 @@ import com.google.gson.annotations.SerializedName;
 
 public class AddGripeResponseParser {
 
-    @SerializedName("success")
+    @SerializedName("state")
     @Expose
-    private Integer success;
-    @SerializedName("message")
+    private Integer state;
+    @SerializedName("msg")
     @Expose
-    private String message;
+    private String msg;
 
     public AddGripeResponseParser() {
 
     }
 
-    public Integer getSuccess() {
-        return success;
+    public Integer getState() {
+        return state;
     }
 
-    public void setSuccess(Integer success) {
-        this.success = success;
+    public void setState(Integer state) {
+        this.state = state;
     }
 
-    public String getMessage() {
-        return message;
+    public String getMsg() {
+        return msg;
     }
 
-    public void setMessage(String message) {
-        this.message = message;
+    public void setMsg(String msg) {
+        this.msg = msg;
     }
 }

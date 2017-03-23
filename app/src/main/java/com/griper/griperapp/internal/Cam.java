@@ -84,8 +84,10 @@ public class Cam {
         if (camConfiguration.getFragment() != null) {
 
             camConfiguration.getFragment().startActivityForResult(cameraIntent, camConfiguration.getRequestCode());
+            camConfiguration.getActivity().overridePendingTransition(0, 0);
         } else {
             camConfiguration.getActivity().startActivityForResult(cameraIntent, camConfiguration.getRequestCode());
+            camConfiguration.getActivity().overridePendingTransition(0, 0);
         }
     }
 }

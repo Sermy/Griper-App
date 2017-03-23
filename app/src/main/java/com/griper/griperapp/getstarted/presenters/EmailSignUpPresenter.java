@@ -49,8 +49,7 @@ public class EmailSignUpPresenter implements EmailSignUpContract.Presenter {
     public void callCreateProfileApi(final SignUpRequestDataParser signUpRequestDataParser) {
         if (Utils.isNetworkAvailable(context)) {
             view.showProgressBar(true);
-            webServiceInterface.createProfile(signUpRequestDataParser.getName(), signUpRequestDataParser.getEmail(),
-                    signUpRequestDataParser.getIsfb(), signUpRequestDataParser.getPass(), signUpRequestDataParser.getUserdp())
+            webServiceInterface.createProfile(signUpRequestDataParser)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .onErrorResumeNext(new Func1<Throwable, Observable<? extends SignUpResponseParser>>() {
@@ -72,9 +71,9 @@ public class EmailSignUpPresenter implements EmailSignUpContract.Presenter {
 
                 @Override
                 public void onNext(SignUpResponseParser responseParser) {
-                    if (responseParser.getSuccess().equals(AppConstants.API_RESPONSE_SUCCESS)) {
-                        onCreateProfileApiSuccess(responseParser, signUpRequestDataParser);
-                    } else if (responseParser.getSuccess().equals(AppConstants.EMAIL_ALREADY_EXISTS)) {
+                    if (responseParser.getState().equals(AppConstants.API_RESPONSE_SUCCESS)) {
+                        onCreateProfileApiSuccess(responseParser);
+                    } else if (responseParser.getState().equals(AppConstants.EMAIL_ALREADY_EXISTS)) {
                         onCreateProfileApiFailure(responseParser.getMessage());
                     } else {
                         onCreateProfileApiFailure(responseParser.getMessage());
@@ -87,8 +86,8 @@ public class EmailSignUpPresenter implements EmailSignUpContract.Presenter {
     }
 
     @Override
-    public void onCreateProfileApiSuccess(SignUpResponseParser responseParser, SignUpRequestDataParser requestDataParser) {
-        UserProfileData.saveUserData(requestDataParser, responseParser);
+    public void onCreateProfileApiSuccess(SignUpResponseParser responseParser) {
+        UserProfileData.saveUserData(responseParser);
         UserProfileData userProfileData = UserProfileData.getUserData();
         Utils.showSnackBar(view.getParentView(), context.getString(R.string.string_sign_up_success));
         view.showProgressBar(false);

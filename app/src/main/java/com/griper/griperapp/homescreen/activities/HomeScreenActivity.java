@@ -10,8 +10,13 @@ import android.os.ResultReceiver;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.os.Bundle;
+import android.support.v4.view.ViewPager;
+import android.widget.ImageView;
 
 import com.griper.griperapp.R;
+import com.griper.griperapp.homescreen.adapters.ShowHomeScreenAdapter;
+import com.griper.griperapp.homescreen.fragments.GripesMapScreenFragment;
+import com.griper.griperapp.homescreen.fragments.GripesNearbyScreenFragment;
 import com.griper.griperapp.homescreen.service.FetchAddressIntentService;
 import com.griper.griperapp.internal.Cam;
 import com.griper.griperapp.internal.configuration.CamConfiguration;
@@ -20,6 +25,7 @@ import com.griper.griperapp.getstarted.activities.FacebookLoginActivity;
 import com.griper.griperapp.homescreen.interfaces.HomeScreenContract;
 import com.griper.griperapp.homescreen.presenters.HomeScreenPresenter;
 import com.griper.griperapp.utils.AppConstants;
+import com.griper.griperapp.utils.CustomViewPager;
 import com.griper.griperapp.utils.Utils;
 
 import java.util.ArrayList;
@@ -32,11 +38,26 @@ import timber.log.Timber;
 
 public class HomeScreenActivity extends LocationRequestActivity implements HomeScreenContract.View {
 
+    @Bind(R.id.viewPager)
+    protected CustomViewPager viewPager;
+    @Bind(R.id.imageViewHome)
+    ImageView homeBtn;
+    @Bind(R.id.imageViewMap)
+    ImageView mapBtn;
+    @Bind(R.id.imageViewRecent)
+    ImageView recentBtn;
+    @Bind(R.id.imageViewProfile)
+    ImageView profileBtn;
+
     private static final int REQUEST_CAMERA_PERMISSIONS = 931;
     private static final int CAPTURE_MEDIA = 368;
 
     private AddressResultReceiver mResultReceiver;
+    private ShowHomeScreenAdapter homeScreenAdapter;
+    private GripesNearbyScreenFragment nearbyScreenFragment;
+    private GripesMapScreenFragment mapScreenFragment;
     private HomeScreenContract.Presenter homeScreenPresenter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +73,49 @@ public class HomeScreenActivity extends LocationRequestActivity implements HomeS
         mResultReceiver = new AddressResultReceiver(new Handler());
         homeScreenPresenter = new HomeScreenPresenter(this);
 
+        setupViewPager();
+    }
+
+    @Override
+    public void findDimensions() {
+
+    }
+
+    @Override
+    public void setupViewPager() {
+        homeScreenAdapter = new ShowHomeScreenAdapter(getSupportFragmentManager());
+        nearbyScreenFragment = GripesNearbyScreenFragment.newInstance();
+        mapScreenFragment = GripesMapScreenFragment.newInstance();
+        homeScreenAdapter.addFragment(nearbyScreenFragment);
+        homeScreenAdapter.addFragment(mapScreenFragment);
+        viewPager.setAdapter(homeScreenAdapter);
+        homeBtn.setImageResource(R.drawable.home_menu_img_selected);
+        viewPager.setPagingEnabled(false);
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                disableHomeNavigationSelected();
+                if (position == 0) {
+                    homeBtn.setImageResource(R.drawable.home_menu_img_selected);
+                } else if (position == 1) {
+                    mapBtn.setImageResource(R.drawable.location_menu_img_selected);
+                } else if (position == 2) {
+                    recentBtn.setImageResource(R.drawable.recent_fixed_menu_img_selected);
+                } else {
+                    profileBtn.setImageResource(R.drawable.profile_menu_img_selected);
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
     }
 
     @Override
@@ -59,6 +123,7 @@ public class HomeScreenActivity extends LocationRequestActivity implements HomeS
         super.onResume();
         requestLocation();
     }
+
 
     @Override
     public void enableCamera() {
@@ -75,15 +140,11 @@ public class HomeScreenActivity extends LocationRequestActivity implements HomeS
     }
 
     @Override
-    public void goToFacebookLoginScreen() {
-
-        Utils.deleteDbTables();
-        Intent intent = new Intent(this, FacebookLoginActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(intent);
-        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
-
-
+    public void disableHomeNavigationSelected() {
+        homeBtn.setImageResource(R.drawable.home_menu_img);
+        mapBtn.setImageResource(R.drawable.location_menu_img);
+        recentBtn.setImageResource(R.drawable.recent_fixed_menu_img);
+        profileBtn.setImageResource(R.drawable.profile_menu_img);
     }
 
     @Override
@@ -109,6 +170,26 @@ public class HomeScreenActivity extends LocationRequestActivity implements HomeS
             enableCamera();
         }
 
+    }
+
+    @OnClick(R.id.imageViewHome)
+    public void onClickHome() {
+        viewPager.setCurrentItem(0);
+    }
+
+    @OnClick(R.id.imageViewMap)
+    public void onClickMap() {
+        viewPager.setCurrentItem(1);
+    }
+
+    @OnClick(R.id.imageViewRecent)
+    public void onClickRecent() {
+//        viewPager.setCurrentItem(2);
+    }
+
+    @OnClick(R.id.imageViewProfile)
+    public void onClickProfile() {
+//        viewPager.setCurrentItem(3);
     }
 
     protected final void askForPermissions(String[] permissions, int requestCode) {
@@ -158,11 +239,6 @@ public class HomeScreenActivity extends LocationRequestActivity implements HomeS
         } else {
             Timber.e("UserProfileData null");
         }
-    }
-
-    @OnClick(R.id.etLogOut)
-    public void onClickLogOut() {
-        goToFacebookLoginScreen();
     }
 
 

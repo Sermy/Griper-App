@@ -11,6 +11,7 @@ import com.griper.griperapp.R;
 import com.griper.griperapp.dbmodels.UserProfileData;
 import com.griper.griperapp.getstarted.parsers.SignUpResponseParser;
 import com.griper.griperapp.injections.modules.ApiModule;
+import com.griper.griperapp.utils.AppConstants;
 import com.griper.griperapp.utils.Utils;
 
 import java.io.File;
@@ -54,13 +55,16 @@ public class AddGripePresenter implements AddGripeContract.Presenter {
     }
 
     @Override
-    public void onAddGripeApiSuccess() {
-
+    public void onAddGripeApiSuccess(AddGripeResponseParser responseParser) {
+        view.showProgressBar(false);
+        view.goToHomeScreen();
+        Utils.showToast(context.getApplicationContext(), responseParser.getMsg());
     }
 
     @Override
     public void onAddGripeApiFailure() {
-
+        Utils.showToast(context, context.getString(R.string.string_error_something_went_wrong));
+        view.showProgressBar(false);
     }
 
     @Override
@@ -75,13 +79,18 @@ public class AddGripePresenter implements AddGripeContract.Presenter {
         RequestBody requestFile =
                 RequestBody.create(MediaType.parse("multipart/form-data"), newFile);
         RequestBody category = RequestBody.create(MediaType.parse("text/plain"), Integer.toString(requestParser.getCategory()));
-        RequestBody postCode = RequestBody.create(MediaType.parse("text/plain"), requestParser.getPostcode());
-        RequestBody address = RequestBody.create(MediaType.parse("text/plain"), requestParser.getAddress());
+        RequestBody postCode = null;
+        RequestBody address = null;
+        if (requestParser.getPostcode() != null && requestParser.getAddress() != null) {
+            postCode = RequestBody.create(MediaType.parse("text/plain"), requestParser.getPostcode());
+            address = RequestBody.create(MediaType.parse("text/plain"), requestParser.getAddress());
+        }
         RequestBody latitude = RequestBody.create(MediaType.parse("text/plain"), Double.toString(requestParser.getLat()));
         RequestBody longitude = RequestBody.create(MediaType.parse("text/plain"), Double.toString(requestParser.getLon()));
         RequestBody title = RequestBody.create(MediaType.parse("text/plain"), requestParser.getTitle());
         RequestBody description = RequestBody.create(MediaType.parse("text/plain"), requestParser.getDescription());
         UserProfileData userProfileData = UserProfileData.getUserData();
+
         if (userProfileData != null && Utils.isNetworkAvailable(context)) {
 
             multipartWebServiceInterface.callAddGripe(userProfileData.getEmail(), requestFile, category, title, description, latitude, longitude, address, postCode)
@@ -101,11 +110,16 @@ public class AddGripePresenter implements AddGripeContract.Presenter {
                 @Override
                 public void onError(Throwable e) {
                     Timber.e(e.getMessage());
+                    onAddGripeApiFailure();
                 }
 
                 @Override
                 public void onNext(AddGripeResponseParser addGripeResponseParser) {
-
+                    if (addGripeResponseParser.getState().equals(AppConstants.API_RESPONSE_SUCCESS)) {
+                        onAddGripeApiSuccess(addGripeResponseParser);
+                    } else {
+                        onAddGripeApiFailure();
+                    }
                 }
             });
         } else {

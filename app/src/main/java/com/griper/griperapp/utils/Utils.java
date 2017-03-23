@@ -1,6 +1,8 @@
 package com.griper.griperapp.utils;
 
 import android.content.Context;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Typeface;
 import android.net.ConnectivityManager;
@@ -81,6 +83,11 @@ public class Utils {
         return (int) px;
     }
 
+    public static int convertDpToPixel(Context context, int dp) {
+        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_PX, dp,
+                context.getResources().getDisplayMetrics());
+    }
+
     public static boolean isApplicationInBackGround(Context context) {
         return ((BaseApplication) context).getResumeCount()
                 == ((BaseApplication) context).getPauseCount();
@@ -89,5 +96,19 @@ public class Utils {
     public static void deleteDbTables() {
         UserPreferencesData.deleteUserPreferencesData();
         UserProfileData.deleteUserData();
+    }
+
+    public static String cloudinaryUrlFromContext(Context context) {
+        String url = "";
+        try {
+            PackageManager packageManager = context.getPackageManager();
+            ApplicationInfo info = packageManager.getApplicationInfo(context.getPackageName(), PackageManager.GET_META_DATA);
+            if (info != null && info.metaData != null) {
+                url = (String) info.metaData.get("CLOUDINARY_URL");
+            }
+        } catch (PackageManager.NameNotFoundException e) {
+            // No metadata found
+        }
+        return url;
     }
 }

@@ -6,6 +6,8 @@ package com.griper.griperapp.utils;
 
 public class BuildSchemeConstants {
 
-    //            public static final String BASE_URL = "http://griper.co.uk/griperapp/";
+    //public static final String BASE_URL = "http://griper.co.uk/griperapp/";
     public static final String BASE_URL = "http://192.168.1.4:8080/v1/";
+//    public static final String BASE_URL = "http://192.168.43.254:8080/v1/";
+
 }

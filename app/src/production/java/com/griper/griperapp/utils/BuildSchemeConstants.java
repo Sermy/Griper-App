@@ -5,5 +5,5 @@ package com.griper.griperapp.utils;
  */
 
 public class BuildSchemeConstants {
-    public static final String BASE_URL = "https://";
+    public static final String BASE_URL = "http://52.56.71.251:8080/v1/";
 }

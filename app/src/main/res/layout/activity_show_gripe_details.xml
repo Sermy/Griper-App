@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_show_gripe_details"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_grey_light"
+    tools:context="com.griper.griperapp.homescreen.activities.ShowGripeDetailsActivity">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbarGripe"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/colorPrimary"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:contentInsetEnd="@dimen/dimen_0dp"
+        app:contentInsetLeft="@dimen/dimen_0dp"
+        app:contentInsetRight="@dimen/dimen_0dp"
+        app:contentInsetStart="@dimen/dimen_0dp"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+
+
+        <com.griper.griperapp.widgets.AppTextView
+            android:id="@+id/textToolbarGripe"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/string_griper_app_name"
+            android:textColor="@color/colorAccent"
+            android:textSize="@dimen/dimen_18sp"
+            app:textStyle="@integer/PT_SANS_WEB_REGULAR" />
+
+    </android.support.v7.widget.Toolbar>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/toolbarGripe"
+        android:clickable="true"
+        android:fillViewport="true"
+        android:focusable="true"
+        android:focusableInTouchMode="true">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:weightSum="2">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1.25">
+
+                <ImageView
+                    android:id="@+id/imageDetailGripe"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+                <com.wang.avi.AVLoadingIndicatorView
+                    android:id="@+id/loadImageDetailGripe"
+                    style="@style/AVLoadingIndicatorView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    app:indicatorColor="@color/colorPrimary"
+                    app:indicatorName="BallScaleRippleIndicator" />
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <LinearLayout
+                    android:id="@+id/locationLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dimen_5dp"
+                    android:layout_marginRight="@dimen/dimen_5dp"
+                    android:layout_marginTop="@dimen/dimen_5dp"
+                    android:orientation="horizontal"
+                    android:padding="@dimen/dimen_5dp">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:padding="@dimen/dimen_5dp"
+                        android:src="@drawable/ic_location_on_black_24dp" />
+
+                    <com.griper.griperapp.widgets.AppTextView
+                        android:id="@+id/tvGripeLocation"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="center_vertical"
+                        android:textColor="@color/color_grey_dark"
+                        android:textSize="@dimen/dimen_15sp"
+                        app:textStyle="@integer/OPEN_SANS_REGULAR" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/layoutDescription"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/locationLayout"
+                    android:layout_marginBottom="@dimen/dimen_10dp"
+                    android:layout_marginLeft="@dimen/dimen_15dp"
+                    android:layout_marginRight="@dimen/dimen_15dp"
+                    android:layout_marginTop="@dimen/dimen_5dp"
+                    android:background="@drawable/drawable_gripe_description_bg"
+                    android:padding="@dimen/dimen_10dp">
+
+                    <com.griper.griperapp.widgets.AppTextView
+                        android:id="@+id/tvGripeDescription"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="@dimen/dimen_5dp"
+                        android:layout_marginRight="@dimen/dimen_5dp"
+                        android:gravity="center_vertical"
+                        android:textColor="@color/color_grey_dark"
+                        android:textSize="@dimen/dimen_16sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/layoutComments"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/layoutDescription"
+                    android:layout_marginLeft="@dimen/dimen_20dp"
+                    android:layout_marginRight="@dimen/dimen_20dp"
+                    android:layout_marginTop="@dimen/dimen_10dp"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:paddingRight="@dimen/dimen_10dp"
+
+                        android:src="@drawable/ic_comment_black_24dp" />
+
+                    <com.griper.griperapp.widgets.AppTextView
+                        android:layout_width="@dimen/dimen_0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:text="@string/string_comments"
+                        android:textColor="@color/color_grey_dark"
+                        android:textSize="@dimen/dimen_17sp"
+                        app:textStyle="@integer/OPEN_SANS_REGULAR" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:src="@drawable/ic_keyboard_arrow_right_black_24dp" />
+                </LinearLayout>
+
+                <View
+                    android:id="@+id/viewDivider"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dimen_1dp"
+                    android:layout_below="@id/layoutComments"
+                    android:layout_marginLeft="@dimen/dimen_20dp"
+                    android:layout_marginRight="@dimen/dimen_20dp"
+                    android:layout_marginTop="@dimen/dimen_0dp"
+                    android:background="@color/color_grey_dark" />
+
+                <LinearLayout
+                    android:id="@+id/layoutLikes"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/viewDivider"
+                    android:layout_marginLeft="@dimen/dimen_20dp"
+                    android:layout_marginRight="@dimen/dimen_20dp"
+                    android:layout_marginTop="@dimen/dimen_15dp"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:paddingRight="@dimen/dimen_10dp"
+                        android:src="@drawable/ic_group_black_24dp" />
+
+                    <com.griper.griperapp.widgets.AppTextView
+                        android:layout_width="@dimen/dimen_0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:text="@string/string_likes"
+                        android:textColor="@color/color_grey_dark"
+                        android:textSize="@dimen/dimen_17sp"
+                        app:textStyle="@integer/OPEN_SANS_REGULAR" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:src="@drawable/ic_keyboard_arrow_right_black_24dp" />
+                </LinearLayout>
+
+                <View
+                    android:id="@+id/viewLikesDivider"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dimen_1dp"
+                    android:layout_below="@id/layoutLikes"
+                    android:layout_marginLeft="@dimen/dimen_20dp"
+                    android:layout_marginRight="@dimen/dimen_20dp"
+                    android:layout_marginTop="@dimen/dimen_0dp"
+                    android:background="@color/color_grey_dark" />
+
+                <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+                    xmlns:map="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/map"
+                    android:name="com.google.android.gms.maps.MapFragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dimen_200dp"
+                    android:layout_below="@id/viewLikesDivider"
+                    android:layout_marginBottom="@dimen/dimen_20dp"
+                    android:layout_marginLeft="@dimen/dimen_10dp"
+                    android:layout_marginRight="@dimen/dimen_10dp"
+                    android:layout_marginTop="@dimen/dimen_25dp"
+                    map:mapType="normal"
+                    map:uiCompass="false"
+                    tools:ignore="MissingPrefix" />
+
+
+            </RelativeLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+</RelativeLayout>

@@ -114,7 +114,7 @@ public class EmailSignUpFragment extends android.support.v4.app.Fragment impleme
     public void onClickSignUpButton() {
         if (validateSignUp()) {
             SignUpRequestDataParser requestDataParser = new SignUpRequestDataParser(editTextName.getText().toString(),
-                    editTextEmail.getText().toString(), editTextPassword.getText().toString(), "null", "0");
+                    editTextEmail.getText().toString(), editTextPassword.getText().toString());
             presenter.callCreateProfileApi(requestDataParser);
         }
     }

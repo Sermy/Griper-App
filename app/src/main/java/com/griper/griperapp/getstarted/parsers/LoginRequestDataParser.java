@@ -12,13 +12,13 @@ public class LoginRequestDataParser {
     @SerializedName("email")
     @Expose
     private String email;
-    @SerializedName("pass")
+    @SerializedName("password")
     @Expose
-    private String pass;
+    private String password;
 
-    public LoginRequestDataParser(String email, String pass) {
+    public LoginRequestDataParser(String email, String password) {
         this.email = email;
-        this.pass = pass;
+        this.password = password;
     }
 
     public String getEmail() {
@@ -29,12 +29,12 @@ public class LoginRequestDataParser {
         this.email = email;
     }
 
-    public String getPass() {
-        return pass;
+    public String getPassword() {
+        return password;
     }
 
-    public void setPass(String pass) {
-        this.pass = pass;
+    public void setPassword(String pass) {
+        this.password = pass;
     }
 
 }

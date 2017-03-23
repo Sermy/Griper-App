@@ -1,0 +1,4 @@
+ALTER TABLE user_preferences_data ADD COLUMN gripe_large_image_width INTEGER
+ALTER TABLE user_preferences_data ADD COLUMN gripe_large_image_height INTEGER
+ALTER TABLE user_preferences_data ADD COLUMN gripe_small_image_width INTEGER
+ALTER TABLE user_preferences_data ADD COLUMN gripe_small_image_height INTEGER

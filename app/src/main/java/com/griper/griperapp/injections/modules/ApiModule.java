@@ -2,6 +2,7 @@ package com.griper.griperapp.injections.modules;
 
 import com.griper.griperapp.BuildConfig;
 import com.griper.griperapp.getstarted.interfaces.GetStartedWebServiceInterface;
+import com.griper.griperapp.homescreen.interfaces.HomeScreenWebServiceInterface;
 import com.griper.griperapp.internal.ui.preview.AddGripeWebServiceInterface;
 import com.griper.griperapp.utils.BuildSchemeConstants;
 
@@ -22,6 +23,7 @@ import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.GsonConverterFactory;
 import retrofit2.Retrofit;
 import retrofit2.RxJavaCallAdapterFactory;
+import retrofit2.http.Path;
 import timber.log.Timber;
 
 /**
@@ -114,6 +116,12 @@ public class ApiModule {
     @Singleton
     public GetStartedWebServiceInterface provideService(Retrofit retrofit) {
         return retrofit.create(GetStartedWebServiceInterface.class);
+    }
+
+    @Provides
+    @Singleton
+    public HomeScreenWebServiceInterface provideHomeScreenWebService(Retrofit retrofit) {
+        return retrofit.create(HomeScreenWebServiceInterface.class);
     }
 
     @Provides

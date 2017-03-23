@@ -110,8 +110,8 @@
                         android:clickable="true">
 
                         <ImageView
-                            android:layout_width="110dp"
-                            android:layout_height="110dp"
+                            android:layout_width="100dp"
+                            android:layout_height="100dp"
                             android:layout_centerInParent="true"
                             android:layout_margin="10dp"
                             android:scaleType="fitCenter"
@@ -127,8 +127,8 @@
                         android:clickable="true">
 
                         <ImageView
-                            android:layout_width="110dp"
-                            android:layout_height="110dp"
+                            android:layout_width="100dp"
+                            android:layout_height="100dp"
                             android:layout_centerInParent="true"
                             android:layout_margin="10dp"
                             android:scaleType="fitCenter"
@@ -155,8 +155,8 @@
                         android:clickable="true">
 
                         <ImageView
-                            android:layout_width="110dp"
-                            android:layout_height="110dp"
+                            android:layout_width="100dp"
+                            android:layout_height="100dp"
                             android:layout_centerInParent="true"
                             android:layout_margin="10dp"
                             android:scaleType="fitCenter"
@@ -173,8 +173,8 @@
                         android:clickable="true">
 
                         <ImageView
-                            android:layout_width="110dp"
-                            android:layout_height="110dp"
+                            android:layout_width="100dp"
+                            android:layout_height="100dp"
                             android:layout_centerInParent="true"
                             android:layout_margin="10dp"
                             android:scaleType="fitCenter"
@@ -190,12 +190,35 @@
                     android:background="@color/color_black_transparent"
                     android:orientation="vertical">
 
+                    <com.griper.griperapp.widgets.AppTextView
+                        android:id="@+id/gripeLocation"
+                        style="@style/Theme.App.EditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:alpha="0.8"
+                        android:drawableLeft="@drawable/ic_location_on_white_24dp"
+                        android:drawablePadding="@dimen/dimen_5dp"
+                        android:drawableStart="@drawable/ic_location_on_white_24dp"
+                        android:ellipsize="end"
+                        android:focusable="true"
+                        android:focusableInTouchMode="true"
+                        android:gravity="center_vertical"
+                        android:paddingLeft="5dp"
+                        android:paddingRight="8dp"
+                        android:paddingTop="7dp"
+                        android:singleLine="true"
+                        android:textColor="@color/color_category_white"
+                        android:textSize="14sp">
+
+                    </com.griper.griperapp.widgets.AppTextView>
+
                     <com.griper.griperapp.widgets.AppEditText
                         android:id="@+id/gripeTitle"
                         style="@style/Theme.App.EditText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="15dp"
+                        android:layout_marginTop="12dp"
                         android:background="@color/color_preview_white"
                         android:hint="Title"
                         android:inputType="textCapSentences"
@@ -230,22 +253,25 @@
 
                     </com.griper.griperapp.widgets.AppEditText>
 
-                    <com.griper.griperapp.widgets.AppButton
-                        android:id="@+id/gripeButton"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginBottom="10dp"
-                        android:layout_marginTop="15dp"
-                        android:background="@drawable/drawable_griper_button"
-                        android:paddingLeft="40dp"
-                        android:paddingRight="40dp"
-                        android:text="Gripe"
-                        android:textAllCaps="false"
-                        android:textColor="@color/colorAccent"
-                        android:textSize="18sp" />
-
                 </LinearLayout>
+
+
+                <com.griper.griperapp.widgets.AppButton
+                    android:id="@+id/gripeButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginTop="15dp"
+                    android:background="@drawable/drawable_griper_button"
+                    android:paddingLeft="40dp"
+                    android:paddingRight="40dp"
+                    android:text="Gripe"
+                    android:textAllCaps="false"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="18sp" />
 
             </RelativeLayout>
 
