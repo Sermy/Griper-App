@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.griper.griperapp.widgets.CustomProgressBar xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/progressBarLoadMore"
+    android:layout_width="@dimen/dimen_42dp"
+    android:layout_height="@dimen/dimen_42dp"
+    android:layout_centerInParent="true"
+    android:layout_gravity="center"
+    app:barWidth="@dimen/dimen_3dp"
+    app:pBarColor="@color/colorPrimary"
+    app:progressIndeterminate="true" />

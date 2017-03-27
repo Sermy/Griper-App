@@ -53,5 +53,10 @@
     <string name="string_comments">Comments</string>
     <string name="string_likes">Likes</string>
     <string name="string_description_not_empty">Description cannot be empty</string>
+    <string name="string_griper_should_this_be_fixed">Should this be fixed?</string>
+    <string name="string_griper_feed_title">Title? Just get going!</string>
+    <string name="string_yes">Yes</string>
+    <string name="string_no">No</string>
+    <string name="string_none">-</string>
 
 </resources>

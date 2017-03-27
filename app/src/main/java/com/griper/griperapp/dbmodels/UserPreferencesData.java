@@ -29,6 +29,12 @@ public class UserPreferencesData extends Model {
     @Column(name = "gripe_small_image_height")
     private int gripeSmallImageHeight;
 
+    @Column(name = "gripe_feed_image_width")
+    private int gripeFeedImageWidth;
+
+    @Column(name = "gripe_feed_image_height")
+    private int gripeFeedImageHeight;
+
     public UserPreferencesData() {
         super();
     }
@@ -90,6 +96,24 @@ public class UserPreferencesData extends Model {
 
     public void setGripeSmallImageHeight(Integer gripeSmallImageHeight) {
         this.gripeSmallImageHeight = gripeSmallImageHeight;
+        this.save();
+    }
+
+    public int getGripeFeedImageWidth() {
+        return gripeFeedImageWidth;
+    }
+
+    public void setGripeFeedImageWidth(int gripeFeedImageWidth) {
+        this.gripeFeedImageWidth = gripeFeedImageWidth;
+        this.save();
+    }
+
+    public int getGripeFeedImageHeight() {
+        return gripeFeedImageHeight;
+    }
+
+    public void setGripeFeedImageHeight(int gripeFeedImageHeight) {
+        this.gripeFeedImageHeight = gripeFeedImageHeight;
         this.save();
     }
 }

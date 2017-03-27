@@ -4,23 +4,50 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.griper.griperapp.BaseActivity;
 import com.griper.griperapp.R;
 import com.griper.griperapp.getstarted.activities.FacebookLoginActivity;
+import com.griper.griperapp.homescreen.adapters.GripesFeedAdapter;
 import com.griper.griperapp.homescreen.interfaces.GripesNearbyScreenContract;
+import com.griper.griperapp.homescreen.models.GripesDataModel;
+import com.griper.griperapp.homescreen.models.GripesMetaDataModel;
+import com.griper.griperapp.homescreen.presenters.GripesNearbyScreenPresenter;
 import com.griper.griperapp.utils.Utils;
+import com.griper.griperapp.widgets.CustomProgressBar;
+import com.wang.avi.AVLoadingIndicatorView;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import timber.log.Timber;
 
 /**
  * Created by Sarthak on 17-03-2017
  */
 
 public class GripesNearbyScreenFragment extends Fragment implements GripesNearbyScreenContract.View {
+
+    @Bind(R.id.progressBarLoadMore)
+    protected CustomProgressBar progressBarLoadMore;
+    @Bind(R.id.recyclerViewGripes)
+    protected RecyclerView recyclerViewGripes;
+    @Bind(R.id.indicatorCircle)
+    AVLoadingIndicatorView progressBar;
+    private GripesFeedAdapter gripesFeedAdapter;
+    private LinearLayoutManager linearLayoutManager;
+    private List<GripesDataModel> gripesModelList = new ArrayList<>();
+    private boolean isLoading = false;
+
+    private GripesNearbyScreenContract.Presenter gripesNearbyPresenter;
 
     public GripesNearbyScreenFragment() {
 
@@ -49,10 +76,95 @@ public class GripesNearbyScreenFragment extends Fragment implements GripesNearby
 
     @Override
     public void init() {
+        gripesNearbyPresenter = new GripesNearbyScreenPresenter(this);
+        ((BaseActivity) getActivity()).getApiComponent().inject((GripesNearbyScreenPresenter) gripesNearbyPresenter);
+        gripesFeedAdapter = new GripesFeedAdapter(getActivity(), gripesModelList, gripesNearbyPresenter);
+//        gripesFeedAdapter.setHasStableIds(true);
+        linearLayoutManager = new LinearLayoutManager(getActivity());
+        recyclerViewGripes.setLayoutManager(linearLayoutManager);
+        recyclerViewGripes.setAdapter(gripesFeedAdapter);
+        if (!isViewDestroyed()) {
+            gripesNearbyPresenter.callGetNearbyGripesApi(0);
+        }
+        setOnScrollListener();
+    }
 
+    private void setOnScrollListener() {
+        recyclerViewGripes.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if (dy > 0) {
+                    int totalItemCount = linearLayoutManager.getItemCount();
+                    int lastVisibleItemPosition = linearLayoutManager.findLastVisibleItemPosition();
+                    if (!isLoading && GripesMetaDataModel.getCount() != 0 && GripesMetaDataModel.getNextPage() != -1) {
+                        if ((lastVisibleItemPosition == (totalItemCount - 1)) && !isViewDestroyed()) {
+                            isLoading = true;
+                            gripesNearbyPresenter.callGetNearbyGripesApi(GripesMetaDataModel.getNextPage());
+                        }
+                    }
+                }
+            }
+        });
     }
 
     @Override
+    public void showPosts(List<GripesDataModel> gripesList) {
+        Timber.i("Show Gripe Feed Posts");
+        gripesModelList.clear();
+
+        for (GripesDataModel gripeModel : gripesList) {
+            gripesModelList.add(gripeModel);
+        }
+        showProgressBar(false);
+        gripesFeedAdapter.notifyDataSetChanged();
+        isLoading = false;
+    }
+
+    @Override
+    public void showNewPosts(List<GripesDataModel> list) {
+        Timber.e("showLoadMoreGripes Update UI");
+        for (GripesDataModel dataModel : list) {
+            gripesModelList.add(dataModel);
+        }
+        showLoadMoreProgressBar(false);
+        gripesFeedAdapter.notifyDataSetChanged();
+        isLoading = false;
+    }
+
+    @Override
+    public void showProgressBar(boolean show) {
+        if (show) {
+            progressBar.setVisibility(View.VISIBLE);
+            progressBar.smoothToShow();
+        } else {
+            progressBar.smoothToHide();
+            progressBar.setVisibility(View.GONE);
+        }
+    }
+
+    @Override
+    public void showLoadMoreProgressBar(boolean show) {
+        if (!isViewDestroyed()) {
+            if (show) {
+                progressBarLoadMore.setVisibility(View.VISIBLE);
+            } else {
+                progressBarLoadMore.setVisibility(View.GONE);
+            }
+        }
+    }
+
+    @Override
+    public boolean isViewDestroyed() {
+        return !isAdded();
+    }
+
     public void goToFacebookLoginScreen() {
 
         Utils.deleteDbTables();
@@ -63,8 +175,5 @@ public class GripesNearbyScreenFragment extends Fragment implements GripesNearby
 
     }
 
-    @OnClick(R.id.etLogOut)
-    public void onClickLogOut() {
-        goToFacebookLoginScreen();
-    }
+
 }

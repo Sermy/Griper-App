@@ -56,7 +56,6 @@ public class GripesMapScreenFragment extends Fragment implements GripesMapScreen
     @Bind(R.id.layoutProgressCircle)
     RelativeLayout layoutProgressCircle;
 
-
     private Boolean isNight;
     private GoogleMap googleMap;
     private ShowGripesDetailFragmentAdapter viewPagerAdapter;

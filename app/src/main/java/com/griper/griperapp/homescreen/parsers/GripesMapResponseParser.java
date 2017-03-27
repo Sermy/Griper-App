@@ -51,6 +51,12 @@ public class GripesMapResponseParser {
     @SerializedName("_meta")
     @Expose
     private GripesMapMetaResponseParser meta;
+    @SerializedName("likeCount")
+    @Expose
+    private int likeCount;
+    @SerializedName("commentCount")
+    @Expose
+    private int commentCount;
 
     public String getId() {
         return id;
@@ -154,5 +160,21 @@ public class GripesMapResponseParser {
 
     public void setIsFixed(Boolean isFixed) {
         this.isFixed = isFixed;
+    }
+
+    public int getLikeCount() {
+        return likeCount;
+    }
+
+    public void setLikeCount(int likeCount) {
+        this.likeCount = likeCount;
+    }
+
+    public int getCommentCount() {
+        return commentCount;
+    }
+
+    public void setCommentCount(int commentCount) {
+        this.commentCount = commentCount;
     }
 }

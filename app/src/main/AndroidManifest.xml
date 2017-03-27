@@ -52,7 +52,7 @@
             android:value="griper.db" />
         <meta-data
             android:name="AA_DB_VERSION"
-            android:value="2" />
+            android:value="3" />
         <meta-data
             android:name="AA_MODELS"
             android:value="com.griper.griperapp.dbmodels.UserProfileData, com.griper.griperapp.dbmodels.UserPreferencesData" />
