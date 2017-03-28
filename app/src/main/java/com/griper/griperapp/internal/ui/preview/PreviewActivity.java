@@ -92,10 +92,12 @@ public class PreviewActivity extends BaseActivity implements View.OnClickListene
 
     @Override
     public void showProgressBar(boolean show) {
-        if (show) {
-            progressBar.setVisibility(View.VISIBLE);
-        } else {
-            progressBar.setVisibility(View.GONE);
+        if (!isViewDestroyed()) {
+            if (show) {
+                progressBar.setVisibility(View.VISIBLE);
+            } else {
+                progressBar.setVisibility(View.GONE);
+            }
         }
     }
 
@@ -348,7 +350,7 @@ public class PreviewActivity extends BaseActivity implements View.OnClickListene
                 }
             } else if (etTitle.getText().toString().isEmpty()) {
                 Utils.showToast(this, getString(R.string.string_title_not_empty));
-            } else if(etDescription.getText().toString().isEmpty()) {
+            } else if (etDescription.getText().toString().isEmpty()) {
                 Utils.showToast(this, getString(R.string.string_description_not_empty));
             } else {
                 Utils.showToast(this, getString(R.string.string_category_not_empty));
@@ -388,6 +390,10 @@ public class PreviewActivity extends BaseActivity implements View.OnClickListene
 
     public static boolean isResultCancel(@NonNull Intent resultIntent) {
         return BaseCamActivity.ACTION_CANCEL == resultIntent.getIntExtra(RESPONSE_CODE_ARG, -1);
+    }
+
+    public boolean isViewDestroyed() {
+        return isFinishing();
     }
 
 }

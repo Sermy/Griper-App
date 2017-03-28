@@ -14,10 +14,8 @@ import android.widget.ImageView;
 
 import com.griper.griperapp.R;
 import com.griper.griperapp.homescreen.activities.ShowGripeDetailsActivity;
-import com.griper.griperapp.homescreen.adapters.ShowGripesDetailFragmentAdapter;
 import com.griper.griperapp.homescreen.interfaces.ShowGripesDetailContract;
 import com.griper.griperapp.homescreen.models.FeaturedGripesModel;
-import com.griper.griperapp.homescreen.parsers.GripesMapResponseParser;
 import com.griper.griperapp.utils.CloudinaryImageUrl;
 import com.griper.griperapp.utils.Utils;
 import com.griper.griperapp.widgets.AppTextView;
@@ -25,13 +23,11 @@ import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 import com.wang.avi.AVLoadingIndicatorView;
 
-import java.sql.Time;
 import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import timber.log.Timber;
 
 /**
  * Created by Sarthak on 17-03-2017
@@ -153,7 +149,7 @@ public class ShowGripesMapDetailsFragment extends Fragment implements ShowGripes
         intent.putExtra(EXTRA_GRIPE_LAT, gripesModel.getLatitude());
         intent.putExtra(EXTRA_GRIPE_LON, gripesModel.getLongitude());
         startActivity(intent);
-        getActivity().overridePendingTransition(R.anim.slide_in_left, 0);
+        getActivity().overridePendingTransition(R.anim.slide_in_left_fast, 0);
     }
 
     @Override

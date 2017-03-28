@@ -101,7 +101,8 @@ public class AddGripePresenter implements AddGripeContract.Presenter {
                         public Observable<? extends AddGripeResponseParser> call(Throwable throwable) {
                             return null;
                         }
-                    }).subscribe(new Subscriber<AddGripeResponseParser>() {
+                    })
+                    .subscribe(new Subscriber<AddGripeResponseParser>() {
                 @Override
                 public void onCompleted() {
                     Timber.i("Completed add gripe api call");
@@ -122,6 +123,8 @@ public class AddGripePresenter implements AddGripeContract.Presenter {
                     }
                 }
             });
+
+
         } else {
             Utils.showToast(context, context.getString(R.string.string_error_no_network));
         }

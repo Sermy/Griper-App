@@ -1,5 +1,7 @@
 package com.griper.griperapp.homescreen.models;
 
+import java.util.DuplicateFormatFlagsException;
+
 /**
  * Created by Sarthak on 25-03-2017
  */
@@ -8,6 +10,9 @@ public class GripesDataModel {
 
     private String gripeId;
     private String title;
+    private String description;
+    private Double latitude;
+    private Double longitude;
     private String location;
     private String imagePublicId;
     private String imageBaseUrl;
@@ -109,5 +114,29 @@ public class GripesDataModel {
 
     public void setNoPressed(boolean noPressed) {
         isNoPressed = noPressed;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(Double latitude) {
+        this.latitude = latitude;
+    }
+
+    public Double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(Double longitude) {
+        this.longitude = longitude;
     }
 }

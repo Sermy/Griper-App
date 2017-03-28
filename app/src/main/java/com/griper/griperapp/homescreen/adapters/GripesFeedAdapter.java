@@ -1,6 +1,7 @@
 package com.griper.griperapp.homescreen.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v4.view.animation.FastOutLinearInInterpolator;
 import android.support.v4.view.animation.LinearOutSlowInInterpolator;
 import android.support.v7.widget.RecyclerView;
@@ -14,6 +15,8 @@ import android.widget.LinearLayout;
 import com.griper.griperapp.R;
 import com.griper.griperapp.dbmodels.UserPreferencesData;
 import com.griper.griperapp.dbmodels.UserProfileData;
+import com.griper.griperapp.homescreen.activities.HomeScreenActivity;
+import com.griper.griperapp.homescreen.activities.ShowGripeDetailsActivity;
 import com.griper.griperapp.homescreen.interfaces.GripesNearbyScreenContract;
 import com.griper.griperapp.homescreen.models.GripesDataModel;
 import com.griper.griperapp.utils.CloudinaryImageUrl;
@@ -27,6 +30,7 @@ import com.transitionseverywhere.TransitionManager;
 import com.transitionseverywhere.TransitionSet;
 import com.transitionseverywhere.extra.Scale;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
@@ -40,6 +44,13 @@ import timber.log.Timber;
  */
 
 public class GripesFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+
+    private static final String EXTRA_GRIPE_TITLE = "gripe_title";
+    private static final String EXTRA_GRIPE_IMAGE = "gripe_image";
+    private static final String EXTRA_GRIPE_ADDRESS = "gripe_address";
+    private static final String EXTRA_GRIPE_LAT = "gripe_lat";
+    private static final String EXTRA_GRIPE_LON = "gripe_lon";
+    private static final String EXTRA_GRIPE_DESCRIPTION = "gripe_description";
 
     private Context context;
     List<GripesDataModel> gripesDataModelList;
@@ -82,11 +93,11 @@ public class GripesFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             }
         }
         if (gripesDataModelList.get(position).isYesPressed()) {
-            feedViewHolder.btnNo.setVisibility(View.INVISIBLE);
+            feedViewHolder.btnNo.setVisibility(View.GONE);
             feedViewHolder.btnYes.setVisibility(View.VISIBLE);
         } else if (gripesDataModelList.get(position).isNoPressed()) {
             feedViewHolder.btnNo.setVisibility(View.VISIBLE);
-            feedViewHolder.btnYes.setVisibility(View.INVISIBLE);
+            feedViewHolder.btnYes.setVisibility(View.GONE);
         } else {
             feedViewHolder.btnNo.setVisibility(View.VISIBLE);
             feedViewHolder.btnYes.setVisibility(View.VISIBLE);
@@ -183,7 +194,7 @@ public class GripesFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                     .setInterpolator((visibleNo ? new LinearOutSlowInInterpolator() :
                             new FastOutLinearInInterpolator()));
             TransitionManager.beginDelayedTransition(transitionContainer, set);
-            btnNo.setVisibility(visibleNo ? View.VISIBLE : View.INVISIBLE);
+            btnNo.setVisibility(visibleNo ? View.VISIBLE : View.GONE);
         }
 
         @OnClick(R.id.textBtnNo)
@@ -203,7 +214,24 @@ public class GripesFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                     .setInterpolator((visibleYes ? new LinearOutSlowInInterpolator() :
                             new FastOutLinearInInterpolator()));
             TransitionManager.beginDelayedTransition(transitionContainer, set);
-            btnYes.setVisibility(visibleYes ? View.VISIBLE : View.INVISIBLE);
+            btnYes.setVisibility(visibleYes ? View.VISIBLE : View.GONE);
+        }
+
+        @OnClick(R.id.imageCardGripe)
+        public void onClickGripe() {
+            int position = getAdapterPosition();
+            Intent intent = new Intent(context, ShowGripeDetailsActivity.class);
+            intent.putExtra(EXTRA_GRIPE_TITLE, gripesDataModelList.get(position).getTitle());
+            intent.putExtra(EXTRA_GRIPE_ADDRESS, gripesDataModelList.get(position).getLocation());
+            intent.putExtra(EXTRA_GRIPE_DESCRIPTION, gripesDataModelList.get(position).getDescription());
+            ArrayList<String> arrayList = new ArrayList<>();
+            arrayList.add(gripesDataModelList.get(position).getImageBaseUrl());
+            arrayList.add(gripesDataModelList.get(position).getImagePublicId());
+            arrayList.add(gripesDataModelList.get(position).getImagePostFixId());
+            intent.putExtra(EXTRA_GRIPE_IMAGE, arrayList);
+            intent.putExtra(EXTRA_GRIPE_LAT, gripesDataModelList.get(position).getLatitude());
+            intent.putExtra(EXTRA_GRIPE_LON, gripesDataModelList.get(position).getLongitude());
+            context.startActivity(intent);
         }
 
     }

@@ -92,7 +92,9 @@ public class GripesNearbyScreenPresenter implements GripesNearbyScreenContract.P
             dataModel.setImageBaseUrl(gripesNearbyResponseParser.getItems().get(i).getMeta().getPublicHost());
             dataModel.setImagePublicId(gripesNearbyResponseParser.getItems().get(i).getPhoto().getPublicId());
             dataModel.setImagePostFixId(gripesNearbyResponseParser.getItems().get(i).getPhoto().getVersion());
-
+            dataModel.setDescription(gripesNearbyResponseParser.getItems().get(i).getDescription());
+            dataModel.setLongitude(gripesNearbyResponseParser.getItems().get(i).getLoc().get(0));
+            dataModel.setLatitude(gripesNearbyResponseParser.getItems().get(i).getLoc().get(1));
             list.add(dataModel);
         }
         if (isNewGripePostsLoaded) {
