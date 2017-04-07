@@ -5,6 +5,7 @@ import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
 import com.activeandroid.query.Delete;
 import com.activeandroid.query.Select;
+import com.griper.griperapp.getstarted.parsers.FacebookLoginResponseParser;
 import com.griper.griperapp.getstarted.parsers.LoginResponseParser;
 import com.griper.griperapp.getstarted.parsers.SignUpRequestDataParser;
 import com.griper.griperapp.getstarted.parsers.SignUpResponseParser;
@@ -29,14 +30,6 @@ public class UserProfileData extends Model {
     private Integer age;
     @Column(name = "imageUrl")
     private String imageUrl;
-    @Column(name = "last_known_latitude")
-    private double lastKnownLatitude;
-    @Column(name = "last_known_longitude")
-    private double lastKnownLongitude;
-    @Column(name = "last_known_address")
-    private String lastKnownAddress;
-    @Column(name = "post_code")
-    private String postCode;
 
     public UserProfileData() {
         super();
@@ -48,24 +41,19 @@ public class UserProfileData extends Model {
         this.email = email;
     }
 
-    public UserProfileData(String uId, String name, String email, String gender, Integer age, String imageUrl, double lastKnownLatitude, double lastKnownLongitude) {
+    public UserProfileData(String uId, String name, String email, String gender, String imageUrl) {
         this.uId = uId;
         this.email = email;
         this.name = name;
         this.gender = gender;
-        this.age = age;
         this.imageUrl = imageUrl;
-        this.lastKnownLatitude = lastKnownLatitude;
-        this.lastKnownLongitude = lastKnownLongitude;
     }
 
-    public UserProfileData(String uId, String name, String email, String imageUrl, double lastKnownLatitude, double lastKnownLongitude) {
+    public UserProfileData(String uId, String name, String email, String imageUrl) {
         this.uId = uId;
         this.email = email;
         this.name = name;
         this.imageUrl = imageUrl;
-        this.lastKnownLatitude = lastKnownLatitude;
-        this.lastKnownLongitude = lastKnownLongitude;
     }
 
     public static void saveUserData(LoginResponseParser loginResponseParser) {
@@ -86,10 +74,13 @@ public class UserProfileData extends Model {
         }
     }
 
-    public static void saveUserDataWithLocation(String uid, String name, String email, String userDp, double lastKnownLatitude, double lastKnownLongitude) {
-        deleteUserData();
-        UserProfileData userProfileData = new UserProfileData(uid, name, email, userDp, lastKnownLatitude, lastKnownLongitude);
-        userProfileData.save();
+    public static void saveUserData(FacebookLoginResponseParser responseParser) {
+        if (responseParser != null) {
+            deleteUserData();
+            UserProfileData userProfileData = new UserProfileData(responseParser.getuId(), responseParser.getName(), responseParser.getEmail(),
+                    responseParser.getGender(), responseParser.getImageUrl());
+            userProfileData.save();
+        }
     }
 
     public static UserProfileData getUserData() {
@@ -150,42 +141,6 @@ public class UserProfileData extends Model {
 
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
-        this.save();
-    }
-
-    public double getLastKnownLatitude() {
-        return lastKnownLatitude;
-    }
-
-    public void setLastKnownLatitude(double lastKnownLatitude) {
-        this.lastKnownLatitude = lastKnownLatitude;
-        this.save();
-    }
-
-    public double getLastKnownLongitude() {
-        return lastKnownLongitude;
-    }
-
-    public void setLastKnownLongitude(double lastKnownLongitude) {
-        this.lastKnownLongitude = lastKnownLongitude;
-        this.save();
-    }
-
-    public String getLastKnownAddress() {
-        return lastKnownAddress;
-    }
-
-    public void setLastKnownAddress(String lastKnownAddress) {
-        this.lastKnownAddress = lastKnownAddress;
-        this.save();
-    }
-
-    public String getPostCode() {
-        return postCode;
-    }
-
-    public void setPostCode(String postCode) {
-        this.postCode = postCode;
         this.save();
     }
 }

@@ -78,6 +78,7 @@ public class GripesNearbyScreenFragment extends Fragment implements GripesNearby
     public void init() {
         gripesNearbyPresenter = new GripesNearbyScreenPresenter(this);
         ((BaseActivity) getActivity()).getApiComponent().inject((GripesNearbyScreenPresenter) gripesNearbyPresenter);
+
         gripesFeedAdapter = new GripesFeedAdapter(getActivity(), gripesModelList, gripesNearbyPresenter);
 //        gripesFeedAdapter.setHasStableIds(true);
         linearLayoutManager = new LinearLayoutManager(getActivity());

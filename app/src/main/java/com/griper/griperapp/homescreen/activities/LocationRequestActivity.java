@@ -227,6 +227,8 @@ public abstract class LocationRequestActivity extends BaseActivity implements Go
                     googleApiClient.connect();
                 }
             }
+        } else if (requestCode == RESULT_CANCELED) {
+            finish();
         }
     }
 

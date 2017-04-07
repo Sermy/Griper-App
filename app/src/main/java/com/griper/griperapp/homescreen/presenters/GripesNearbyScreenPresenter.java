@@ -2,6 +2,7 @@ package com.griper.griperapp.homescreen.presenters;
 
 import android.content.Context;
 
+import com.griper.griperapp.dbmodels.UserPreferencesData;
 import com.griper.griperapp.dbmodels.UserProfileData;
 import com.griper.griperapp.homescreen.interfaces.GripesNearbyScreenContract;
 import com.griper.griperapp.homescreen.interfaces.HomeScreenWebServiceInterface;
@@ -52,7 +53,8 @@ public class GripesNearbyScreenPresenter implements GripesNearbyScreenContract.P
                     view.showProgressBar(false);
                     isNewGripePostsLoaded = true;
                 }
-                webServiceInterface.getNearbyGripesViaPage(userProfileData.getEmail(), page, userProfileData.getLastKnownLongitude(), userProfileData.getLastKnownLatitude(), 50)
+                webServiceInterface.getNearbyGripesViaPage(userProfileData.getEmail(), page, UserPreferencesData.getUserPreferencesData().getLastKnownLongitude(),
+                        UserPreferencesData.getUserPreferencesData().getLastKnownLatitude(), 50)
                         .observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io())
                         .subscribe(new Subscriber<GripesNearbyResponseParser>() {
                             @Override
@@ -63,6 +65,7 @@ public class GripesNearbyScreenPresenter implements GripesNearbyScreenContract.P
                             @Override
                             public void onError(Throwable e) {
                                 Timber.i(e.getMessage());
+                                onGetNearbyGripesApiFailure(false, true);
                             }
 
                             @Override
@@ -106,6 +109,6 @@ public class GripesNearbyScreenPresenter implements GripesNearbyScreenContract.P
 
     @Override
     public void onGetNearbyGripesApiFailure(boolean isEmpty, boolean isFailure) {
-
+        view.showLoadMoreProgressBar(isFailure && isEmpty);
     }
 }

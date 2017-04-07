@@ -142,7 +142,6 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:paddingRight="@dimen/dimen_10dp"
-
                         android:src="@drawable/ic_comment_black_24dp" />
 
                     <com.griper.griperapp.widgets.AppTextView

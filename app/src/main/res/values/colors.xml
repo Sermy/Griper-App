@@ -24,6 +24,7 @@
     <color name="transparent">#00000000</color>
     <color name="color_hint_grey">#6F7579</color>
     <color name="color_grey">#c5c5c5</color>
+    <color name="color_placeholder_background">#E3E3E3</color>
     <color name="color_grey_ripple">#E1E1E1</color>
     <color name="color_grey_dark">#82000000</color>
     <color name="color_grey_light">#E8E8E8</color>

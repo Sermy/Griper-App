@@ -20,9 +20,11 @@ import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.griper.griperapp.BaseActivity;
 import com.griper.griperapp.R;
+import com.griper.griperapp.dbmodels.UserPreferencesData;
 import com.griper.griperapp.getstarted.interfaces.FacebookLoginContract;
 import com.griper.griperapp.getstarted.presenters.FacebookLoginPresenter;
 import com.griper.griperapp.homescreen.activities.HomeScreenActivity;
+import com.griper.griperapp.homescreen.activities.LocationRequestActivity;
 import com.griper.griperapp.utils.Utils;
 
 import java.util.ArrayList;
@@ -39,7 +41,7 @@ import timber.log.Timber;
  * Created by Sarthak on 20-02-2017
  */
 
-public class FacebookLoginActivity extends BaseActivity implements FacebookLoginContract.View {
+public class FacebookLoginActivity extends LocationRequestActivity implements FacebookLoginContract.View {
 
     private static final int REQUEST_CAMERA_PERMISSIONS = 931;
     private static final int CAPTURE_MEDIA = 368;
@@ -68,9 +70,15 @@ public class FacebookLoginActivity extends BaseActivity implements FacebookLogin
         getApiComponent().inject((FacebookLoginPresenter) facebookLoginPresenter);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        requestLocation();
+    }
+
     @OnClick(R.id.linearLayoutFacebook)
     public void onClickFacebookLogin() {
-//        goToFacebookLogin();
+        goToFacebookLogin();
     }
 
     /*
@@ -80,6 +88,18 @@ public class FacebookLoginActivity extends BaseActivity implements FacebookLogin
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         callbackManager.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    public void onLocationFailed(String message) {
+
+    }
+
+    @Override
+    public void onLocationSuccess(double latitude, double longitude) {
+        Timber.i("Location : (" + latitude + "," + longitude + ")");
+        UserPreferencesData.getUserPreferencesData().setLastKnownLatitude(latitude);
+        UserPreferencesData.getUserPreferencesData().setLastKnownLongitude(longitude);
     }
 
     @OnClick(R.id.buttonEmail)

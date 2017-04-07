@@ -14,9 +14,11 @@ import android.support.v4.view.ViewPager;
 import android.widget.ImageView;
 
 import com.griper.griperapp.R;
+import com.griper.griperapp.dbmodels.UserPreferencesData;
 import com.griper.griperapp.homescreen.adapters.ShowHomeScreenAdapter;
 import com.griper.griperapp.homescreen.fragments.GripesMapScreenFragment;
 import com.griper.griperapp.homescreen.fragments.GripesNearbyScreenFragment;
+import com.griper.griperapp.homescreen.fragments.ProfileScreenFragment;
 import com.griper.griperapp.homescreen.service.FetchAddressIntentService;
 import com.griper.griperapp.internal.Cam;
 import com.griper.griperapp.internal.configuration.CamConfiguration;
@@ -56,7 +58,9 @@ public class HomeScreenActivity extends LocationRequestActivity implements HomeS
     private ShowHomeScreenAdapter homeScreenAdapter;
     private GripesNearbyScreenFragment nearbyScreenFragment;
     private GripesMapScreenFragment mapScreenFragment;
+    private ProfileScreenFragment profileScreenFragment;
     private HomeScreenContract.Presenter homeScreenPresenter;
+    UserPreferencesData preferencesData;
 
 
     @Override
@@ -86,11 +90,13 @@ public class HomeScreenActivity extends LocationRequestActivity implements HomeS
         homeScreenAdapter = new ShowHomeScreenAdapter(getSupportFragmentManager());
         nearbyScreenFragment = GripesNearbyScreenFragment.newInstance();
         mapScreenFragment = GripesMapScreenFragment.newInstance();
+        profileScreenFragment = ProfileScreenFragment.newInstance();
         homeScreenAdapter.addFragment(nearbyScreenFragment);
         homeScreenAdapter.addFragment(mapScreenFragment);
+        homeScreenAdapter.addFragment(profileScreenFragment);
         viewPager.setAdapter(homeScreenAdapter);
         homeBtn.setImageResource(R.drawable.home_menu_img_selected);
-        viewPager.setPagingEnabled(false);
+//        viewPager.setPagingEnabled(false);
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -104,8 +110,8 @@ public class HomeScreenActivity extends LocationRequestActivity implements HomeS
                     homeBtn.setImageResource(R.drawable.home_menu_img_selected);
                 } else if (position == 1) {
                     mapBtn.setImageResource(R.drawable.location_menu_img_selected);
-                } else if (position == 2) {
-                    recentBtn.setImageResource(R.drawable.recent_fixed_menu_img_selected);
+//                } else if (position == 2) {
+//                    recentBtn.setImageResource(R.drawable.recent_fixed_menu_img_selected);
                 } else {
                     profileBtn.setImageResource(R.drawable.profile_menu_img_selected);
                 }
@@ -189,7 +195,7 @@ public class HomeScreenActivity extends LocationRequestActivity implements HomeS
 
     @OnClick(R.id.imageViewProfile)
     public void onClickProfile() {
-//        viewPager.setCurrentItem(3);
+        viewPager.setCurrentItem(2);        //3
     }
 
     protected final void askForPermissions(String[] permissions, int requestCode) {
@@ -231,14 +237,11 @@ public class HomeScreenActivity extends LocationRequestActivity implements HomeS
     @Override
     public void onLocationSuccess(double latitude, double longitude) {
         Timber.i("Location : (" + latitude + "," + longitude + ")");
-        UserProfileData userProfileData = UserProfileData.getUserData();
-        if (userProfileData != null) {
-            UserProfileData.saveUserDataWithLocation(userProfileData.getUid(), userProfileData.getName(), userProfileData.getEmail(), userProfileData.getImageUrl(),
-                    latitude, longitude);
-            startIntentService(latitude, longitude);
-        } else {
-            Timber.e("UserProfileData null");
-        }
+        preferencesData = UserPreferencesData.getUserPreferencesData();
+        preferencesData.setLastKnownLatitude(latitude);
+        preferencesData.setLastKnownLongitude(longitude);
+        startIntentService(latitude, longitude);
+
     }
 
 
@@ -254,18 +257,18 @@ public class HomeScreenActivity extends LocationRequestActivity implements HomeS
             String postCode = resultData.getString(AppConstants.RESULT_DATA_POSTCODE_KEY);
 
             if (resultCode == AppConstants.SUCCESS_RESULT) {
-                UserProfileData userProfileData = UserProfileData.getUserData();
-                if (userProfileData != null) {
+                UserPreferencesData preferencesData = UserPreferencesData.getUserPreferencesData();
+                if (preferencesData != null) {
                     if (mAddressOutput != null) {
-                        userProfileData.setLastKnownAddress(mAddressOutput);
-                        userProfileData.setPostCode(postCode);
-                        Timber.i("Address: " + userProfileData.getLastKnownAddress());
-                        Timber.i("PostCode: " + userProfileData.getPostCode());
+                        preferencesData.setLastKnownAddress(mAddressOutput);
+                        preferencesData.setPostCode(postCode);
+                        Timber.i("Address: " + preferencesData.getLastKnownAddress());
+                        Timber.i("PostCode: " + preferencesData.getPostCode());
                     } else {
                         Timber.e("Location Address Output null");
                     }
                 } else {
-                    Timber.e("UserProfile null");
+                    Timber.e("PreferencesData null");
                 }
             }
 

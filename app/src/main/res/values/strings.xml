@@ -58,5 +58,11 @@
     <string name="string_yes">Yes</string>
     <string name="string_no">No</string>
     <string name="string_none">-</string>
+    <string name="string_my_griper">My Griper</string>
+    <string name="string_name">Sarthak Arora</string>
+    <string name="string_issues_resolved">Issues Resolved</string>
+    <string name="string_volunteering">Volunteering</string>
+    <string name="string_my_posts">My Posts</string>
+    <string name="string_my_gripes">My Gripes</string>
 
 </resources>

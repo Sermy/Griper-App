@@ -9,11 +9,17 @@ import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.HttpMethod;
 import com.facebook.login.LoginResult;
+import com.google.gson.JsonParser;
 import com.griper.griperapp.R;
 import com.griper.griperapp.dbmodels.UserPreferencesData;
 import com.griper.griperapp.dbmodels.UserProfileData;
 import com.griper.griperapp.getstarted.interfaces.FacebookLoginContract;
 import com.griper.griperapp.getstarted.interfaces.GetStartedWebServiceInterface;
+import com.griper.griperapp.getstarted.parsers.FacebookLoginRequestAuthHashParser;
+import com.griper.griperapp.getstarted.parsers.FacebookLoginRequestCredentialsParser;
+import com.griper.griperapp.getstarted.parsers.FacebookLoginRequestDataParser;
+import com.griper.griperapp.getstarted.parsers.FacebookLoginRequestParser;
+import com.griper.griperapp.getstarted.parsers.FacebookLoginResponseParser;
 import com.griper.griperapp.getstarted.parsers.SignUpRequestDataParser;
 import com.griper.griperapp.getstarted.parsers.SignUpResponseParser;
 import com.griper.griperapp.utils.AppConstants;
@@ -69,6 +75,7 @@ public class FacebookLoginPresenter implements FacebookLoginContract.Presenter {
                 new GraphRequest.Callback() {
                     public void onCompleted(GraphResponse response) {
                         if (response.getError() == null) {
+                            Timber.i("onGraphApi Success");
                             onGraphApiSuccess(loginResult, response);
                         } else {
                             onGraphApiFailure(response.getError().getErrorMessage());
@@ -92,28 +99,49 @@ public class FacebookLoginPresenter implements FacebookLoginContract.Presenter {
 
     @Override
     public void onFacebookLoginApiFailure(String errorMessage) {
-
+        facebookLoginView.showFacebookErrorMessage(errorMessage);
     }
 
     @Override
     public void onGraphApiSuccess(LoginResult loginResult, GraphResponse response) {
         String responseString = response.getRawResponse();
         Timber.i("Graph Api Response: " + responseString);
-        JSONObject responseJSON = response.getJSONObject();
-        SignUpRequestDataParser dataParser = null;
-        try {
-            dataParser = new SignUpRequestDataParser(responseJSON.getString("name"),
-                    responseJSON.getString("email"), "", "https://graph.facebook.com/" + responseJSON.getString("id") + "/picture?type=large");
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        if (dataParser != null) {
-            callCreateProfileApi(dataParser, loginResult, response);
+//        JSONObject responseJSON = response.getJSONObject();
+//        SignUpRequestDataParser dataParser = null;
+//        try {
+//            dataParser = new SignUpRequestDataParser(responseJSON.getString("name"),
+//                    responseJSON.getString("email"), "", "https://graph.facebook.com/" + responseJSON.getString("id") + "/picture?type=large");
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
+
+        if (getFacebookLoginParser(loginResult, response) != null) {
+            callCreateProfileApi(getFacebookLoginParser(loginResult, response), loginResult, response);
         } else {
             Timber.e("Unable to parse Graph Api JSON data");
             facebookLoginView.showFacebookErrorMessage(context.getString(R.string.string_error_graph_api_failed));
         }
     }
+
+    private FacebookLoginRequestParser getFacebookLoginParser(LoginResult loginResult,
+                                                              GraphResponse graphResponse) {
+
+        FacebookLoginRequestCredentialsParser facebookRequestCredentialsParser = new FacebookLoginRequestCredentialsParser(
+                loginResult.getAccessToken().getCurrentAccessToken().getToken(),
+                loginResult.getAccessToken().getCurrentAccessToken().getExpires().getTime()
+        );
+
+        FacebookLoginRequestAuthHashParser facebookAuthHashParser;
+
+        facebookAuthHashParser = new FacebookLoginRequestAuthHashParser(
+                loginResult.getAccessToken().getUserId(), facebookRequestCredentialsParser, (new JsonParser()).parse(graphResponse.getRawResponse()).getAsJsonObject()
+        );
+
+        FacebookLoginRequestDataParser data = new FacebookLoginRequestDataParser(facebookAuthHashParser);
+        FacebookLoginRequestParser request = new FacebookLoginRequestParser(data);
+        return request;
+    }
+
 
     @Override
     public void onGraphApiFailure(String errorMessage) {
@@ -122,17 +150,17 @@ public class FacebookLoginPresenter implements FacebookLoginContract.Presenter {
     }
 
     @Override
-    public void callCreateProfileApi(final SignUpRequestDataParser signUpRequestDataParser, LoginResult loginResult, GraphResponse graphResponse) {
+    public void callCreateProfileApi(FacebookLoginRequestParser requestParser, LoginResult loginResult, GraphResponse graphResponse) {
         Timber.i("Call create profile api");
         if (Utils.isNetworkAvailable(context)) {
-            getStartedWebServiceInterface.createProfile(signUpRequestDataParser).subscribeOn(Schedulers.io())
+            getStartedWebServiceInterface.facebookSignIn(requestParser).subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .onErrorResumeNext(new Func1<Throwable, Observable<? extends SignUpResponseParser>>() {
+                    .onErrorResumeNext(new Func1<Throwable, Observable<? extends FacebookLoginResponseParser>>() {
                         @Override
-                        public Observable<? extends SignUpResponseParser> call(Throwable throwable) {
+                        public Observable<? extends FacebookLoginResponseParser> call(Throwable throwable) {
                             return null;
                         }
-                    }).subscribe(new Subscriber<SignUpResponseParser>() {
+                    }).subscribe(new Subscriber<FacebookLoginResponseParser>() {
                 @Override
                 public void onCompleted() {
                     Timber.i("Completed create profile api call");
@@ -145,11 +173,11 @@ public class FacebookLoginPresenter implements FacebookLoginContract.Presenter {
                 }
 
                 @Override
-                public void onNext(SignUpResponseParser signUpResponseParser) {
-                    if (signUpResponseParser.getState().equals(AppConstants.API_RESPONSE_SUCCESS)) {
-                        onCreateProfileApiSuccess(signUpResponseParser, signUpRequestDataParser);
+                public void onNext(FacebookLoginResponseParser facebookLoginResponseParser) {
+                    if (facebookLoginResponseParser.getState().equals(AppConstants.API_RESPONSE_SUCCESS)) {
+                        onCreateProfileApiSuccess(facebookLoginResponseParser);
                     } else {
-                        onCreateProfileApiFailure(signUpResponseParser.getMessage());
+                        onCreateProfileApiFailure(facebookLoginResponseParser.getMsg());
                     }
                 }
             });
@@ -157,7 +185,7 @@ public class FacebookLoginPresenter implements FacebookLoginContract.Presenter {
     }
 
     @Override
-    public void onCreateProfileApiSuccess(SignUpResponseParser responseParser, SignUpRequestDataParser requestDataParser) {
+    public void onCreateProfileApiSuccess(FacebookLoginResponseParser responseParser) {
         UserProfileData.saveUserData(responseParser);
         setUserLoggedinStatus(true);
         facebookLoginView.showProgressBar(false);

@@ -52,7 +52,7 @@
             android:value="griper.db" />
         <meta-data
             android:name="AA_DB_VERSION"
-            android:value="3" />
+            android:value="4" />
         <meta-data
             android:name="AA_MODELS"
             android:value="com.griper.griperapp.dbmodels.UserProfileData, com.griper.griperapp.dbmodels.UserPreferencesData" />
@@ -95,9 +95,14 @@
         <activity
             android:name=".homescreen.activities.ShowGripeDetailsActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/SwipeBackTheme">
+            android:theme="@style/SwipeBackTheme" />
 
-        </activity>
+        <activity
+            android:name=".homescreen.activities.ShowMyPostsActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" />
+
+
     </application>
 
 </manifest>

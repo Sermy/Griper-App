@@ -35,6 +35,15 @@ public class UserPreferencesData extends Model {
     @Column(name = "gripe_feed_image_height")
     private int gripeFeedImageHeight;
 
+    @Column(name = "last_known_latitude")
+    private double lastKnownLatitude;
+    @Column(name = "last_known_longitude")
+    private double lastKnownLongitude;
+    @Column(name = "last_known_address")
+    private String lastKnownAddress;
+    @Column(name = "post_code")
+    private String postCode;
+
     public UserPreferencesData() {
         super();
     }
@@ -114,6 +123,42 @@ public class UserPreferencesData extends Model {
 
     public void setGripeFeedImageHeight(int gripeFeedImageHeight) {
         this.gripeFeedImageHeight = gripeFeedImageHeight;
+        this.save();
+    }
+
+    public double getLastKnownLatitude() {
+        return lastKnownLatitude;
+    }
+
+    public void setLastKnownLatitude(double lastKnownLatitude) {
+        this.lastKnownLatitude = lastKnownLatitude;
+        this.save();
+    }
+
+    public double getLastKnownLongitude() {
+        return lastKnownLongitude;
+    }
+
+    public void setLastKnownLongitude(double lastKnownLongitude) {
+        this.lastKnownLongitude = lastKnownLongitude;
+        this.save();
+    }
+
+    public String getLastKnownAddress() {
+        return lastKnownAddress;
+    }
+
+    public void setLastKnownAddress(String lastKnownAddress) {
+        this.lastKnownAddress = lastKnownAddress;
+        this.save();
+    }
+
+    public String getPostCode() {
+        return postCode;
+    }
+
+    public void setPostCode(String postCode) {
+        this.postCode = postCode;
         this.save();
     }
 }

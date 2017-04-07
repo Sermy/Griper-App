@@ -24,6 +24,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.griper.griperapp.BaseActivity;
 import com.griper.griperapp.R;
+import com.griper.griperapp.dbmodels.UserPreferencesData;
 import com.griper.griperapp.dbmodels.UserProfileData;
 import com.griper.griperapp.homescreen.adapters.ShowGripesDetailFragmentAdapter;
 import com.griper.griperapp.homescreen.interfaces.GripesMapScreenContract;
@@ -213,8 +214,8 @@ public class GripesMapScreenFragment extends Fragment implements GripesMapScreen
             googleMap.animateCamera(CameraUpdateFactory.newLatLng(new LatLng(gripesModels.get(0).getLatitude(),
                     gripesModels.get(0).getLongitude())));
         } else if (userProfileData != null) {
-            googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(userProfileData.getLastKnownLatitude(),
-                    userProfileData.getLastKnownLongitude()), 15));
+            googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(UserPreferencesData.getUserPreferencesData().getLastKnownLatitude(),
+                    UserPreferencesData.getUserPreferencesData().getLastKnownLongitude()), 15));
         }
 
     }

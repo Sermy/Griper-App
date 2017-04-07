@@ -20,6 +20,7 @@ import android.widget.RelativeLayout;
 
 import com.griper.griperapp.BaseActivity;
 import com.griper.griperapp.R;
+import com.griper.griperapp.dbmodels.UserPreferencesData;
 import com.griper.griperapp.dbmodels.UserProfileData;
 import com.griper.griperapp.homescreen.activities.HomeScreenActivity;
 import com.griper.griperapp.internal.configuration.CamConfiguration;
@@ -230,8 +231,8 @@ public class PreviewActivity extends BaseActivity implements View.OnClickListene
         tvGripeLocation = (AppTextView) findViewById(R.id.gripeLocation);
 
         UserProfileData userProfileData = UserProfileData.getUserData();
-        if (userProfileData != null && userProfileData.getLastKnownAddress() != null) {
-            tvGripeLocation.setText(userProfileData.getLastKnownAddress());
+        if (UserPreferencesData.getUserPreferencesData().getLastKnownAddress() != null) {
+            tvGripeLocation.setText(UserPreferencesData.getUserPreferencesData().getLastKnownAddress());
         } else {
             tvGripeLocation.setVisibility(View.GONE);
         }
@@ -342,8 +343,8 @@ public class PreviewActivity extends BaseActivity implements View.OnClickListene
 
                 if (userProfileData != null) {
                     AddGripeRequestParser requestParser = new AddGripeRequestParser(userProfileData.getEmail(), etTitle.getText().toString(),
-                            etDescription.getText().toString(), categoryGripes, userProfileData.getLastKnownLatitude(), userProfileData.getLastKnownLongitude(),
-                            userProfileData.getLastKnownAddress(), userProfileData.getPostCode());
+                            etDescription.getText().toString(), categoryGripes, UserPreferencesData.getUserPreferencesData().getLastKnownLatitude(), UserPreferencesData.getUserPreferencesData().getLastKnownLongitude(),
+                            UserPreferencesData.getUserPreferencesData().getLastKnownAddress(), UserPreferencesData.getUserPreferencesData().getPostCode());
                     presenter.callAddGripeApi(previewFilePath, requestParser);
                 } else {
                     Timber.e("UserProfileData null");

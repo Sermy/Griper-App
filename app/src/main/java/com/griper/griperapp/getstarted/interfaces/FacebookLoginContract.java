@@ -2,6 +2,8 @@ package com.griper.griperapp.getstarted.interfaces;
 
 import com.facebook.GraphResponse;
 import com.facebook.login.LoginResult;
+import com.griper.griperapp.getstarted.parsers.FacebookLoginRequestParser;
+import com.griper.griperapp.getstarted.parsers.FacebookLoginResponseParser;
 import com.griper.griperapp.getstarted.parsers.SignUpRequestDataParser;
 import com.griper.griperapp.getstarted.parsers.SignUpResponseParser;
 
@@ -36,9 +38,9 @@ public interface FacebookLoginContract {
 
         void onGraphApiFailure(String errorMessage);
 
-        void callCreateProfileApi(SignUpRequestDataParser signUpRequestDataParser, LoginResult loginResult, GraphResponse graphResponse);
+        void callCreateProfileApi(FacebookLoginRequestParser requestParser, LoginResult loginResult, GraphResponse graphResponse);
 
-        void onCreateProfileApiSuccess(SignUpResponseParser responseParser, SignUpRequestDataParser requestDataParser);
+        void onCreateProfileApiSuccess(FacebookLoginResponseParser responseParser);
 
         void onCreateProfileApiFailure(String errorMessage);
 

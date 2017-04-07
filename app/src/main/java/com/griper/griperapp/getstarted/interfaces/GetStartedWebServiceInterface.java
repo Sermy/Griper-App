@@ -1,5 +1,7 @@
 package com.griper.griperapp.getstarted.interfaces;
 
+import com.griper.griperapp.getstarted.parsers.FacebookLoginRequestParser;
+import com.griper.griperapp.getstarted.parsers.FacebookLoginResponseParser;
 import com.griper.griperapp.getstarted.parsers.LoginRequestDataParser;
 import com.griper.griperapp.getstarted.parsers.LoginResponseParser;
 import com.griper.griperapp.getstarted.parsers.SignUpRequestDataParser;
@@ -27,6 +29,8 @@ public interface GetStartedWebServiceInterface {
     @POST("signup")
     Observable<SignUpResponseParser> createProfile(@Body SignUpRequestDataParser requestDataParser);
 
+    @POST("login/facebook")
+    Observable<FacebookLoginResponseParser> facebookSignIn(@Body FacebookLoginRequestParser facebookLoginRequestParser);
 
     @POST("login")
     Observable<LoginResponseParser> signIn(@Body LoginRequestDataParser loginRequestDataParser);

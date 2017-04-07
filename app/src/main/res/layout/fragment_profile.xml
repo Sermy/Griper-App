@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:weightSum="5">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbarNearbyGripe"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/colorPrimary"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:contentInsetEnd="@dimen/dimen_0dp"
+        app:contentInsetLeft="@dimen/dimen_0dp"
+        app:contentInsetRight="@dimen/dimen_0dp"
+        app:contentInsetStart="@dimen/dimen_0dp"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+
+
+        <com.griper.griperapp.widgets.AppTextView
+            android:id="@+id/textToolbarGripe"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/string_my_griper"
+            android:textColor="@color/colorAccent"
+            android:textSize="@dimen/dimen_19sp"
+            android:textStyle="bold"
+            app:textStyle="@integer/PT_SANS_WEB_REGULAR" />
+
+    </android.support.v7.widget.Toolbar>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_0dp"
+        android:layout_weight="2">
+
+        <com.griper.griperapp.widgets.RoundedImageView
+            android:id="@+id/profileImage"
+            android:layout_width="@dimen/dimen_150dp"
+            android:layout_height="@dimen/dimen_150dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="@dimen/dimen_10dp"
+            android:background="@drawable/profile_image_placeholder" />
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_0dp"
+        android:layout_weight="3"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <com.griper.griperapp.widgets.AppTextView
+            android:id="@+id/profileName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/color_black"
+            android:textSize="@dimen/dimen_24sp"
+            app:textStyle="@integer/OPEN_SANS_REGULAR"
+            tools:text="@string/string_name" />
+
+        <LinearLayout
+            android:id="@+id/layoutPosts"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dimen_50dp"
+            android:layout_marginRight="@dimen/dimen_50dp"
+            android:layout_marginTop="@dimen/dimen_30dp"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:alpha="0.8"
+                android:paddingRight="@dimen/dimen_10dp"
+                android:src="@drawable/ic_question_answer_black_24dp" />
+
+            <com.griper.griperapp.widgets.AppTextView
+                android:layout_width="@dimen/dimen_0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:text="@string/string_my_posts"
+                android:textColor="@color/color_grey_dark"
+                android:textSize="@dimen/dimen_16sp"
+                app:textStyle="@integer/OPEN_SANS_REGULAR" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/ic_keyboard_arrow_right_black_24dp" />
+        </LinearLayout>
+
+        <View
+            android:id="@+id/viewPostsDivider"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dimen_1dp"
+            android:layout_marginLeft="@dimen/dimen_50dp"
+            android:layout_marginRight="@dimen/dimen_50dp"
+            android:layout_marginTop="@dimen/dimen_2dp"
+            android:background="@color/color_grey_dark" />
+
+        <LinearLayout
+            android:id="@+id/layoutLikes"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dimen_50dp"
+            android:layout_marginRight="@dimen/dimen_50dp"
+            android:layout_marginTop="@dimen/dimen_10dp"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:alpha="0.8"
+                android:paddingRight="@dimen/dimen_10dp"
+                android:src="@drawable/ic_favorite_black_24dp" />
+
+            <com.griper.griperapp.widgets.AppTextView
+                android:layout_width="@dimen/dimen_0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:text="@string/string_likes"
+                android:textColor="@color/color_grey_dark"
+                android:textSize="@dimen/dimen_16sp"
+                app:textStyle="@integer/OPEN_SANS_REGULAR" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/ic_keyboard_arrow_right_black_24dp" />
+        </LinearLayout>
+
+        <View
+            android:id="@+id/viewLikesDivider"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dimen_1dp"
+            android:layout_marginLeft="@dimen/dimen_50dp"
+            android:layout_marginRight="@dimen/dimen_50dp"
+            android:layout_marginTop="@dimen/dimen_2dp"
+            android:background="@color/color_grey_dark" />
+
+
+        <LinearLayout
+            android:id="@+id/layoutComments"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dimen_50dp"
+            android:layout_marginRight="@dimen/dimen_50dp"
+            android:layout_marginTop="@dimen/dimen_10dp"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:alpha="0.8"
+                android:paddingRight="@dimen/dimen_10dp"
+                android:src="@drawable/ic_comment_black_24dp" />
+
+            <com.griper.griperapp.widgets.AppTextView
+                android:layout_width="@dimen/dimen_0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:text="@string/string_comments"
+                android:textColor="@color/color_grey_dark"
+                android:textSize="@dimen/dimen_16sp"
+                app:textStyle="@integer/OPEN_SANS_REGULAR" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/ic_keyboard_arrow_right_black_24dp" />
+        </LinearLayout>
+
+        <View
+            android:id="@+id/viewDivider"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dimen_1dp"
+            android:layout_marginLeft="@dimen/dimen_50dp"
+            android:layout_marginRight="@dimen/dimen_50dp"
+            android:layout_marginTop="@dimen/dimen_2dp"
+            android:background="@color/color_grey_dark" />
+
+        <LinearLayout
+            android:id="@+id/layoutIssuesResolved"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dimen_50dp"
+            android:layout_marginRight="@dimen/dimen_50dp"
+            android:layout_marginTop="@dimen/dimen_10dp"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:alpha="0.8"
+                android:paddingRight="@dimen/dimen_10dp"
+                android:src="@drawable/ic_settings_black_24dp" />
+
+            <com.griper.griperapp.widgets.AppTextView
+                android:layout_width="@dimen/dimen_0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:text="@string/string_issues_resolved"
+                android:textColor="@color/color_grey_dark"
+                android:textSize="@dimen/dimen_16sp"
+                app:textStyle="@integer/OPEN_SANS_REGULAR" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/ic_keyboard_arrow_right_black_24dp" />
+        </LinearLayout>
+
+        <View
+            android:id="@+id/viewIssuesDivider"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dimen_1dp"
+            android:layout_marginLeft="@dimen/dimen_50dp"
+            android:layout_marginRight="@dimen/dimen_50dp"
+            android:layout_marginTop="@dimen/dimen_2dp"
+            android:background="@color/color_grey_dark" />
+
+        <LinearLayout
+            android:id="@+id/layoutVolunteer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dimen_50dp"
+            android:layout_marginRight="@dimen/dimen_50dp"
+            android:layout_marginTop="@dimen/dimen_10dp"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:alpha="0.8"
+                android:paddingRight="@dimen/dimen_10dp"
+                android:src="@drawable/ic_group_black_24dp" />
+
+            <com.griper.griperapp.widgets.AppTextView
+                android:layout_width="@dimen/dimen_0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:text="@string/string_volunteering"
+                android:textColor="@color/color_grey_dark"
+                android:textSize="@dimen/dimen_16sp"
+                app:textStyle="@integer/OPEN_SANS_REGULAR" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/ic_keyboard_arrow_right_black_24dp" />
+        </LinearLayout>
+
+        <View
+            android:id="@+id/viewVolunteerDivider"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dimen_1dp"
+            android:layout_marginLeft="@dimen/dimen_50dp"
+            android:layout_marginRight="@dimen/dimen_50dp"
+            android:layout_marginTop="@dimen/dimen_2dp"
+            android:background="@color/color_grey_dark" />
+
+
+    </LinearLayout>
+
+</LinearLayout>

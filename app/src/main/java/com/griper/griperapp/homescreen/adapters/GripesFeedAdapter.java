@@ -2,8 +2,10 @@ package com.griper.griperapp.homescreen.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.support.v4.view.animation.FastOutLinearInInterpolator;
 import android.support.v4.view.animation.LinearOutSlowInInterpolator;
+import android.support.v7.widget.DrawableUtils;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -18,6 +20,7 @@ import com.griper.griperapp.dbmodels.UserProfileData;
 import com.griper.griperapp.homescreen.activities.HomeScreenActivity;
 import com.griper.griperapp.homescreen.activities.ShowGripeDetailsActivity;
 import com.griper.griperapp.homescreen.interfaces.GripesNearbyScreenContract;
+import com.griper.griperapp.homescreen.interfaces.ShowMyPostsContract;
 import com.griper.griperapp.homescreen.models.GripesDataModel;
 import com.griper.griperapp.utils.CloudinaryImageUrl;
 import com.griper.griperapp.utils.Utils;
@@ -55,11 +58,20 @@ public class GripesFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     private Context context;
     List<GripesDataModel> gripesDataModelList;
     private GripesNearbyScreenContract.Presenter presenter;
+    private ShowMyPostsContract.Presenter postsPresenter;
+    private boolean isNearbyGripes = false;
 
     public GripesFeedAdapter(Context context, List<GripesDataModel> dataModelList, GripesNearbyScreenContract.Presenter presenter) {
         this.context = context;
         this.gripesDataModelList = dataModelList;
         this.presenter = presenter;
+        isNearbyGripes = true;
+    }
+
+    public GripesFeedAdapter(Context context, List<GripesDataModel> dataModelList, ShowMyPostsContract.Presenter postsPresenter) {
+        this.context = context;
+        this.gripesDataModelList = dataModelList;
+        this.postsPresenter = postsPresenter;
     }
 
     @Override
@@ -91,6 +103,9 @@ public class GripesFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                             .into(feedViewHolder.imageCardGripe);
                 }
             }
+        }
+        if (!isNearbyGripes) {
+            feedViewHolder.transitionContainer.setVisibility(View.GONE);
         }
         if (gripesDataModelList.get(position).isYesPressed()) {
             feedViewHolder.btnNo.setVisibility(View.GONE);
@@ -132,6 +147,7 @@ public class GripesFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                         if (transformedImageUrl != null) {
                             Picasso.with(context)
                                     .load(transformedImageUrl)
+                                    .placeholder(R.drawable.img_placeholder)
                                     .fit()
                                     .into(viewHolder.imageCardGripe);
                         }

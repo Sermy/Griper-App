@@ -3,6 +3,7 @@ package com.griper.griperapp.homescreen.presenters;
 import android.content.Context;
 
 import com.griper.griperapp.R;
+import com.griper.griperapp.dbmodels.UserPreferencesData;
 import com.griper.griperapp.dbmodels.UserProfileData;
 import com.griper.griperapp.homescreen.interfaces.GripesMapScreenContract;
 import com.griper.griperapp.homescreen.interfaces.HomeScreenWebServiceInterface;
@@ -45,8 +46,8 @@ public class GripesMapScreenPresenter implements GripesMapScreenContract.Present
     public void callGetNearbyGripesApi() {
         if (Utils.isNetworkAvailable(context)) {
             if (userProfileData != null) {
-                webServiceInterface.getNearbyGripes(userProfileData.getEmail(), userProfileData.getLastKnownLongitude(),
-                        userProfileData.getLastKnownLatitude(), 50).subscribeOn(Schedulers.io())
+                webServiceInterface.getNearbyGripes(userProfileData.getEmail(), UserPreferencesData.getUserPreferencesData().getLastKnownLongitude(),
+                        UserPreferencesData.getUserPreferencesData().getLastKnownLatitude(), 50).subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(new Subscriber<List<GripesMapResponseParser>>() {
                             @Override

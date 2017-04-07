@@ -70,6 +70,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginTop="@dimen/dimen_10dp"
+                    android:background="@drawable/img_placeholder"
                     android:scaleType="centerCrop"
                     android:src="@drawable/img_placeholder" />
 
@@ -139,9 +140,9 @@
                 android:id="@+id/transition_container"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/dimen_below_7dp"
                 android:layout_alignBottom="@id/imageGripeLayout"
                 android:layout_centerHorizontal="true"
+                android:layout_marginBottom="@dimen/dimen_below_7dp"
                 android:orientation="horizontal">
 
                 <com.griper.griperapp.widgets.AppTextView
