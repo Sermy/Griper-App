@@ -2,19 +2,23 @@ package com.griper.griperapp.homescreen.presenters;
 
 import android.content.Context;
 
+import com.griper.griperapp.R;
 import com.griper.griperapp.dbmodels.UserPreferencesData;
 import com.griper.griperapp.dbmodels.UserProfileData;
 import com.griper.griperapp.homescreen.interfaces.GripesNearbyScreenContract;
 import com.griper.griperapp.homescreen.interfaces.HomeScreenWebServiceInterface;
 import com.griper.griperapp.homescreen.models.GripesDataModel;
 import com.griper.griperapp.homescreen.models.GripesMetaDataModel;
+import com.griper.griperapp.homescreen.parsers.GripesNearbyLikeResponseParser;
 import com.griper.griperapp.homescreen.parsers.GripesNearbyResponseParser;
+import com.griper.griperapp.utils.AppConstants;
 import com.griper.griperapp.utils.Utils;
 
 import java.util.ArrayList;
 
 import javax.inject.Inject;
 
+import rx.Observer;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -98,6 +102,9 @@ public class GripesNearbyScreenPresenter implements GripesNearbyScreenContract.P
             dataModel.setDescription(gripesNearbyResponseParser.getItems().get(i).getDescription());
             dataModel.setLongitude(gripesNearbyResponseParser.getItems().get(i).getLoc().get(0));
             dataModel.setLatitude(gripesNearbyResponseParser.getItems().get(i).getLoc().get(1));
+            dataModel.setLikeCount(gripesNearbyResponseParser.getItems().get(i).getLikeCount());
+            dataModel.setCommentCount(gripesNearbyResponseParser.getItems().get(i).getCommentCount());
+            dataModel.setYesPressed(gripesNearbyResponseParser.getItems().get(i).getLiked());
             list.add(dataModel);
         }
         if (isNewGripePostsLoaded) {
@@ -110,5 +117,37 @@ public class GripesNearbyScreenPresenter implements GripesNearbyScreenContract.P
     @Override
     public void onGetNearbyGripesApiFailure(boolean isEmpty, boolean isFailure) {
         view.showLoadMoreProgressBar(isFailure && isEmpty);
+    }
+
+    @Override
+    public void callUpdateLikesApi(String gripeId, boolean isLiked) {
+        if (Utils.isNetworkAvailable(context)) {
+            UserProfileData userProfileData = UserProfileData.getUserData();
+            if (userProfileData != null) {
+                webServiceInterface.updateGripeLikes(userProfileData.getEmail(), gripeId, isLiked)
+                        .observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io())
+                        .subscribe(new Observer<GripesNearbyLikeResponseParser>() {
+                            @Override
+                            public void onCompleted() {
+                                Timber.i("Update Gripe Likes Success!");
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+                                Timber.e("Error: ".concat(e.getMessage()));
+
+                            }
+
+                            @Override
+                            public void onNext(GripesNearbyLikeResponseParser gripesNearbyLikeResponseParser) {
+                                if (gripesNearbyLikeResponseParser.getState().equals(AppConstants.API_RESPONSE_SUCCESS)) {
+                                    Timber.i("LikeUpdate API Response Success");
+                                }
+                            }
+                        });
+            }
+        } else {
+            Utils.showToast(context, context.getString(R.string.string_error_no_network));
+        }
     }
 }

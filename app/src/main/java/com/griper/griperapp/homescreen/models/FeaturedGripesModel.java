@@ -26,6 +26,9 @@ public class FeaturedGripesModel implements Parcelable {
     private String baseUrlPostFix;
     private String imagePublicId;
     private Boolean isFixed;
+    private Boolean isLiked;
+    private int likeCount;
+    private int commentCount;
 
     protected FeaturedGripesModel(Parcel in) {
         this.id = in.readString();
@@ -43,6 +46,9 @@ public class FeaturedGripesModel implements Parcelable {
         this.baseUrlPostFix = in.readString();
         this.imagePublicId = in.readString();
         this.isFixed = in.readInt() == 1;
+        this.isLiked = in.readInt() == 1;
+        this.likeCount = in.readInt();
+        this.commentCount = in.readInt();
     }
 
     public FeaturedGripesModel(GripesMapResponseParser responseParser) {
@@ -61,6 +67,9 @@ public class FeaturedGripesModel implements Parcelable {
         baseUrlPostFix = responseParser.getPhoto().getVersion();
         imagePublicId = responseParser.getPhoto().getPublicId();
         isFixed = responseParser.getIsFixed();
+        isLiked = responseParser.getLiked();
+        likeCount = responseParser.getLikeCount();
+        commentCount = responseParser.getCommentCount();
     }
 
     public static final Creator<FeaturedGripesModel> CREATOR = new Creator<FeaturedGripesModel>() {
@@ -74,7 +83,6 @@ public class FeaturedGripesModel implements Parcelable {
             return new FeaturedGripesModel[size];
         }
     };
-
 
 
     @Override
@@ -99,6 +107,9 @@ public class FeaturedGripesModel implements Parcelable {
         parcel.writeString(this.baseUrlPostFix);
         parcel.writeString(this.imagePublicId);
         parcel.writeInt(isFixed ? 1 : 0);
+        parcel.writeInt(isLiked ? 1 : 0);
+        parcel.writeInt(likeCount);
+        parcel.writeInt(commentCount);
     }
 
     public String getId() {
@@ -219,6 +230,30 @@ public class FeaturedGripesModel implements Parcelable {
 
     public void setFixed(Boolean fixed) {
         isFixed = fixed;
+    }
+
+    public Boolean getLiked() {
+        return isLiked;
+    }
+
+    public void setLiked(Boolean liked) {
+        isLiked = liked;
+    }
+
+    public int getLikeCount() {
+        return likeCount;
+    }
+
+    public void setLikeCount(int likeCount) {
+        this.likeCount = likeCount;
+    }
+
+    public int getCommentCount() {
+        return commentCount;
+    }
+
+    public void setCommentCount(int commentCount) {
+        this.commentCount = commentCount;
     }
 }
 

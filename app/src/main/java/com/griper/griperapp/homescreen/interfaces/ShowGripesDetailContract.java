@@ -12,6 +12,8 @@ public interface ShowGripesDetailContract {
         void showData();
 
         void setViewHighlighted(boolean show);
+
+        void updateLikeCount(boolean isLiked, int likeCount);
     }
 
     interface Presenter {

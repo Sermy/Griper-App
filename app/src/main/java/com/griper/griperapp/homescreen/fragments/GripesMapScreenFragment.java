@@ -1,12 +1,14 @@
 package com.griper.griperapp.homescreen.fragments;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,9 +28,11 @@ import com.griper.griperapp.BaseActivity;
 import com.griper.griperapp.R;
 import com.griper.griperapp.dbmodels.UserPreferencesData;
 import com.griper.griperapp.dbmodels.UserProfileData;
+import com.griper.griperapp.homescreen.activities.HomeScreenActivity;
 import com.griper.griperapp.homescreen.adapters.ShowGripesDetailFragmentAdapter;
 import com.griper.griperapp.homescreen.interfaces.GripesMapScreenContract;
 import com.griper.griperapp.homescreen.models.FeaturedGripesModel;
+import com.griper.griperapp.homescreen.models.GripeLikeUpdateModel;
 import com.griper.griperapp.homescreen.parsers.GripesMapResponseParser;
 import com.griper.griperapp.homescreen.presenters.GripesMapScreenPresenter;
 import com.griper.griperapp.utils.Utils;
@@ -36,6 +40,7 @@ import com.wang.avi.AVLoadingIndicatorView;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 
 import butterknife.Bind;
@@ -46,7 +51,7 @@ import timber.log.Timber;
  * Created by Sarthak on 14-03-2017
  */
 
-public class GripesMapScreenFragment extends Fragment implements GripesMapScreenContract.View, OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
+public class GripesMapScreenFragment extends Fragment implements GripesMapScreenContract.View, OnMapReadyCallback, GoogleMap.OnMarkerClickListener, HomeScreenActivity.MapUpdateLikesListener {
 
     @Bind(R.id.mapView)
     MapView mMapView;
@@ -63,6 +68,7 @@ public class GripesMapScreenFragment extends Fragment implements GripesMapScreen
     private ArrayList<FeaturedGripesModel> gripesModels;
     private ArrayList<Marker> mapMarkers = new ArrayList<>();
     private GripesMapScreenContract.Presenter gripesMapPresenter;
+    public static HashMap<Integer, GripeLikeUpdateModel> likeHashMap;
 
     public GripesMapScreenFragment() {
 
@@ -90,6 +96,11 @@ public class GripesMapScreenFragment extends Fragment implements GripesMapScreen
         init();
     }
 
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+    }
 
     @Override
     public void init() {
@@ -97,6 +108,7 @@ public class GripesMapScreenFragment extends Fragment implements GripesMapScreen
         MapsInitializer.initialize(this.getActivity().getApplicationContext());
         mMapView.getMapAsync(this);
         gripesMapPresenter = new GripesMapScreenPresenter(this);
+        likeHashMap = new HashMap<>();
         ((BaseActivity) getActivity()).getApiComponent().
                 inject((GripesMapScreenPresenter) gripesMapPresenter);
         progressView.smoothToShow();
@@ -109,6 +121,7 @@ public class GripesMapScreenFragment extends Fragment implements GripesMapScreen
         viewPagerAdapter = new ShowGripesDetailFragmentAdapter(getChildFragmentManager(), gripesModels);
         viewPager.setAdapter(viewPagerAdapter);
         viewPager.setCurrentItem(0);
+        viewPager.setOffscreenPageLimit(4);
         ShowGripesMapDetailsFragment current = viewPagerAdapter.getFragments().get(0);
         current.setViewHighlighted(true);
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -141,6 +154,16 @@ public class GripesMapScreenFragment extends Fragment implements GripesMapScreen
                     ShowGripesMapDetailsFragment next = viewPagerAdapter.getFragments().get(position + 1);
                     next.setViewHighlighted(false);
                     updateCameraPositionGripes(position);
+                }
+
+                if (likeHashMap.containsKey(position + 1)) {
+                    GripeLikeUpdateModel updateModel = likeHashMap.get(position + 1);
+                    viewPagerAdapter.getFragments().get(position + 1).updateLikeCount(updateModel.isLiked(), updateModel.getLikeCount());
+                    likeHashMap.remove(position + 1);
+                } else if (likeHashMap.containsKey(position - 1)) {
+                    GripeLikeUpdateModel updateModel = likeHashMap.get(position - 1);
+                    viewPagerAdapter.getFragments().get(position - 1).updateLikeCount(updateModel.isLiked(), updateModel.getLikeCount());
+                    likeHashMap.remove(position - 1);
                 }
             }
 
@@ -220,4 +243,15 @@ public class GripesMapScreenFragment extends Fragment implements GripesMapScreen
 
     }
 
+
+    @Override
+    public void updateGripeLikes(int position, int size, int likeCount, boolean isLiked) {
+        if (size <= viewPagerAdapter.getCount() && position < viewPagerAdapter.getFragments().size()) {
+            viewPagerAdapter.getFragments().get(position).updateLikeCount(isLiked, likeCount);
+
+        } else {
+            GripeLikeUpdateModel likeUpdateModel = new GripeLikeUpdateModel(likeCount, isLiked);
+            likeHashMap.put(position, likeUpdateModel);
+        }
+    }
 }

@@ -14,7 +14,10 @@ public class GripesNearbyLikeResponseParser {
     private String gripeId;
     @SerializedName("likeCount")
     @Expose
-    private int likeCount;
+    private Integer likeCount;
+    @SerializedName("state")
+    @Expose
+    private Integer state;
     @SerializedName("msg")
     @Expose
     private String msg;
@@ -27,11 +30,11 @@ public class GripesNearbyLikeResponseParser {
         this.gripeId = gripeId;
     }
 
-    public int getLikeCount() {
+    public Integer getLikeCount() {
         return likeCount;
     }
 
-    public void setLikeCount(int likeCount) {
+    public void setLikeCount(Integer likeCount) {
         this.likeCount = likeCount;
     }
 
@@ -41,5 +44,13 @@ public class GripesNearbyLikeResponseParser {
 
     public void setMsg(String msg) {
         this.msg = msg;
+    }
+
+    public Integer getState() {
+        return state;
+    }
+
+    public void setState(Integer state) {
+        this.state = state;
     }
 }

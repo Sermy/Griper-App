@@ -98,6 +98,9 @@ public class ShowMyPostsPresenter implements ShowMyPostsContract.Presenter {
             dataModel.setDescription(responseParser.getItems().get(i).getDescription());
             dataModel.setLongitude(responseParser.getItems().get(i).getLoc().get(0));
             dataModel.setLatitude(responseParser.getItems().get(i).getLoc().get(1));
+            dataModel.setLikeCount(responseParser.getItems().get(i).getLikeCount());
+            dataModel.setYesPressed(responseParser.getItems().get(i).getLiked());
+            dataModel.setCommentCount(responseParser.getItems().get(i).getCommentCount());
             list.add(dataModel);
         }
         if (isNewPostsLoaded) {

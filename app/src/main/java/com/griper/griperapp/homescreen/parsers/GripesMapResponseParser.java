@@ -42,6 +42,9 @@ public class GripesMapResponseParser {
     @SerializedName("isFixed")
     @Expose
     private Boolean isFixed;
+    @SerializedName("isLiked")
+    @Expose
+    private Boolean isLiked;
     @SerializedName("__v")
     @Expose
     private Integer v;
@@ -176,5 +179,21 @@ public class GripesMapResponseParser {
 
     public void setCommentCount(int commentCount) {
         this.commentCount = commentCount;
+    }
+
+    public Boolean getLiked() {
+        return isLiked;
+    }
+
+    public void setLiked(Boolean liked) {
+        isLiked = liked;
+    }
+
+    public Boolean getFixed() {
+        return isFixed;
+    }
+
+    public void setFixed(Boolean fixed) {
+        isFixed = fixed;
     }
 }

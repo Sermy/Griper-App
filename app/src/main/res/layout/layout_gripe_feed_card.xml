@@ -88,27 +88,38 @@
                 android:layout_marginTop="@dimen/dimen_7dp">
 
                 <TextSwitcher
+                    android:id="@+id/tsLikesCounter"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginEnd="@dimen/dimen_5dp"
-                    android:layout_marginRight="@dimen/dimen_5dp">
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginRight="5dp"
+                    android:inAnimation="@anim/slide_in_likes_counter"
+                    android:outAnimation="@anim/slide_out_likes_counter">
+
 
                     <com.griper.griperapp.widgets.AppTextView
-                        android:id="@+id/likeCount"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:text="@string/string_none"
                         android:textColor="@color/color_black"
                         app:textStyle="@integer/OPEN_SANS_REGULAR" />
+
+                    <com.griper.griperapp.widgets.AppTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:textColor="@color/color_black"
+                        app:textStyle="@integer/OPEN_SANS_REGULAR" />
                 </TextSwitcher>
 
                 <ImageView
+                    android:id="@+id/ivLikes"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:src="@drawable/ic_group_black_24dp" />
+                    android:src="@drawable/ic_favorite_border_black_24dp" />
 
                 <TextSwitcher
                     android:layout_width="wrap_content"

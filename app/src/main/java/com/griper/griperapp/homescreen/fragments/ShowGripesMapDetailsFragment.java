@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.ImageView;
+import android.widget.TextSwitcher;
 
 import com.griper.griperapp.R;
 import com.griper.griperapp.homescreen.activities.ShowGripeDetailsActivity;
@@ -51,6 +52,10 @@ public class ShowGripesMapDetailsFragment extends Fragment implements ShowGripes
     AppTextView textViewGripe;
     @Bind(R.id.progressCircleGripe)
     AVLoadingIndicatorView indicatorView;
+    @Bind(R.id.likeButton)
+    ImageView likeButton;
+    @Bind(R.id.likesCounter)
+    TextSwitcher likesCounter;
 
     final int version = Build.VERSION.SDK_INT;
     private FeaturedGripesModel gripesModel;
@@ -133,6 +138,8 @@ public class ShowGripesMapDetailsFragment extends Fragment implements ShowGripes
         if (textViewGripe != null) {
             textViewGripe.setText(gripesModel.getTitle());
         }
+        likeButton.setImageResource(gripesModel.getLiked() ? R.drawable.ic_favorite_pink_24dp : R.drawable.ic_favorite_border_white_24dp);
+        likesCounter.setCurrentText(String.valueOf(gripesModel.getLikeCount()));
     }
 
     @OnClick(R.id.layoutGripe)
@@ -165,5 +172,27 @@ public class ShowGripesMapDetailsFragment extends Fragment implements ShowGripes
         }
     }
 
+    @Override
+    public void updateLikeCount(boolean isLiked, int likeCount) {
+        likeButton.setImageResource(isLiked ? R.drawable.ic_favorite_pink_24dp : R.drawable.ic_favorite_border_white_24dp);
+        gripesModel.setLiked(isLiked);
+        if (isLiked) {
+            String likesCountTextFrom = likesCounter.getResources().getQuantityString(
+                    R.plurals.likes_count, likeCount - 1, likeCount - 1
+            );
+            likesCounter.setCurrentText(likesCountTextFrom);
+        } else {
+            String likesCountTextFrom = likesCounter.getResources().getQuantityString(
+                    R.plurals.likes_count, likeCount + 1, likeCount + 1
+            );
+            likesCounter.setCurrentText(likesCountTextFrom);
+        }
+
+        String likesCountTextTo = likesCounter.getResources().getQuantityString(
+                R.plurals.likes_count, likeCount, likeCount
+        );
+        gripesModel.setLikeCount(likeCount);
+        likesCounter.setText(likesCountTextTo);
+    }
 
 }

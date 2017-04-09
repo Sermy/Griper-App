@@ -22,8 +22,6 @@ import com.griper.griperapp.homescreen.fragments.ProfileScreenFragment;
 import com.griper.griperapp.homescreen.service.FetchAddressIntentService;
 import com.griper.griperapp.internal.Cam;
 import com.griper.griperapp.internal.configuration.CamConfiguration;
-import com.griper.griperapp.dbmodels.UserProfileData;
-import com.griper.griperapp.getstarted.activities.FacebookLoginActivity;
 import com.griper.griperapp.homescreen.interfaces.HomeScreenContract;
 import com.griper.griperapp.homescreen.presenters.HomeScreenPresenter;
 import com.griper.griperapp.utils.AppConstants;
@@ -38,7 +36,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import timber.log.Timber;
 
-public class HomeScreenActivity extends LocationRequestActivity implements HomeScreenContract.View {
+public class HomeScreenActivity extends LocationRequestActivity implements HomeScreenContract.View, GripesNearbyScreenFragment.UpdateItemListener {
 
     @Bind(R.id.viewPager)
     protected CustomViewPager viewPager;
@@ -62,6 +60,7 @@ public class HomeScreenActivity extends LocationRequestActivity implements HomeS
     private HomeScreenContract.Presenter homeScreenPresenter;
     UserPreferencesData preferencesData;
 
+    public MapUpdateLikesListener likesListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,9 +91,11 @@ public class HomeScreenActivity extends LocationRequestActivity implements HomeS
         mapScreenFragment = GripesMapScreenFragment.newInstance();
         profileScreenFragment = ProfileScreenFragment.newInstance();
         homeScreenAdapter.addFragment(nearbyScreenFragment);
+        nearbyScreenFragment.setOnItemUpdateListener(this);
         homeScreenAdapter.addFragment(mapScreenFragment);
         homeScreenAdapter.addFragment(profileScreenFragment);
         viewPager.setAdapter(homeScreenAdapter);
+        viewPager.setOffscreenPageLimit(4);
         homeBtn.setImageResource(R.drawable.home_menu_img_selected);
 //        viewPager.setPagingEnabled(false);
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -244,6 +245,11 @@ public class HomeScreenActivity extends LocationRequestActivity implements HomeS
 
     }
 
+    @Override
+    public void syncLikesUpdate(int position, int size, int likeCount, boolean isLiked) {
+        mapScreenFragment.updateGripeLikes(position, size, likeCount, isLiked);
+    }
+
 
     private class AddressResultReceiver extends ResultReceiver {
 
@@ -273,6 +279,11 @@ public class HomeScreenActivity extends LocationRequestActivity implements HomeS
             }
 
         }
+    }
+
+    public interface MapUpdateLikesListener {
+
+        void updateGripeLikes(int position, int size, int likeCount, boolean isLiked);
     }
 
 }

@@ -5,8 +5,10 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
+import com.griper.griperapp.homescreen.fragments.GripesMapScreenFragment;
 import com.griper.griperapp.homescreen.fragments.ShowGripesMapDetailsFragment;
 import com.griper.griperapp.homescreen.models.FeaturedGripesModel;
+import com.griper.griperapp.homescreen.models.GripeLikeUpdateModel;
 import com.griper.griperapp.homescreen.parsers.GripesMapMetaResponseParser;
 import com.griper.griperapp.homescreen.parsers.GripesMapResponseParser;
 

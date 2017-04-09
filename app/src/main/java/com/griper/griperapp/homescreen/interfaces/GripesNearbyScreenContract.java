@@ -5,6 +5,8 @@ import com.griper.griperapp.homescreen.parsers.GripesNearbyResponseParser;
 
 import java.util.List;
 
+import butterknife.Bind;
+
 /**
  * Created by Sarthak on 17-03-2017
  */
@@ -22,6 +24,8 @@ public interface GripesNearbyScreenContract {
 
         void showLoadMoreProgressBar(boolean show);
 
+        void updateGripeAdapterLikes();
+
         boolean isViewDestroyed();
     }
 
@@ -32,5 +36,7 @@ public interface GripesNearbyScreenContract {
         void onGetNearbyGripesApiSuccess(GripesNearbyResponseParser responseParser, boolean isNewPostsLoaded);
 
         void onGetNearbyGripesApiFailure(boolean isEmpty, boolean isFailure);
+
+        void callUpdateLikesApi(String gripeId, boolean isLike);
     }
 }

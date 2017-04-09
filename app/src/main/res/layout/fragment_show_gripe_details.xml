@@ -58,19 +58,58 @@
             app:indicatorColor="@color/colorPrimary"
             app:indicatorName="BallScaleRippleIndicator" />
 
-        <ImageView
-            android:layout_width="@dimen/dimen_25dp"
-            android:layout_height="@dimen/dimen_25dp"
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:layout_marginBottom="@dimen/dimen_3dp"
-            android:layout_marginEnd="@dimen/dimen_5dp"
-            android:layout_marginRight="@dimen/dimen_5dp"
-            android:padding="@dimen/dimen_5dp"
-            android:src="@drawable/ic_favorite_border_white_24dp" />
+            android:orientation="horizontal">
+
+            <TextSwitcher
+                android:id="@+id/likesCounter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="@dimen/dimen_3dp"
+                android:layout_marginEnd="@dimen/dimen_5dp"
+                android:layout_marginRight="@dimen/dimen_5dp"
+                android:inAnimation="@anim/slide_in_likes_counter"
+                android:outAnimation="@anim/slide_out_likes_counter">
+
+
+                <com.griper.griperapp.widgets.AppTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:text="0"
+                    android:textColor="@color/color_white"
+                    android:textSize="16sp"
+                    app:textStyle="@integer/OPEN_SANS_REGULAR" />
+
+                <com.griper.griperapp.widgets.AppTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:textColor="@color/color_white"
+                    android:textSize="16sp"
+                    app:textStyle="@integer/OPEN_SANS_REGULAR" />
+            </TextSwitcher>
+
+            <ImageView
+                android:id="@+id/likeButton"
+                android:layout_width="@dimen/dimen_25dp"
+                android:layout_height="@dimen/dimen_25dp"
+                android:layout_gravity="center"
+                android:layout_marginBottom="@dimen/dimen_3dp"
+                android:layout_marginEnd="@dimen/dimen_7dp"
+                android:layout_marginRight="@dimen/dimen_7dp"
+                android:padding="@dimen/dimen_3dp"
+                android:src="@drawable/ic_favorite_border_white_24dp" />
+        </LinearLayout>
 
     </RelativeLayout>
-
 
 </RelativeLayout>

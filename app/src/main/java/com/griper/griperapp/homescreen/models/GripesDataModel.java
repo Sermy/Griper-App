@@ -17,10 +17,11 @@ public class GripesDataModel {
     private String imagePublicId;
     private String imageBaseUrl;
     private String imagePostFixId;
-    private int likeCount;
-    private int commentCount;
+    private Integer likeCount;
+    private Integer commentCount;
     private boolean isYesPressed = false;
     private boolean isNoPressed = false;
+    private boolean likeIncrement = false;
 
     public GripesDataModel() {
     }
@@ -84,19 +85,19 @@ public class GripesDataModel {
         this.imagePostFixId = imagePostFixId;
     }
 
-    public int getLikeCount() {
+    public Integer getLikeCount() {
         return likeCount;
     }
 
-    public void setLikeCount(int likeCount) {
+    public void setLikeCount(Integer likeCount) {
         this.likeCount = likeCount;
     }
 
-    public int getCommentCount() {
+    public Integer getCommentCount() {
         return commentCount;
     }
 
-    public void setCommentCount(int commentCount) {
+    public void setCommentCount(Integer commentCount) {
         this.commentCount = commentCount;
     }
 
@@ -138,5 +139,13 @@ public class GripesDataModel {
 
     public void setLongitude(Double longitude) {
         this.longitude = longitude;
+    }
+
+    public boolean isLikeIncrement() {
+        return likeIncrement;
+    }
+
+    public void setLikeIncrement(boolean likeIncrement) {
+        this.likeIncrement = likeIncrement;
     }
 }

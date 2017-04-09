@@ -29,6 +29,7 @@ public interface HomeScreenWebServiceInterface {
     String QUERY_LATITUDE = "lat";
     String QUERY_LONGITUDE = "lon";
     String QUERY_DISTANCE = "distance";
+    String PARAM_PATH_INCR_LIKE = "like";
 
     @GET("api/{" + PARAM_PATH_EMAIL + "}/getNearbyGripes")
     Observable<List<GripesMapResponseParser>> getNearbyGripes(@Path(PARAM_PATH_EMAIL) String email, @Query(QUERY_LONGITUDE) double lon,
@@ -39,8 +40,9 @@ public interface HomeScreenWebServiceInterface {
                                                                   @Query(QUERY_LONGITUDE) double lon, @Query(QUERY_LATITUDE) double lat,
                                                                   @Query(QUERY_DISTANCE) Integer distance);
 
-    @PATCH("api/{" + PARAM_PATH_EMAIL + "}/{" + PARAM_PATH_GRIPE_ID + "}/updateGripeLikes")
-    Observable<GripesNearbyLikeResponseParser> updateGripeLikes(@Path(PARAM_PATH_EMAIL) String email, @Path(PARAM_PATH_GRIPE_ID) String gripeId);
+    @PATCH("api/{" + PARAM_PATH_EMAIL + "}/{" + PARAM_PATH_GRIPE_ID + "}/{" + PARAM_PATH_INCR_LIKE + "}/updateGripeLikes")
+    Observable<GripesNearbyLikeResponseParser> updateGripeLikes(@Path(PARAM_PATH_EMAIL) String email, @Path(PARAM_PATH_GRIPE_ID) String gripeId,
+                                                                @Path(PARAM_PATH_INCR_LIKE) boolean isLike);
 
     @GET("api/{" + PARAM_PATH_EMAIL + "}/{" + PARAM_PATH_PAGE + "}/getMyPosts")
     Observable<GripesNearbyResponseParser> getMyPosts(@Path(PARAM_PATH_EMAIL) String email, @Path(PARAM_PATH_PAGE) int page);

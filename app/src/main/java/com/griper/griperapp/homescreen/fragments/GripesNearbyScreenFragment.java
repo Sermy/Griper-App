@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import com.griper.griperapp.BaseActivity;
 import com.griper.griperapp.R;
 import com.griper.griperapp.getstarted.activities.FacebookLoginActivity;
+import com.griper.griperapp.homescreen.adapters.FeedItemAnimator;
 import com.griper.griperapp.homescreen.adapters.GripesFeedAdapter;
 import com.griper.griperapp.homescreen.interfaces.GripesNearbyScreenContract;
 import com.griper.griperapp.homescreen.models.GripesDataModel;
@@ -34,7 +35,7 @@ import timber.log.Timber;
  * Created by Sarthak on 17-03-2017
  */
 
-public class GripesNearbyScreenFragment extends Fragment implements GripesNearbyScreenContract.View {
+public class GripesNearbyScreenFragment extends Fragment implements GripesNearbyScreenContract.View, GripesFeedAdapter.OnFeedItemClickListener {
 
     @Bind(R.id.progressBarLoadMore)
     protected CustomProgressBar progressBarLoadMore;
@@ -47,6 +48,7 @@ public class GripesNearbyScreenFragment extends Fragment implements GripesNearby
     private List<GripesDataModel> gripesModelList = new ArrayList<>();
     private boolean isLoading = false;
 
+    private UpdateItemListener likesListener;
     private GripesNearbyScreenContract.Presenter gripesNearbyPresenter;
 
     public GripesNearbyScreenFragment() {
@@ -83,7 +85,9 @@ public class GripesNearbyScreenFragment extends Fragment implements GripesNearby
 //        gripesFeedAdapter.setHasStableIds(true);
         linearLayoutManager = new LinearLayoutManager(getActivity());
         recyclerViewGripes.setLayoutManager(linearLayoutManager);
+        gripesFeedAdapter.setOnFeedItemClickListener(this);
         recyclerViewGripes.setAdapter(gripesFeedAdapter);
+        recyclerViewGripes.setItemAnimator(new FeedItemAnimator());
         if (!isViewDestroyed()) {
             gripesNearbyPresenter.callGetNearbyGripesApi(0);
         }
@@ -162,6 +166,11 @@ public class GripesNearbyScreenFragment extends Fragment implements GripesNearby
     }
 
     @Override
+    public void updateGripeAdapterLikes() {
+
+    }
+
+    @Override
     public boolean isViewDestroyed() {
         return !isAdded();
     }
@@ -177,4 +186,18 @@ public class GripesNearbyScreenFragment extends Fragment implements GripesNearby
     }
 
 
+    @Override
+    public void onYesClick(int position, boolean incrementLikeCount, int likeCount) {
+        likesListener.syncLikesUpdate(position, gripesModelList.size(), likeCount, incrementLikeCount);
+        gripesNearbyPresenter.callUpdateLikesApi(gripesModelList.get(position).getGripeId(), incrementLikeCount);
+
+    }
+
+    public void setOnItemUpdateListener(UpdateItemListener updateListener) {
+        this.likesListener = updateListener;
+    }
+
+    public interface UpdateItemListener {
+        void syncLikesUpdate(int position, int size, int likeCount, boolean isLiked);
+    }
 }

@@ -28,6 +28,11 @@
     <string name="string_accept_permissions">Please enable Camera and Storage Permissions from System Settings</string>
     <string name="string_show_location">Turn on High Accuracy under Location Settings</string>
 
+    <plurals name="likes_count">
+        <item quantity="one">%d</item>
+        <item quantity="other">%d</item>
+    </plurals>
+
     <string-array name="string_array_fb_permissions">
         <item>public_profile</item>
         <item>email</item>
@@ -64,5 +69,6 @@
     <string name="string_volunteering">Volunteering</string>
     <string name="string_my_posts">My Posts</string>
     <string name="string_my_gripes">My Gripes</string>
+    <string name="string_zero">0</string>
 
 </resources>
