@@ -166,8 +166,13 @@ public class GripesNearbyScreenFragment extends Fragment implements GripesNearby
     }
 
     @Override
-    public void updateGripeAdapterLikes() {
-
+    public void updateGripeAdapterLikes(int position, int likeCount, boolean isLike) {
+        if (position < gripesModelList.size()) {
+            gripesModelList.get(position).setLikeCount(likeCount);
+            gripesModelList.get(position).setYesPressed(isLike);
+            gripesModelList.get(position).setNoPressed(false);
+            gripesFeedAdapter.notifyItemChanged(position);
+        }
     }
 
     @Override

@@ -51,7 +51,7 @@ import timber.log.Timber;
  * Created by Sarthak on 14-03-2017
  */
 
-public class GripesMapScreenFragment extends Fragment implements GripesMapScreenContract.View, OnMapReadyCallback, GoogleMap.OnMarkerClickListener, HomeScreenActivity.MapUpdateLikesListener {
+public class GripesMapScreenFragment extends Fragment implements GripesMapScreenContract.View, OnMapReadyCallback, GoogleMap.OnMarkerClickListener, ShowGripesMapDetailsFragment.MapItemListener {
 
     @Bind(R.id.mapView)
     MapView mMapView;
@@ -69,6 +69,8 @@ public class GripesMapScreenFragment extends Fragment implements GripesMapScreen
     private ArrayList<Marker> mapMarkers = new ArrayList<>();
     private GripesMapScreenContract.Presenter gripesMapPresenter;
     public static HashMap<Integer, GripeLikeUpdateModel> likeHashMap;
+    private ShowGripesMapDetailsFragment.MapItemListener itemListener;
+    private UpdateMapItemListener mapListener;
 
     public GripesMapScreenFragment() {
 
@@ -107,6 +109,7 @@ public class GripesMapScreenFragment extends Fragment implements GripesMapScreen
         mMapView.onResume();
         MapsInitializer.initialize(this.getActivity().getApplicationContext());
         mMapView.getMapAsync(this);
+        itemListener = this;
         gripesMapPresenter = new GripesMapScreenPresenter(this);
         likeHashMap = new HashMap<>();
         ((BaseActivity) getActivity()).getApiComponent().
@@ -124,6 +127,7 @@ public class GripesMapScreenFragment extends Fragment implements GripesMapScreen
         viewPager.setOffscreenPageLimit(4);
         ShowGripesMapDetailsFragment current = viewPagerAdapter.getFragments().get(0);
         current.setViewHighlighted(true);
+        current.setOnMapItemListener(itemListener);
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -133,7 +137,7 @@ public class GripesMapScreenFragment extends Fragment implements GripesMapScreen
             @Override
             public void onPageSelected(int position) {
                 Timber.i("Position: " + position);
-
+                viewPagerAdapter.getFragments().get(position).setOnMapItemListener(itemListener);
                 if (position > 0 && position < (viewPagerAdapter.getCount() - 1)) {
                     ShowGripesMapDetailsFragment current = viewPagerAdapter.getFragments().get(position);
                     current.setViewHighlighted(true);
@@ -253,5 +257,18 @@ public class GripesMapScreenFragment extends Fragment implements GripesMapScreen
             GripeLikeUpdateModel likeUpdateModel = new GripeLikeUpdateModel(likeCount, isLiked);
             likeHashMap.put(position, likeUpdateModel);
         }
+    }
+
+    @Override
+    public void updateLikeMainScreen(int position, int likeCount, boolean isLiked) {
+        mapListener.syncLikesMainScreen(position, likeCount, isLiked);
+    }
+
+    public void setOnUpdateMapItemListener(UpdateMapItemListener updateListener) {
+        this.mapListener = updateListener;
+    }
+
+    public interface UpdateMapItemListener {
+        void syncLikesMainScreen(int position, int likeCount, boolean isLiked);
     }
 }

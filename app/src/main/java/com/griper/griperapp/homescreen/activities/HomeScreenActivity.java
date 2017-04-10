@@ -17,6 +17,7 @@ import com.griper.griperapp.R;
 import com.griper.griperapp.dbmodels.UserPreferencesData;
 import com.griper.griperapp.homescreen.adapters.ShowHomeScreenAdapter;
 import com.griper.griperapp.homescreen.fragments.GripesMapScreenFragment;
+import com.griper.griperapp.homescreen.fragments.GripesMapScreenFragment.UpdateMapItemListener;
 import com.griper.griperapp.homescreen.fragments.GripesNearbyScreenFragment;
 import com.griper.griperapp.homescreen.fragments.ProfileScreenFragment;
 import com.griper.griperapp.homescreen.service.FetchAddressIntentService;
@@ -36,7 +37,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import timber.log.Timber;
 
-public class HomeScreenActivity extends LocationRequestActivity implements HomeScreenContract.View, GripesNearbyScreenFragment.UpdateItemListener {
+public class HomeScreenActivity extends LocationRequestActivity implements HomeScreenContract.View, GripesNearbyScreenFragment.UpdateItemListener, GripesMapScreenFragment.UpdateMapItemListener {
 
     @Bind(R.id.viewPager)
     protected CustomViewPager viewPager;
@@ -59,8 +60,6 @@ public class HomeScreenActivity extends LocationRequestActivity implements HomeS
     private ProfileScreenFragment profileScreenFragment;
     private HomeScreenContract.Presenter homeScreenPresenter;
     UserPreferencesData preferencesData;
-
-    public MapUpdateLikesListener likesListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,6 +92,7 @@ public class HomeScreenActivity extends LocationRequestActivity implements HomeS
         homeScreenAdapter.addFragment(nearbyScreenFragment);
         nearbyScreenFragment.setOnItemUpdateListener(this);
         homeScreenAdapter.addFragment(mapScreenFragment);
+        mapScreenFragment.setOnUpdateMapItemListener(this);
         homeScreenAdapter.addFragment(profileScreenFragment);
         viewPager.setAdapter(homeScreenAdapter);
         viewPager.setOffscreenPageLimit(4);
@@ -250,6 +250,11 @@ public class HomeScreenActivity extends LocationRequestActivity implements HomeS
         mapScreenFragment.updateGripeLikes(position, size, likeCount, isLiked);
     }
 
+    @Override
+    public void syncLikesMainScreen(int position, int likeCount, boolean isLiked) {
+        nearbyScreenFragment.updateGripeAdapterLikes(position, likeCount, isLiked);
+    }
+
 
     private class AddressResultReceiver extends ResultReceiver {
 
@@ -279,11 +284,6 @@ public class HomeScreenActivity extends LocationRequestActivity implements HomeS
             }
 
         }
-    }
-
-    public interface MapUpdateLikesListener {
-
-        void updateGripeLikes(int position, int size, int likeCount, boolean isLiked);
     }
 
 }

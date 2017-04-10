@@ -24,6 +24,8 @@ public interface GripesMapScreenContract {
         void updateGripesMapMarkers(List<GripesMapResponseParser> responseParserList);
 
         void updateCameraPositionGripes(int position);
+
+        public void updateGripeLikes(int position, int size, int likeCount, boolean isLiked);
     }
 
     interface Presenter {

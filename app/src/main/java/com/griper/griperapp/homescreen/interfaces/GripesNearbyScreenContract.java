@@ -24,7 +24,7 @@ public interface GripesNearbyScreenContract {
 
         void showLoadMoreProgressBar(boolean show);
 
-        void updateGripeAdapterLikes();
+        void updateGripeAdapterLikes(int position, int likeCount, boolean isLike);
 
         boolean isViewDestroyed();
     }

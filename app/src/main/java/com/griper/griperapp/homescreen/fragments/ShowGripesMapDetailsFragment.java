@@ -1,5 +1,10 @@
 package com.griper.griperapp.homescreen.fragments;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -10,13 +15,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.view.animation.OvershootInterpolator;
 import android.widget.ImageView;
 import android.widget.TextSwitcher;
 
+import com.griper.griperapp.BaseActivity;
 import com.griper.griperapp.R;
 import com.griper.griperapp.homescreen.activities.ShowGripeDetailsActivity;
 import com.griper.griperapp.homescreen.interfaces.ShowGripesDetailContract;
 import com.griper.griperapp.homescreen.models.FeaturedGripesModel;
+import com.griper.griperapp.homescreen.presenters.ShowGripeDetailPresenter;
 import com.griper.griperapp.utils.CloudinaryImageUrl;
 import com.griper.griperapp.utils.Utils;
 import com.griper.griperapp.widgets.AppTextView;
@@ -29,6 +37,7 @@ import java.util.ArrayList;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import timber.log.Timber;
 
 /**
  * Created by Sarthak on 17-03-2017
@@ -43,6 +52,7 @@ public class ShowGripesMapDetailsFragment extends Fragment implements ShowGripes
     private static final String EXTRA_GRIPE_LAT = "gripe_lat";
     private static final String EXTRA_GRIPE_LON = "gripe_lon";
     private static final String EXTRA_GRIPE_DESCRIPTION = "gripe_description";
+    private static final String EXTRA_GRIPE_POSITION = "gripe_position";
 
     @Bind(R.id.viewHighlight)
     View viewHighlight;
@@ -59,16 +69,22 @@ public class ShowGripesMapDetailsFragment extends Fragment implements ShowGripes
 
     final int version = Build.VERSION.SDK_INT;
     private FeaturedGripesModel gripesModel;
+    private int position;
     private String transformedImageUrl;
+
+    private static final OvershootInterpolator OVERSHOOT_INTERPOLATOR = new OvershootInterpolator(4);
+    private ShowGripesDetailContract.Presenter presenter;
+    private MapItemListener listener;
 
     public ShowGripesMapDetailsFragment() {
         // Required empty public constructor
     }
 
-    public static ShowGripesMapDetailsFragment newInstance(FeaturedGripesModel gripesModel) {
+    public static ShowGripesMapDetailsFragment newInstance(FeaturedGripesModel gripesModel, int position) {
         Bundle args = new Bundle();
         ShowGripesMapDetailsFragment fragment = new ShowGripesMapDetailsFragment();
         args.putParcelable(EXTRA_FRAGMENT_GRIPE_DATA, gripesModel);
+        args.putInt(EXTRA_GRIPE_POSITION, position);
         fragment.setArguments(args);
         return fragment;
     }
@@ -92,6 +108,9 @@ public class ShowGripesMapDetailsFragment extends Fragment implements ShowGripes
         Bundle bundle = getArguments();
         if (bundle != null) {
             gripesModel = bundle.getParcelable(EXTRA_FRAGMENT_GRIPE_DATA);
+            position = bundle.getInt(EXTRA_GRIPE_POSITION);
+            presenter = new ShowGripeDetailPresenter(this);
+            ((BaseActivity) getActivity()).getApiComponent().inject((ShowGripeDetailPresenter) presenter);
         }
         if (gripesModel != null) {
             showData();
@@ -159,6 +178,12 @@ public class ShowGripesMapDetailsFragment extends Fragment implements ShowGripes
         getActivity().overridePendingTransition(R.anim.slide_in_left_fast, 0);
     }
 
+    @OnClick(R.id.likeButton)
+    public void onClickLike() {
+        gripesModel.setLikeCount(gripesModel.getLiked() ? (gripesModel.getLikeCount() - 1) : (gripesModel.getLikeCount() + 1));
+        presenter.callUpdateGripeLikeApi(gripesModel.getId(), position, gripesModel.getLikeCount(), !gripesModel.getLiked());
+    }
+
     @Override
     public void setViewHighlighted(boolean show) {
         if (viewHighlight != null && textViewGripe != null) {
@@ -176,6 +201,11 @@ public class ShowGripesMapDetailsFragment extends Fragment implements ShowGripes
     public void updateLikeCount(boolean isLiked, int likeCount) {
         likeButton.setImageResource(isLiked ? R.drawable.ic_favorite_pink_24dp : R.drawable.ic_favorite_border_white_24dp);
         gripesModel.setLiked(isLiked);
+        animateLikeCount(isLiked, likeCount);
+    }
+
+    @Override
+    public void animateLikeCount(boolean isLiked, int likeCount) {
         if (isLiked) {
             String likesCountTextFrom = likesCounter.getResources().getQuantityString(
                     R.plurals.likes_count, likeCount - 1, likeCount - 1
@@ -195,4 +225,54 @@ public class ShowGripesMapDetailsFragment extends Fragment implements ShowGripes
         likesCounter.setText(likesCountTextTo);
     }
 
+    @Override
+    public void animateLikeButtonPressed(boolean isLiked, int likeCount) {
+        animateLikeCount(isLiked, likeCount);
+        if (isLiked) {
+            AnimatorSet animatorSet = new AnimatorSet();
+            ObjectAnimator bounceAnimX = ObjectAnimator.ofFloat(likeButton, "scaleX", 0.2f, 1f);
+            bounceAnimX.setDuration(300);
+            bounceAnimX.setInterpolator(OVERSHOOT_INTERPOLATOR);
+
+            ObjectAnimator bounceAnimY = ObjectAnimator.ofFloat(likeButton, "scaleY", 0.2f, 1f);
+            bounceAnimY.setDuration(300);
+            bounceAnimY.setInterpolator(OVERSHOOT_INTERPOLATOR);
+            bounceAnimY.addListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationStart(Animator animation) {
+                    likeButton.setImageResource(R.drawable.ic_favorite_pink_24dp);
+                }
+
+                @Override
+                public void onAnimationEnd(Animator animation) {
+
+                }
+            });
+
+            animatorSet.play(bounceAnimX).with(bounceAnimY);
+            animatorSet.start();
+        } else {
+            likeButton.setImageResource(R.drawable.ic_favorite_border_white_24dp);
+        }
+        gripesModel.setLiked(isLiked);
+    }
+
+    @Override
+    public void syncLikeUpdateMainScreen(int position, int likeCount, boolean isLiked) {
+        Timber.i("Sync MainScreen");
+        listener.updateLikeMainScreen(position, likeCount, isLiked);
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+    }
+
+    public void setOnMapItemListener(MapItemListener mapItemListener) {
+        this.listener = mapItemListener;
+    }
+
+    public interface MapItemListener {
+        void updateLikeMainScreen(int position, int likeCount, boolean isLiked);
+    }
 }

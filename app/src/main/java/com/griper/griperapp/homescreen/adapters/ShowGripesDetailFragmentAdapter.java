@@ -34,7 +34,7 @@ public class ShowGripesDetailFragmentAdapter extends FragmentPagerAdapter {
     @Override
     public Fragment getItem(int position) {
         Timber.i("getItem :" + position);
-        fragments.add(position, ShowGripesMapDetailsFragment.newInstance(featuredGripesModelList.get(position)));
+        fragments.add(position, ShowGripesMapDetailsFragment.newInstance(featuredGripesModelList.get(position), position));
         return fragments.get(position);
     }
 
