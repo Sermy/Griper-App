@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/dimen_10dp"
+    android:layout_marginTop="@dimen/dimen_10dp"
+    android:background="@color/transparent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.griper.griperapp.widgets.AppTextView
+            android:id="@+id/likeTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dimen_10dp"
+            android:text="@string/string_test_gripe_text"
+            android:textColor="@color/color_black"
+            android:textSize="@dimen/dimen_17sp"
+            app:textStyle="@integer/OPEN_SANS_REGULAR" />
+
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="75dp"
+            android:layout_below="@id/likeTitle"
+            card_view:cardCornerRadius="0dp"
+            card_view:cardElevation="1dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="@dimen/dimen_20dp"
+                android:layout_marginTop="@dimen/dimen_15dp"
+                android:orientation="horizontal"
+                android:layout_gravity="center_vertical"
+                android:paddingLeft="@dimen/dimen_15dp"
+                android:paddingRight="@dimen/dimen_15dp"
+                android:weightSum="3">
+
+                <com.griper.griperapp.widgets.AppTextView
+                    android:id="@+id/likeLocation"
+                    android:layout_width="@dimen/dimen_0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:text="@string/string_welcome_user"
+                    android:textColor="@color/color_grey_dark"
+                    app:textStyle="@integer/PT_SANS_WEB_REGULAR" />
+
+            </LinearLayout>
+
+        </android.support.v7.widget.CardView>
+
+
+    </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/imgGripeLike"
+        android:layout_width="@dimen/dimen_100dp"
+        android:layout_height="@dimen/dimen_100dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginRight="@dimen/dimen_10dp"
+        android:background="@drawable/drawable_image_like_gripe_placeholder"
+        android:src="@drawable/drawable_image_like_gripe_placeholder" />
+
+</RelativeLayout>

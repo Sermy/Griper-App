@@ -6,6 +6,7 @@ import com.griper.griperapp.getstarted.presenters.FacebookLoginPresenter;
 import com.griper.griperapp.homescreen.presenters.GripesMapScreenPresenter;
 import com.griper.griperapp.homescreen.presenters.GripesNearbyScreenPresenter;
 import com.griper.griperapp.homescreen.presenters.ShowGripeDetailPresenter;
+import com.griper.griperapp.homescreen.presenters.ShowMyLikesPresenter;
 import com.griper.griperapp.homescreen.presenters.ShowMyPostsPresenter;
 import com.griper.griperapp.injections.modules.ApiModule;
 import com.griper.griperapp.internal.ui.preview.AddGripePresenter;
@@ -34,6 +35,8 @@ public interface ApiComponent {
     void inject(GripesNearbyScreenPresenter gripesNearbyScreenPresenter);
 
     void inject(ShowMyPostsPresenter showMyPostsPresenter);
+
+    void inject(ShowMyLikesPresenter showMyLikesPresenter);
 
     void inject(ShowGripeDetailPresenter showGripeDetailPresenter);
 }

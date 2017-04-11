@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 
 import com.griper.griperapp.R;
 import com.griper.griperapp.dbmodels.UserProfileData;
+import com.griper.griperapp.homescreen.activities.ShowMyLikesActivity;
 import com.griper.griperapp.homescreen.activities.ShowMyPostsActivity;
 import com.griper.griperapp.homescreen.interfaces.ProfileScreenContract;
 import com.griper.griperapp.widgets.AppTextView;
@@ -76,6 +77,12 @@ public class ProfileScreenFragment extends Fragment implements ProfileScreenCont
     @OnClick(R.id.layoutPosts)
     public void onClickMyPosts() {
         Intent intent = new Intent(getActivity(), ShowMyPostsActivity.class);
+        startActivity(intent);
+    }
+
+    @OnClick(R.id.layoutLikes)
+    public void onClickMyLikes() {
+        Intent intent = new Intent(getActivity(), ShowMyLikesActivity.class);
         startActivity(intent);
     }
 }

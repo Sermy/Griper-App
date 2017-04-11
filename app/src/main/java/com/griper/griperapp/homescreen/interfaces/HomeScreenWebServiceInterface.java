@@ -47,4 +47,7 @@ public interface HomeScreenWebServiceInterface {
     @GET("api/{" + PARAM_PATH_EMAIL + "}/{" + PARAM_PATH_PAGE + "}/getMyPosts")
     Observable<GripesNearbyResponseParser> getMyPosts(@Path(PARAM_PATH_EMAIL) String email, @Path(PARAM_PATH_PAGE) int page);
 
+    @GET("api/{" + PARAM_PATH_EMAIL + "}/{" + PARAM_PATH_PAGE + "}/getMyLikes")
+    Observable<GripesNearbyResponseParser> getMyLikes(@Path(PARAM_PATH_EMAIL) String email, @Path(PARAM_PATH_PAGE) int page);
+
 }

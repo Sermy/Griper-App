@@ -111,4 +111,19 @@ public class Utils {
         }
         return url;
     }
+
+    public static String getCircularCloudinaryImageUrl(String baseUrl,String baseUrlThumbnailPostFix, String imageId, int toolbarIconRadius) {
+        CloudinaryImageUrl cloudinaryImageUrl =
+                new CloudinaryImageUrl.Builder(baseUrl, imageId, toolbarIconRadius * 2,
+                        toolbarIconRadius * 2, baseUrlThumbnailPostFix)
+                        .cornerRadius(toolbarIconRadius)
+                        .crop(CloudinaryImageUrl.CROP_THUMB)
+                        .build();
+        if (cloudinaryImageUrl != null) {
+            return cloudinaryImageUrl.getTransformedImageUrl();
+        }
+        return "";
+
+    }
+
 }

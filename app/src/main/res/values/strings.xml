@@ -70,5 +70,7 @@
     <string name="string_my_posts">My Posts</string>
     <string name="string_my_gripes">My Gripes</string>
     <string name="string_zero">0</string>
+    <string name="string_my_likes">My Likes</string>
+    <string name="string_test_gripe_text">Graffiti in Manchester</string>
 
 </resources>

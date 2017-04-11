@@ -101,7 +101,10 @@
             android:name=".homescreen.activities.ShowMyPostsActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
-
+        <activity
+            android:name=".homescreen.activities.ShowMyLikesActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" />
 
     </application>
 
