@@ -66,4 +66,7 @@
     <dimen name="dimen_80dp">80dp</dimen>
     <dimen name="dimen_22sp">22sp</dimen>
     <dimen name="dimen_43dp">43dp</dimen>
+    <dimen name="dimen_72dp">72dp</dimen>
+    <dimen name="comment_avatar_size">40dp</dimen>
+    <dimen name="dimen_4dp">4dp</dimen>
 </resources>

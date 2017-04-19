@@ -8,6 +8,8 @@ interface ShowGripeDetailsScreenContract {
     interface View {
         fun init()
 
+        fun setUpRecyclerViewFirebase();
+
         fun setGripeImage()
     }
 

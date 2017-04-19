@@ -19,6 +19,7 @@ import android.widget.TextSwitcher;
 import com.griper.griperapp.R;
 import com.griper.griperapp.dbmodels.UserPreferencesData;
 import com.griper.griperapp.dbmodels.UserProfileData;
+import com.griper.griperapp.homescreen.activities.CommentsActivity;
 import com.griper.griperapp.homescreen.activities.HomeScreenActivity;
 import com.griper.griperapp.homescreen.activities.ShowGripeDetailsActivity;
 import com.griper.griperapp.homescreen.interfaces.GripesNearbyScreenContract;
@@ -34,6 +35,8 @@ import com.transitionseverywhere.Fade;
 import com.transitionseverywhere.TransitionManager;
 import com.transitionseverywhere.TransitionSet;
 import com.transitionseverywhere.extra.Scale;
+
+import org.w3c.dom.Comment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -130,7 +133,9 @@ public class GripesFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         feedViewHolder.cardTitle.setText(gripesDataModelList.get(position).getTitle());
         feedViewHolder.gripeCardLocation.setText(gripesDataModelList.get(position).getLocation());
         if (gripesDataModelList.get(position).getCommentCount() != 0) {
-            feedViewHolder.commentsCount.setText(gripesDataModelList.get(position).getCommentCount());
+            feedViewHolder.commentsCount.setText(gripesDataModelList.get(position).getCommentCount().toString());
+        } else {
+            feedViewHolder.commentsCount.setText("0");
         }
         feedViewHolder.likesCounter.setText(gripesDataModelList.get(position).getLikeCount().toString());
     }
@@ -187,7 +192,7 @@ public class GripesFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         ImageView likeButton;
         AppTextView btnYes;
         AppTextView btnNo;
-        @Bind(R.id.commentCount)
+        @Bind(R.id.tvCommentCount)
         AppTextView commentsCount;
         @Bind(R.id.tsLikesCounter)
         TextSwitcher likesCounter;
@@ -268,6 +273,7 @@ public class GripesFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             intent.putExtra(EXTRA_GRIPE_TITLE, gripesDataModelList.get(position).getTitle());
             intent.putExtra(EXTRA_GRIPE_ADDRESS, gripesDataModelList.get(position).getLocation());
             intent.putExtra(EXTRA_GRIPE_DESCRIPTION, gripesDataModelList.get(position).getDescription());
+            intent.putExtra(CommentsActivity.GRIPE_ID, gripesDataModelList.get(position).getGripeId());
             ArrayList<String> arrayList = new ArrayList<>();
             arrayList.add(gripesDataModelList.get(position).getImageBaseUrl());
             arrayList.add(gripesDataModelList.get(position).getImagePublicId());
@@ -276,6 +282,11 @@ public class GripesFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             intent.putExtra(EXTRA_GRIPE_LAT, gripesDataModelList.get(position).getLatitude());
             intent.putExtra(EXTRA_GRIPE_LON, gripesDataModelList.get(position).getLongitude());
             context.startActivity(intent);
+        }
+
+        @OnClick(R.id.ivComments)
+        public void onClickComments() {
+            onFeedItemClickListener.onCommentsClick(getAdapterPosition());
         }
 
         public GripesDataModel getGripesDataModel() {
@@ -288,5 +299,7 @@ public class GripesFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     public interface OnFeedItemClickListener {
 
         void onYesClick(int position, boolean incrementLike, int likeCount);
+
+        void onCommentsClick(int position);
     }
 }

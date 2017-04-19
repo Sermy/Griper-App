@@ -72,5 +72,8 @@
     <string name="string_zero">0</string>
     <string name="string_my_likes">My Likes</string>
     <string name="string_test_gripe_text">Graffiti in Manchester</string>
+    <string name="string_add_comment">Add a comment...</string>
+    <string name="string_post">POST</string>
+    <string name="string_user">Sarthak Arora</string>
 
 </resources>

@@ -128,13 +128,33 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:id="@+id/layoutComments"
+                    android:id="@+id/llCommentsHint"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/layoutDescription"
+                    android:layout_marginLeft="@dimen/dimen_3dp"
+                    android:layout_marginRight="@dimen/dimen_20dp"
+                    android:layout_marginTop="@dimen/dimen_3dp"
+                    android:orientation="vertical">
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/rvHintComments"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:scrollbars="none">
+
+                    </android.support.v7.widget.RecyclerView>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/layoutComments"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/llCommentsHint"
                     android:layout_marginLeft="@dimen/dimen_20dp"
                     android:layout_marginRight="@dimen/dimen_20dp"
-                    android:layout_marginTop="@dimen/dimen_10dp"
+                    android:layout_marginTop="@dimen/dimen_15dp"
                     android:orientation="horizontal">
 
                     <ImageView
@@ -145,6 +165,7 @@
                         android:src="@drawable/ic_comment_black_24dp" />
 
                     <com.griper.griperapp.widgets.AppTextView
+                        android:id="@+id/appTvComments"
                         android:layout_width="@dimen/dimen_0dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"

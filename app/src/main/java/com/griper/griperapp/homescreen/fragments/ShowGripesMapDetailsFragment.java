@@ -39,6 +39,8 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import timber.log.Timber;
 
+import static com.griper.griperapp.homescreen.activities.CommentsActivity.GRIPE_ID;
+
 /**
  * Created by Sarthak on 17-03-2017
  */
@@ -101,6 +103,11 @@ public class ShowGripesMapDetailsFragment extends Fragment implements ShowGripes
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         init();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
     }
 
     @Override
@@ -172,6 +179,7 @@ public class ShowGripesMapDetailsFragment extends Fragment implements ShowGripes
         arrayList.add(gripesModel.getImagePublicId());
         arrayList.add(gripesModel.getBaseUrlPostFix());
         intent.putExtra(EXTRA_GRIPE_IMAGE, arrayList);
+        intent.putExtra(GRIPE_ID, gripesModel.getId());
         intent.putExtra(EXTRA_GRIPE_LAT, gripesModel.getLatitude());
         intent.putExtra(EXTRA_GRIPE_LON, gripesModel.getLongitude());
         startActivity(intent);

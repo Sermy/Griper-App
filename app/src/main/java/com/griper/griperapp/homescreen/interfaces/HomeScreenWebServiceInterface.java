@@ -50,4 +50,7 @@ public interface HomeScreenWebServiceInterface {
     @GET("api/{" + PARAM_PATH_EMAIL + "}/{" + PARAM_PATH_PAGE + "}/getMyLikes")
     Observable<GripesNearbyResponseParser> getMyLikes(@Path(PARAM_PATH_EMAIL) String email, @Path(PARAM_PATH_PAGE) int page);
 
+    @PATCH("firebase/{" + PARAM_PATH_EMAIL + "}/{" + PARAM_PATH_GRIPE_ID + "}/updateCommentsCount")
+    Observable<GripesNearbyLikeResponseParser> updateCommentsCount(@Path(PARAM_PATH_EMAIL) String email, @Path(PARAM_PATH_GRIPE_ID) String gripeId);
+
 }

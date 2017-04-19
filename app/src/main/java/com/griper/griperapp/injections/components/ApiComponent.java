@@ -3,6 +3,7 @@ package com.griper.griperapp.injections.components;
 import com.griper.griperapp.getstarted.presenters.EmailLoginPresenter;
 import com.griper.griperapp.getstarted.presenters.EmailSignUpPresenter;
 import com.griper.griperapp.getstarted.presenters.FacebookLoginPresenter;
+import com.griper.griperapp.homescreen.presenters.CommentsScreenPresenter;
 import com.griper.griperapp.homescreen.presenters.GripesMapScreenPresenter;
 import com.griper.griperapp.homescreen.presenters.GripesNearbyScreenPresenter;
 import com.griper.griperapp.homescreen.presenters.ShowGripeDetailPresenter;
@@ -37,6 +38,8 @@ public interface ApiComponent {
     void inject(ShowMyPostsPresenter showMyPostsPresenter);
 
     void inject(ShowMyLikesPresenter showMyLikesPresenter);
+
+    void inject(CommentsScreenPresenter commentsScreenPresenter);
 
     void inject(ShowGripeDetailPresenter showGripeDetailPresenter);
 }

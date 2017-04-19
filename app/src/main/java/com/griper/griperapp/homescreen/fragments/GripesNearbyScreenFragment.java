@@ -13,9 +13,11 @@ import android.view.ViewGroup;
 import com.griper.griperapp.BaseActivity;
 import com.griper.griperapp.R;
 import com.griper.griperapp.getstarted.activities.FacebookLoginActivity;
+import com.griper.griperapp.homescreen.activities.CommentsActivity;
 import com.griper.griperapp.homescreen.adapters.FeedItemAnimator;
 import com.griper.griperapp.homescreen.adapters.GripesFeedAdapter;
 import com.griper.griperapp.homescreen.interfaces.GripesNearbyScreenContract;
+import com.griper.griperapp.homescreen.models.CommentsUpdateModel;
 import com.griper.griperapp.homescreen.models.GripesDataModel;
 import com.griper.griperapp.homescreen.models.GripesMetaDataModel;
 import com.griper.griperapp.homescreen.presenters.GripesNearbyScreenPresenter;
@@ -77,10 +79,18 @@ public class GripesNearbyScreenFragment extends Fragment implements GripesNearby
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        if (CommentsUpdateModel.getCommentIsPosted()) {
+            init();
+            CommentsUpdateModel.setCommentIsPosted(false);
+        }
+    }
+
+    @Override
     public void init() {
         gripesNearbyPresenter = new GripesNearbyScreenPresenter(this);
         ((BaseActivity) getActivity()).getApiComponent().inject((GripesNearbyScreenPresenter) gripesNearbyPresenter);
-
         gripesFeedAdapter = new GripesFeedAdapter(getActivity(), gripesModelList, gripesNearbyPresenter);
 //        gripesFeedAdapter.setHasStableIds(true);
         linearLayoutManager = new LinearLayoutManager(getActivity());
@@ -196,6 +206,14 @@ public class GripesNearbyScreenFragment extends Fragment implements GripesNearby
         likesListener.syncLikesUpdate(position, gripesModelList.size(), likeCount, incrementLikeCount);
         gripesNearbyPresenter.callUpdateLikesApi(gripesModelList.get(position).getGripeId(), incrementLikeCount);
 
+    }
+
+    @Override
+    public void onCommentsClick(int position) {
+        Intent intent = new Intent(getActivity(), CommentsActivity.class);
+        intent.putExtra(CommentsActivity.GRIPE_ID, gripesModelList.get(position).getGripeId());
+        startActivity(intent);
+        getActivity().overridePendingTransition(0, 0);
     }
 
     public void setOnItemUpdateListener(UpdateItemListener updateListener) {
