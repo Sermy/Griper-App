@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -36,6 +37,7 @@ import com.transitionseverywhere.TransitionManager;
 
 import java.io.File;
 
+import me.relex.circleindicator.CircleIndicator;
 import timber.log.Timber;
 
 /**
@@ -78,10 +80,15 @@ public class PreviewActivity extends BaseActivity implements View.OnClickListene
     AppEditText etDescription;
     AppButton buttonGripe;
     AppTextView tvGripeLocation;
+    ImageView ivAddImages;
 
     LinearLayout progressBar;
     SlidingUpPanelLayout mLayout;
     ViewGroup layoutDrag;
+
+    ViewPager viewPager;
+    PreviewImagesPagerAdapter pagerAdapter = null;
+    CircleIndicator indicator;
 
     private AddGripeContract.Presenter presenter;
 
@@ -212,7 +219,7 @@ public class PreviewActivity extends BaseActivity implements View.OnClickListene
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_preview);
         init();
-        photoPreviewContainer = (FrameLayout) findViewById(R.id.photo_preview_container);
+//        photoPreviewContainer = (FrameLayout) findViewById(R.id.photo_preview_container);
         View reTakeMedia = findViewById(R.id.re_take_media);
         mLayout = (SlidingUpPanelLayout) findViewById(R.id.panelLayout);
         mLayout.addPanelSlideListener(this);
@@ -229,6 +236,9 @@ public class PreviewActivity extends BaseActivity implements View.OnClickListene
         griperOtherLayout = (RelativeLayout) findViewById(R.id.griperOther);
         buttonGripe = (AppButton) findViewById(R.id.gripeButton);
         tvGripeLocation = (AppTextView) findViewById(R.id.gripeLocation);
+        ivAddImages = (ImageView) findViewById(R.id.add_images);
+        viewPager = (ViewPager) findViewById(R.id.viewPagerPhotos);
+        indicator = (CircleIndicator) findViewById(R.id.indicator);
 
         UserProfileData userProfileData = UserProfileData.getUserData();
         if (UserPreferencesData.getUserPreferencesData().getLastKnownAddress() != null) {
@@ -242,7 +252,7 @@ public class PreviewActivity extends BaseActivity implements View.OnClickListene
         griperLitterLayout.setOnClickListener(this);
         griperRoadLayout.setOnClickListener(this);
         buttonGripe.setOnClickListener(this);
-
+        ivAddImages.setOnClickListener(this);
 
         if (reTakeMedia != null)
             reTakeMedia.setOnClickListener(this);
@@ -252,14 +262,43 @@ public class PreviewActivity extends BaseActivity implements View.OnClickListene
         mediaAction = args.getInt(MEDIA_ACTION_ARG);
         previewFilePath = args.getString(FILE_PATH_ARG);
         Log.i("PreviewPath", previewFilePath);
-        if (mediaAction == CamConfiguration.MEDIA_ACTION_PHOTO) {
-            displayImage();
-        } else {
-            String mimeType = Utils.getMimeType(previewFilePath);
-            if (mimeType.contains(MIME_TYPE_IMAGE)) {
-                displayImage();
-            } else finish();
+        ImagePreviewList.previewImagesList.add(previewFilePath);
+        if (ImagePreviewList.previewImagesList.size() > 2) {
+            ivAddImages.setVisibility(View.GONE);
         }
+//        if (mediaAction == CamConfiguration.MEDIA_ACTION_PHOTO) {
+//            displayImage();
+//        } else {
+//            String mimeType = Utils.getMimeType(previewFilePath);
+//            if (mimeType.contains(MIME_TYPE_IMAGE)) {
+//                displayImage();
+//            } else finish();
+//        }
+        pagerAdapter = new PreviewImagesPagerAdapter(this, ImagePreviewList.previewImagesList);
+        viewPager.setAdapter(pagerAdapter);
+        indicator.setViewPager(viewPager);
+        if (ImagePreviewList.previewImagesList.size() == 1) {
+            indicator.setVisibility(View.GONE);
+        } else {
+            indicator.setVisibility(View.VISIBLE);
+        }
+        pagerAdapter.registerDataSetObserver(indicator.getDataSetObserver());
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
     }
 
     @Override
@@ -302,7 +341,9 @@ public class PreviewActivity extends BaseActivity implements View.OnClickListene
     @Override
     public void onClick(View view) {
         Intent resultIntent = new Intent();
-        if (view.getId() == R.id.confirm_media_result) {
+        if (view.getId() == R.id.add_images) {
+            super.onBackPressed();
+        } else if (view.getId() == R.id.confirm_media_result) {
             resultIntent.putExtra(RESPONSE_CODE_ARG, BaseCamActivity.ACTION_CONFIRM).putExtra(FILE_PATH_ARG, previewFilePath);
         } else if (view.getId() == R.id.re_take_media) {
             onBackPressed();
@@ -345,7 +386,7 @@ public class PreviewActivity extends BaseActivity implements View.OnClickListene
                     AddGripeRequestParser requestParser = new AddGripeRequestParser(userProfileData.getEmail(), etTitle.getText().toString(),
                             etDescription.getText().toString(), categoryGripes, UserPreferencesData.getUserPreferencesData().getLastKnownLatitude(), UserPreferencesData.getUserPreferencesData().getLastKnownLongitude(),
                             UserPreferencesData.getUserPreferencesData().getLastKnownAddress(), UserPreferencesData.getUserPreferencesData().getPostCode());
-                    presenter.callAddGripeApi(previewFilePath, requestParser);
+                    presenter.callAddGripeApi(ImagePreviewList.previewImagesList.get(0), requestParser);
                 } else {
                     Timber.e("UserProfileData null");
                 }
@@ -374,6 +415,7 @@ public class PreviewActivity extends BaseActivity implements View.OnClickListene
 
     private boolean deleteMediaFile() {
         File mediaFile = new File(previewFilePath);
+        ImagePreviewList.removeAll();
         return mediaFile.delete();
     }
 

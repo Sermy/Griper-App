@@ -6,6 +6,8 @@ import android.content.Context;
 import android.os.Build;
 import android.view.TextureView;
 
+import timber.log.Timber;
+
 /**
  * Created by Sarthak on 26-02-2017
  */
@@ -37,22 +39,25 @@ public class AutoFitTextureView extends TextureView {
         }
         ratioWidth = width;
         ratioHeight = height;
-
         requestLayout();
     }
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        setAspectRatio(16, 9);
         final int width = resolveSize(getSuggestedMinimumWidth(), widthMeasureSpec);
         final int height = resolveSize(getSuggestedMinimumHeight(), heightMeasureSpec);
 
         if (0 == ratioWidth || 0 == ratioHeight) {
             setMeasuredDimension(width, height);
         } else {
+            Timber.i("RatioWidthHeight");
             if (width < height * (ratioWidth / (float) ratioHeight)) {
                 setMeasuredDimension(width, (int) (width * (ratioWidth / (float) ratioHeight)));
+//                setMeasuredDimension(width, height);
             } else {
                 setMeasuredDimension((int) (height * (ratioWidth / (float) ratioHeight)), height);
+//                setMeasuredDimension(width, height);
             }
         }
     }

@@ -24,11 +24,12 @@
             android:layout_height="match_parent"
             android:background="#000000">
 
-            <FrameLayout
-                android:id="@+id/photo_preview_container"
+            <android.support.v4.view.ViewPager
+                android:id="@+id/viewPagerPhotos"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_alignParentTop="true" />
+                android:clipToPadding="false" />
+
 
             <ImageView
                 android:id="@+id/re_take_media"
@@ -40,6 +41,23 @@
                 android:layout_margin="10dp"
                 android:padding="7dp"
                 android:src="@drawable/ic_clear_white_24dp" />
+
+            <me.relex.circleindicator.CircleIndicator
+                android:id="@+id/indicator"
+                android:layout_width="@dimen/dimen_100dp"
+                android:layout_height="56dp"
+                android:layout_centerHorizontal="true" />
+
+            <ImageView
+                android:id="@+id/add_images"
+                style="@style/PreviewButtonsStyle"
+                android:layout_width="@dimen/dimen_38dp"
+                android:layout_height="@dimen/dimen_38dp"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_margin="@dimen/dimen_10dp"
+                android:padding="@dimen/dimen_7dp"
+                android:src="@drawable/ic_action_name" />
 
             <LinearLayout
                 android:id="@+id/preview_control_panel"

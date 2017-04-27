@@ -67,7 +67,8 @@ public class FlashSwitchView extends ImageButton {
     }
 
     private void init() {
-        setBackgroundColor(Color.TRANSPARENT);
+//        setBackgroundResource(R.drawable.circle_frame_background_dark);
+        setBackgroundResource(R.drawable.circle_frame_stroke_background);
         setOnClickListener(new FlashButtonClickListener());
         setIcon();
     }

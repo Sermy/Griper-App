@@ -4,6 +4,8 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.FrameLayout;
 
+import timber.log.Timber;
+
 /**
  * Layout that adjusts to maintain a specific aspect ratio.
  */
@@ -34,7 +36,7 @@ public class AspectFrameLayout extends FrameLayout {
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-
+        setAspectRatio(16 / 9);
         if (targetAspectRatio > 0) {
             int initialWidth = MeasureSpec.getSize(widthMeasureSpec);
             int initialHeight = MeasureSpec.getSize(heightMeasureSpec);
@@ -51,13 +53,13 @@ public class AspectFrameLayout extends FrameLayout {
             if (Math.abs(aspectDifference) < 0.01) {
                 //no changes
             } else {
-                if (aspectDifference > 0) {
-                    initialHeight = (int) (initialWidth / targetAspectRatio);
-                } else {
-                    initialWidth = (int) (initialHeight * targetAspectRatio);
-                }
+//                if (aspectDifference > 0) {
+//                    initialHeight = (int) (initialWidth / targetAspectRatio);
+//                } else {
+//                    initialWidth = (int) (initialHeight * targetAspectRatio);
+//                }
                 initialWidth += horizontalPadding;
-                initialHeight -= verticalPadding;
+                initialHeight += verticalPadding;
                 widthMeasureSpec = MeasureSpec.makeMeasureSpec(initialWidth, MeasureSpec.EXACTLY);
                 heightMeasureSpec = MeasureSpec.makeMeasureSpec(initialHeight, MeasureSpec.EXACTLY);
             }

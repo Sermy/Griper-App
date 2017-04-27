@@ -6,6 +6,8 @@ import android.support.annotation.NonNull;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
+import timber.log.Timber;
+
 /**
  * Created by Sarthak on 26-02-2017
  */
@@ -43,11 +45,13 @@ public class AutoFitSurfaceView extends SurfaceView {
         }
         ratioWidth = width;
         ratioHeight = height;
+        Timber.i("WIDTH: " + ratioWidth + " HEIGHT: " + ratioHeight);
         requestLayout();
     }
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        setAspectRatio(16, 9);
         final int width = resolveSize(getSuggestedMinimumWidth(), widthMeasureSpec);
         final int height = resolveSize(getSuggestedMinimumHeight(), heightMeasureSpec);
 
@@ -56,8 +60,10 @@ public class AutoFitSurfaceView extends SurfaceView {
         } else {
             if (width < height * (ratioWidth / (float) ratioHeight)) {
                 setMeasuredDimension(width, (int) (width * (ratioWidth / (float) ratioHeight)));
+//                setMeasuredDimension(width, height);
             } else {
                 setMeasuredDimension((int) (height * (ratioWidth / (float) ratioHeight)), height);
+//                setMeasuredDimension(width, height);
             }
         }
     }

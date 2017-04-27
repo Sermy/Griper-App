@@ -71,7 +71,7 @@
         <activity
             android:name=".internal.ui.preview.PreviewActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/FullScreenTheme" />
+            android:theme="@style/FullScreenPreviewTheme" />
         <activity
             android:name=".homescreen.activities.HomeScreenActivity"
             android:screenOrientation="portrait"

@@ -116,6 +116,7 @@ abstract public class CamCameraActivity<CameraId> extends Activity
         previewContainer.addView(preview);
 
         previewContainer.setAspectRatio(previewSize.getHeight() / (double) previewSize.getWidth());
+//        previewContainer.setAspectRatio(16 / 9);
     }
 
     @Override

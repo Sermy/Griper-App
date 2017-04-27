@@ -69,7 +69,8 @@ public class CameraSwitchView extends AppCompatImageButton {
         DrawableCompat.setTintList(rearCameraDrawable.mutate(), ContextCompat.getColorStateList(context, R.drawable.switch_camera_mode_selector));
 
 //        setBackgroundResource(R.drawable.circle_frame_background_dark);
-        setBackgroundColor(Color.TRANSPARENT);
+        setBackgroundResource(R.drawable.circle_frame_transparent_stroke_bg);
+//        setBackgroundColor(Color.TRANSPARENT);
         setOnClickListener(new CameraTypeClickListener());
         setIcons();
         padding = Utils.convertDipToPixels(context, padding);

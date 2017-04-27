@@ -46,6 +46,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
+import timber.log.Timber;
+
 /**
  * Created by Sarthak on 26-02-2017
  */
@@ -214,6 +216,7 @@ public final class Camera2Manager extends BaseCameraManager<String, TextureView.
                     }
                     return;
                 }
+                Timber.i("openCamera2");
                 prepareCameraOutputs();
                 try {
                     manager.openCamera(currentCameraId, stateCallback, backgroundHandler);
@@ -531,7 +534,8 @@ public final class Camera2Manager extends BaseCameraManager<String, TextureView.
             imageReader = ImageReader.newInstance(photoSize.getWidth(), photoSize.getHeight(),
                     ImageFormat.JPEG, 2);
             imageReader.setOnImageAvailableListener(this, backgroundHandler);
-
+            Timber.i("Window : Height, Width | " + windowSize.getHeight() + " " + windowSize.getWidth());
+            Timber.i("Photo : Height, Width | " + photoSize.getHeight() + " " + photoSize.getWidth());
             if (configurationProvider.getMediaAction() == CamConfiguration.MEDIA_ACTION_PHOTO
                     || configurationProvider.getMediaAction() == CamConfiguration.MEDIA_ACTION_UNSPECIFIED) {
 

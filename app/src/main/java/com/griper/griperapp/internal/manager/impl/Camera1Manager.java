@@ -26,6 +26,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
 
+import timber.log.Timber;
+
 /**
  * Created by Sarthak on 26-02-2017
  */
@@ -67,6 +69,7 @@ public class Camera1Manager extends BaseCameraManager<Integer, SurfaceHolder.Cal
             public void run() {
                 try {
                     camera = Camera.open(cameraId);
+                    Timber.i("openCamera1");
                     prepareCameraOutputs();
                     if (cameraOpenListener != null) {
                         uiHandler.post(new Runnable() {
@@ -224,6 +227,7 @@ public class Camera1Manager extends BaseCameraManager<Integer, SurfaceHolder.Cal
 
             List<Size> previewSizes = Size.fromList(camera.getParameters().getSupportedPreviewSizes());
             List<Size> pictureSizes = Size.fromList(camera.getParameters().getSupportedPictureSizes());
+            Timber.i("Preview | PictureSize: " + previewSizes.get(0).getHeight() + "," + previewSizes.get(0).getWidth() + " | " + pictureSizes.get(0).getHeight() + "," + pictureSizes.get(0).getWidth());
             List<Size> videoSizes;
             if (Build.VERSION.SDK_INT > 10)
                 videoSizes = Size.fromList(camera.getParameters().getSupportedVideoSizes());
@@ -233,13 +237,16 @@ public class Camera1Manager extends BaseCameraManager<Integer, SurfaceHolder.Cal
                     (videoSizes == null || videoSizes.isEmpty()) ? previewSizes : videoSizes,
                     camcorderProfile.videoFrameWidth, camcorderProfile.videoFrameHeight);
 
-            photoSize = CameraHelper.getPictureSize(
-                    (pictureSizes == null || pictureSizes.isEmpty()) ? previewSizes : pictureSizes,
-                    configurationProvider.getMediaQuality() == CamConfiguration.MEDIA_QUALITY_AUTO
-                            ? CamConfiguration.MEDIA_QUALITY_HIGHEST : configurationProvider.getMediaQuality());
-
+//            photoSize = CameraHelper.getPictureSize(
+//                    (pictureSizes == null || pictureSizes.isEmpty()) ? previewSizes : pictureSizes,
+//                    configurationProvider.getMediaQuality() == CamConfiguration.MEDIA_QUALITY_AUTO
+//                            ? CamConfiguration.MEDIA_QUALITY_HIGHEST : configurationProvider.getMediaQuality());
+//            photoSize = CameraHelper.getPictureSize(previewSizes, configurationProvider.getMediaQuality() == CamConfiguration.MEDIA_QUALITY_AUTO
+//                    ? CamConfiguration.MEDIA_QUALITY_HIGHEST : configurationProvider.getMediaQuality());
+            photoSize = previewSizes.get(0);
             if (configurationProvider.getMediaAction() == CamConfiguration.MEDIA_ACTION_PHOTO
                     || configurationProvider.getMediaAction() == CamConfiguration.MEDIA_ACTION_UNSPECIFIED) {
+                Timber.i("PreviewSize : " + photoSize.getHeight() + " , " + photoSize.getWidth());
                 previewSize = CameraHelper.getSizeWithClosestRatio(previewSizes, photoSize.getWidth(), photoSize.getHeight());
             } else {
                 previewSize = CameraHelper.getSizeWithClosestRatio(previewSizes, videoSize.getWidth(), videoSize.getHeight());

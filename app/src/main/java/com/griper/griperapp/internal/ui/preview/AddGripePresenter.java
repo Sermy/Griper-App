@@ -15,6 +15,9 @@ import com.griper.griperapp.utils.AppConstants;
 import com.griper.griperapp.utils.Utils;
 
 import java.io.File;
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -70,14 +73,37 @@ public class AddGripePresenter implements AddGripeContract.Presenter {
     @Override
     public void callAddGripeApi(String filePath, AddGripeRequestParser requestParser) {
         //Configure Stuff beforing pushing to server
-        Uri newUri = Uri.parse(filePath);
         view.showProgressBar(true);
-        Timber.i("new Uri: " + newUri.toString());
+        MultipartBody.Builder builder = new MultipartBody.Builder();
+        builder.setType(MultipartBody.FORM);
+        MultipartBody requestBody = null;
+        RequestBody requestFile = null;
+        MultipartBody.Part[] imagesParts = new MultipartBody.Part[ImagePreviewList.previewImagesList.size()];
+        Map<String, RequestBody> map = new HashMap<>();
+        if (ImagePreviewList.previewImagesList.size() > 1) {
 
-        Timber.i("new filepath:" + filePath);
-        File newFile = new File(filePath);
-        RequestBody requestFile =
-                RequestBody.create(MediaType.parse("multipart/form-data"), newFile);
+            for (int i = 0; i < ImagePreviewList.previewImagesList.size(); i++) {
+                File file = new File(ImagePreviewList.previewImagesList.get(i));
+                RequestBody fileBody = RequestBody.create(MediaType.parse("multipart/form-data"), file);
+//                builder.addFormDataPart("photo_files", file.getName(), fileBody);
+                imagesParts[i] = MultipartBody.Part.createFormData("photo_files", file.getName(), fileBody);
+                map.put("photo_file\"; filename=\"" + file.getName(), fileBody);
+            }
+//            requestBody = builder.build();
+        } else {
+            Uri newUri = Uri.parse(filePath);
+            Timber.i("new Uri: " + newUri.toString());
+            Timber.i("new filepath:" + filePath);
+            File newFile = new File(filePath);
+            requestFile =
+                    RequestBody.create(MediaType.parse("multipart/form-data"), newFile);
+            imagesParts[0] = MultipartBody.Part.createFormData("photo_files", newFile.getName(), requestFile);
+//            builder.addFormDataPart("photo_files", newFile.getName(), requestFile);
+//            requestBody = builder.build();
+            map.put("photo_file\"; filename=\"" + newFile.getName(), requestFile);
+        }
+
+
         RequestBody category = RequestBody.create(MediaType.parse("text/plain"), Integer.toString(requestParser.getCategory()));
         RequestBody postCode = null;
         RequestBody address = null;
@@ -93,7 +119,7 @@ public class AddGripePresenter implements AddGripeContract.Presenter {
 
         if (userProfileData != null && Utils.isNetworkAvailable(context)) {
 
-            multipartWebServiceInterface.callAddGripe(userProfileData.getEmail(), requestFile, category, title, description, latitude, longitude, address, postCode)
+            multipartWebServiceInterface.callAddGripe(userProfileData.getEmail(), map, category, title, description, latitude, longitude, address, postCode)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .onErrorResumeNext(new Func1<Throwable, Observable<? extends AddGripeResponseParser>>() {
@@ -103,26 +129,26 @@ public class AddGripePresenter implements AddGripeContract.Presenter {
                         }
                     })
                     .subscribe(new Subscriber<AddGripeResponseParser>() {
-                @Override
-                public void onCompleted() {
-                    Timber.i("Completed add gripe api call");
-                }
+                        @Override
+                        public void onCompleted() {
+                            Timber.i("Completed add gripe api call");
+                        }
 
-                @Override
-                public void onError(Throwable e) {
-                    Timber.e(e.getMessage());
-                    onAddGripeApiFailure();
-                }
+                        @Override
+                        public void onError(Throwable e) {
+                            Timber.e(e.getMessage());
+                            onAddGripeApiFailure();
+                        }
 
-                @Override
-                public void onNext(AddGripeResponseParser addGripeResponseParser) {
-                    if (addGripeResponseParser.getState().equals(AppConstants.API_RESPONSE_SUCCESS)) {
-                        onAddGripeApiSuccess(addGripeResponseParser);
-                    } else {
-                        onAddGripeApiFailure();
-                    }
-                }
-            });
+                        @Override
+                        public void onNext(AddGripeResponseParser addGripeResponseParser) {
+                            if (addGripeResponseParser.getState().equals(AppConstants.API_RESPONSE_SUCCESS)) {
+                                onAddGripeApiSuccess(addGripeResponseParser);
+                            } else {
+                                onAddGripeApiFailure();
+                            }
+                        }
+                    });
 
 
         } else {
