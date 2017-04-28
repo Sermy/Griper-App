@@ -199,7 +199,6 @@ public class GripesMapScreenFragment extends Fragment implements GripesMapScreen
         }
         setProgressCircleLayoutVisibility(false);
         setupViewPager();
-
     }
 
     @Override

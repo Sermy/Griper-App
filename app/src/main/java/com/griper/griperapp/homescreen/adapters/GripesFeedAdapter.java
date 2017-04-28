@@ -59,6 +59,7 @@ public class GripesFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     private static final String EXTRA_GRIPE_LAT = "gripe_lat";
     private static final String EXTRA_GRIPE_LON = "gripe_lon";
     private static final String EXTRA_GRIPE_DESCRIPTION = "gripe_description";
+    private static final String EXTRA_GRIPE_IMAGE_COUNT = "gripe_image_count";
     public static final String ACTION_LIKE_BUTTON_CLICKED = "action_like_button_button";
 
     private Context context;
@@ -99,8 +100,8 @@ public class GripesFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         } else {
             int availableWidth = UserPreferencesData.getUserPreferencesData().getGripeFeedImageWidth();
             CloudinaryImageUrl imageUrl = new CloudinaryImageUrl.Builder(
-                    gripesDataModelList.get(position).getImageBaseUrl(), gripesDataModelList.get(position).getImagePublicId(),
-                    availableWidth, availableWidth, gripesDataModelList.get(position).getImagePostFixId())
+                    gripesDataModelList.get(position).getPhotosList().get(0).getImageBaseUrl(), gripesDataModelList.get(position).getPhotosList().get(0).getImagePublicId(),
+                    availableWidth, availableWidth, gripesDataModelList.get(position).getPhotosList().get(0).getImagePostFixId())
                     .cornerRadius(Utils.convertDpToPixel(context,
                             (int) context.getResources().getDimension(R.dimen.dimen_0dp)))
                     .build();
@@ -150,8 +151,8 @@ public class GripesFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                     UserPreferencesData.getUserPreferencesData().setGripeFeedImageHeight(availableWidth);
                     viewHolder.imageCardGripe.getViewTreeObserver().removeOnGlobalLayoutListener(this);
                     CloudinaryImageUrl imageUrl = new CloudinaryImageUrl.Builder(
-                            gripesDataModelList.get(position).getImageBaseUrl(), gripesDataModelList.get(position).getImagePublicId(),
-                            availableWidth, availableWidth, gripesDataModelList.get(position).getImagePostFixId())
+                            gripesDataModelList.get(position).getPhotosList().get(0).getImageBaseUrl(), gripesDataModelList.get(position).getPhotosList().get(0).getImagePublicId(),
+                            availableWidth, availableWidth, gripesDataModelList.get(position).getPhotosList().get(0).getImagePostFixId())
                             .cornerRadius(Utils.convertDpToPixel(context,
                                     (int) context.getResources().getDimension(R.dimen.dimen_0dp)))
                             .build();
@@ -274,11 +275,16 @@ public class GripesFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             intent.putExtra(EXTRA_GRIPE_ADDRESS, gripesDataModelList.get(position).getLocation());
             intent.putExtra(EXTRA_GRIPE_DESCRIPTION, gripesDataModelList.get(position).getDescription());
             intent.putExtra(CommentsActivity.GRIPE_ID, gripesDataModelList.get(position).getGripeId());
-            ArrayList<String> arrayList = new ArrayList<>();
-            arrayList.add(gripesDataModelList.get(position).getImageBaseUrl());
-            arrayList.add(gripesDataModelList.get(position).getImagePublicId());
-            arrayList.add(gripesDataModelList.get(position).getImagePostFixId());
-            intent.putExtra(EXTRA_GRIPE_IMAGE, arrayList);
+
+            for (int i = 0; i < gripesDataModelList.get(position).getPhotosList().size(); i++) {
+                ArrayList<String> arrayList = new ArrayList<>();
+                arrayList.clear();
+                arrayList.add(gripesDataModelList.get(position).getPhotosList().get(i).getImageBaseUrl());
+                arrayList.add(gripesDataModelList.get(position).getPhotosList().get(i).getImagePublicId());
+                arrayList.add(gripesDataModelList.get(position).getPhotosList().get(i).getImagePostFixId());
+                intent.putExtra(EXTRA_GRIPE_IMAGE + "[" + i + "]", arrayList);
+            }
+            intent.putExtra(EXTRA_GRIPE_IMAGE_COUNT, gripesDataModelList.get(position).getPhotosList().size());
             intent.putExtra(EXTRA_GRIPE_LAT, gripesDataModelList.get(position).getLatitude());
             intent.putExtra(EXTRA_GRIPE_LON, gripesDataModelList.get(position).getLongitude());
             context.startActivity(intent);

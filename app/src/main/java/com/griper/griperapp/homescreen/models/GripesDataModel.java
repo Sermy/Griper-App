@@ -1,6 +1,7 @@
 package com.griper.griperapp.homescreen.models;
 
 import java.util.DuplicateFormatFlagsException;
+import java.util.List;
 
 /**
  * Created by Sarthak on 25-03-2017
@@ -14,9 +15,7 @@ public class GripesDataModel {
     private Double latitude;
     private Double longitude;
     private String location;
-    private String imagePublicId;
-    private String imageBaseUrl;
-    private String imagePostFixId;
+    private List<PhotosDataModel> photosList;
     private Integer likeCount;
     private Integer commentCount;
     private boolean isYesPressed = false;
@@ -30,9 +29,7 @@ public class GripesDataModel {
         this.gripeId = gripeId;
         this.title = title;
         this.location = location;
-        this.imagePublicId = imagePublicId;
-        this.imageBaseUrl = imageBaseUrl;
-        this.imagePostFixId = imagePostFixId;
+        this.photosList = photosList;
         this.likeCount = likeCount;
         this.commentCount = commentCount;
     }
@@ -61,28 +58,12 @@ public class GripesDataModel {
         this.location = location;
     }
 
-    public String getImagePublicId() {
-        return imagePublicId;
+    public List<PhotosDataModel> getPhotosList() {
+        return photosList;
     }
 
-    public void setImagePublicId(String imagePublicId) {
-        this.imagePublicId = imagePublicId;
-    }
-
-    public String getImageBaseUrl() {
-        return imageBaseUrl;
-    }
-
-    public void setImageBaseUrl(String imageBaseUrl) {
-        this.imageBaseUrl = imageBaseUrl;
-    }
-
-    public String getImagePostFixId() {
-        return imagePostFixId;
-    }
-
-    public void setImagePostFixId(String imagePostFixId) {
-        this.imagePostFixId = imagePostFixId;
+    public void setPhotosList(List<PhotosDataModel> photosList) {
+        this.photosList = photosList;
     }
 
     public Integer getLikeCount() {

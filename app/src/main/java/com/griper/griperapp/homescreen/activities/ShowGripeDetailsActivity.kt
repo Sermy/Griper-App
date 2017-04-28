@@ -1,16 +1,19 @@
 package com.griper.griperapp.homescreen.activities
 
 import android.Manifest
+import android.app.PendingIntent.getActivity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.support.v4.app.ActivityCompat
+import android.support.v4.view.ViewPager
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewTreeObserver
 import butterknife.ButterKnife
+import butterknife.OnClick
 import com.firebase.ui.database.FirebaseRecyclerAdapter
 import com.google.android.gms.maps.*
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
@@ -22,6 +25,7 @@ import com.griper.griperapp.dbmodels.UserPreferencesData
 import com.griper.griperapp.firebase.adapters.CommentViewHolder
 import com.griper.griperapp.firebase.adapters.CommentsAdapter
 import com.griper.griperapp.firebase.model.CommentDataModel
+import com.griper.griperapp.homescreen.adapters.ImagesShowPagerAdapter
 import com.griper.griperapp.homescreen.interfaces.ShowGripeDetailsScreenContract
 import com.griper.griperapp.utils.CloudinaryImageUrl
 import com.griper.griperapp.utils.Utils
@@ -36,6 +40,23 @@ import java.util.*
 
 class ShowGripeDetailsActivity : SwipeBackActivity(), ShowGripeDetailsScreenContract.View, OnMapReadyCallback {
 
+    override fun showRightAction(visibility: Boolean) {
+        if (visibility) {
+            imageViewRight.visibility = View.VISIBLE
+        } else {
+            imageViewRight.visibility = View.GONE
+        }
+
+    }
+
+    override fun showLeftAction(visibility: Boolean) {
+        if (visibility) {
+            imageViewLeft.setVisibility(View.VISIBLE)
+        } else {
+            imageViewLeft.setVisibility(View.GONE)
+        }
+    }
+
     companion object {
         private val EXTRA_GRIPE_DATA = "gripe_data"
         private val EXTRA_GRIPE_TITLE = "gripe_title"
@@ -45,6 +66,7 @@ class ShowGripeDetailsActivity : SwipeBackActivity(), ShowGripeDetailsScreenCont
         private val EXTRA_GRIPE_LON = "gripe_lon"
         private val EXTRA_GRIPE_DESCRIPTION = "gripe_description"
         private val EXTRA_GRIPE_ID = "gripe_id"
+        private val EXTRA_GRIPE_IMAGE_COUNT = "gripe_image_count"
     }
 
     private var gripeId: String? = null
@@ -53,10 +75,16 @@ class ShowGripeDetailsActivity : SwipeBackActivity(), ShowGripeDetailsScreenCont
     private var gripeDescription: String? = null
     private var gripeLocation: ArrayList<Double> = ArrayList()
     private var gripeImage: ArrayList<String> = ArrayList()
+    private var gripeImage2: ArrayList<String> = ArrayList()
+    private var gripeImage3: ArrayList<String> = ArrayList()
+    private var transformedUrlList: ArrayList<String> = ArrayList()
+    private var imageCount: Int? = 0
+    private var showPhotoGalleryPagerAdapter: ImagesShowPagerAdapter? = null
     private var mFirebaseDatabaseReference: DatabaseReference? = null
     private var firebaseAdapter: FirebaseRecyclerAdapter<CommentDataModel, CommentViewHolder>? = null
     internal var linearLayoutManager: LinearLayoutManager? = null
     internal var queryRef: Query? = null
+
 
     override fun init() {
         setSupportActionBar(toolbarGripe)
@@ -65,13 +93,22 @@ class ShowGripeDetailsActivity : SwipeBackActivity(), ShowGripeDetailsScreenCont
         supportActionBar!!.setHomeButtonEnabled(false)
         val mapFragment = fragmentManager.findFragmentById(R.id.map) as MapFragment
         mapFragment.getMapAsync(this)
-
+        ButterKnife.bind(this)
         if (intent.extras != null) {
             gripeTitle = intent.extras.getString(EXTRA_GRIPE_TITLE)
             gripeAddress = intent.extras.getString(EXTRA_GRIPE_ADDRESS)
             gripeLocation.add(intent.extras.getDouble(EXTRA_GRIPE_LAT))
             gripeLocation.add(intent.extras.getDouble(EXTRA_GRIPE_LON))
-            gripeImage = intent.extras.getStringArrayList(EXTRA_GRIPE_IMAGE)
+            imageCount = intent.extras.getInt(EXTRA_GRIPE_IMAGE_COUNT)
+            for (i in 0..(imageCount!! - 1)) {
+                if (i == 0) {
+                    gripeImage = intent.extras.getStringArrayList(EXTRA_GRIPE_IMAGE + "[0]")
+                } else if (i == 1) {
+                    gripeImage2 = intent.extras.getStringArrayList(EXTRA_GRIPE_IMAGE + "[1]")
+                } else {
+                    gripeImage3 = intent.extras.getStringArrayList(EXTRA_GRIPE_IMAGE + "[2]")
+                }
+            }
             gripeId = intent.extras.getString(EXTRA_GRIPE_ID)
             gripeDescription = intent.extras.getString(EXTRA_GRIPE_DESCRIPTION)
             textToolbarGripe.setText(gripeTitle)
@@ -82,14 +119,58 @@ class ShowGripeDetailsActivity : SwipeBackActivity(), ShowGripeDetailsScreenCont
         }
     }
 
+    fun setUpViewPager() {
+        loadImageDetailGripe.smoothToHide()
+        showPhotoGalleryPagerAdapter = ImagesShowPagerAdapter(this, transformedUrlList)
+        viewPagerGallery.adapter = showPhotoGalleryPagerAdapter
+        if (transformedUrlList.size == 1) {
+            showLeftAction(false)
+            showRightAction(false)
+        } else {
+            showLeftAction(false)
+            showRightAction(true)
+        }
+
+        viewPagerGallery.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+            override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {}
+
+            override fun onPageSelected(position: Int) {
+
+                if (transformedUrlList.size > 1)
+                    for (i in transformedUrlList.indices)
+                        if (position == 0) {
+                            showLeftAction(false)
+                            showRightAction(true)
+                        } else if (position == transformedUrlList.size - 1) {
+                            showRightAction(false)
+                            showLeftAction(true)
+                        } else {
+                            showLeftAction(true)
+                            showRightAction(true)
+                        }
+            }
+
+            override fun onPageScrollStateChanged(state: Int) {}
+        })
+
+        imageViewLeft.setOnClickListener(View.OnClickListener {
+            viewPagerGallery.currentItem = viewPagerGallery.currentItem - 1
+        })
+
+        imageViewRight.setOnClickListener(View.OnClickListener {
+            viewPagerGallery.currentItem = viewPagerGallery.currentItem + 1
+        })
+
+    }
+
     override fun setGripeImage() {
         val preferencesData = UserPreferencesData.getUserPreferencesData()
         if (preferencesData.gripeLargeImageHeight == 0 && preferencesData.gripeLargeImageWidth == 0) {
-            imageDetailGripe.viewTreeObserver.addOnGlobalLayoutListener(
+            viewPagerGallery.viewTreeObserver.addOnGlobalLayoutListener(
                     object : ViewTreeObserver.OnGlobalLayoutListener {
                         override fun onGlobalLayout() {
-                            val availableHeight = imageDetailGripe.measuredHeight
-                            val availableWidth = imageDetailGripe.measuredWidth
+                            val availableHeight = viewPagerGallery.measuredHeight
+                            val availableWidth = viewPagerGallery.measuredWidth
                             // Saving to local database
                             preferencesData.gripeLargeImageHeight = availableHeight
                             preferencesData.gripeLargeImageWidth = availableWidth
@@ -103,16 +184,36 @@ class ShowGripeDetailsActivity : SwipeBackActivity(), ShowGripeDetailsScreenCont
                                     val transformedImageUrl = imageUrl.transformedImageUrl
                                     if (transformedImageUrl != null) {
                                         loadImageDetailGripe.smoothToShow()
-                                        Picasso.with(baseContext).load(transformedImageUrl)
-                                                .into(imageDetailGripe, object : Callback {
-                                                    override fun onSuccess() {
-                                                        loadImageDetailGripe.smoothToHide()
-                                                    }
-
-                                                    override fun onError() {
-
-                                                    }
-                                                })
+                                        transformedUrlList.add(transformedImageUrl)
+                                        for (i in 0..(imageCount!! - 1)) {
+                                            if (i == 0) {
+                                                continue
+                                            } else if (i == 1) {
+                                                val imgUrl = CloudinaryImageUrl.Builder(gripeImage2.get(0), gripeImage2.get(1),
+                                                        availableWidth, availableHeight, gripeImage2.get(2)).build()
+                                                if (imgUrl != null) {
+                                                    val transformedImgUrl = imgUrl.transformedImageUrl
+                                                    transformedUrlList.add(transformedImgUrl)
+                                                }
+                                            } else {
+                                                val img_url = CloudinaryImageUrl.Builder(gripeImage3.get(0), gripeImage3.get(1),
+                                                        availableWidth, availableHeight, gripeImage3.get(2)).build()
+                                                if (img_url != null) {
+                                                    val transformedImgUrl = img_url.transformedImageUrl
+                                                    transformedUrlList.add(transformedImgUrl)
+                                                }
+                                            }
+                                        }
+//                                        Picasso.with(baseContext).load(transformedImageUrl)
+//                                                .into(imageDetailGripe, object : Callback {
+//                                                    override fun onSuccess() {
+//                                                        loadImageDetailGripe.smoothToHide()
+//                                                    }
+//
+//                                                    override fun onError() {
+//
+//                                                    }
+//                                                })
                                     }
                                 }
                             }
@@ -122,24 +223,34 @@ class ShowGripeDetailsActivity : SwipeBackActivity(), ShowGripeDetailsScreenCont
         } else {
             val imageUrl = CloudinaryImageUrl.Builder(gripeImage.get(0), gripeImage.get(1),
                     preferencesData.gripeLargeImageWidth, preferencesData.gripeLargeImageHeight, gripeImage.get(2)).build()
-
             if (imageUrl != null) {
                 val transformedImageUrl = imageUrl.transformedImageUrl
                 if (transformedImageUrl != null) {
                     loadImageDetailGripe.smoothToShow()
-                    Picasso.with(baseContext).load(transformedImageUrl)
-                            .into(imageDetailGripe, object : Callback {
-                                override fun onSuccess() {
-                                    loadImageDetailGripe.smoothToHide()
-                                }
-
-                                override fun onError() {
-
-                                }
-                            })
+                    transformedUrlList.add(transformedImageUrl)
+                    for (i in 0..(imageCount!! - 1)) {
+                        if (i == 0) {
+                            continue
+                        } else if (i == 1) {
+                            val imgUrl = CloudinaryImageUrl.Builder(gripeImage2.get(0), gripeImage2.get(1),
+                                    preferencesData.gripeLargeImageWidth, preferencesData.gripeLargeImageHeight, gripeImage2.get(2)).build()
+                            if (imgUrl != null) {
+                                val transformedImgUrl = imgUrl.transformedImageUrl
+                                transformedUrlList.add(transformedImgUrl)
+                            }
+                        } else {
+                            val imgUrl = CloudinaryImageUrl.Builder(gripeImage3.get(0), gripeImage3.get(1),
+                                    preferencesData.gripeLargeImageWidth, preferencesData.gripeLargeImageHeight, gripeImage3.get(2)).build()
+                            if (imgUrl != null) {
+                                val transformedImgUrl = imgUrl.transformedImageUrl
+                                transformedUrlList.add(transformedImgUrl)
+                            }
+                        }
+                    }
                 }
             }
         }
+        setUpViewPager()
     }
 
     override fun setUpRecyclerViewFirebase() {
@@ -192,7 +303,6 @@ class ShowGripeDetailsActivity : SwipeBackActivity(), ShowGripeDetailsScreenCont
         p0?.addMarker(MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.drawable.map_pin_red)).
                 position(LatLng(gripeLocation[0], gripeLocation[1])))
     }
-
 
     override fun onBackPressed() {
         finish()

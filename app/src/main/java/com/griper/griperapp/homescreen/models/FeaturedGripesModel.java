@@ -5,6 +5,9 @@ import android.os.Parcelable;
 
 import com.griper.griperapp.homescreen.parsers.GripesMapResponseParser;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by Sarthak on 17-03-2017
  */
@@ -21,10 +24,10 @@ public class FeaturedGripesModel implements Parcelable {
     private String title;
     private String category;
     private String createdAt;
-    private String imageUrl;
+    private List<String> imageUrlList;
     private String baseUrl;
-    private String baseUrlPostFix;
-    private String imagePublicId;
+    private List<String> baseUrlPostFixList;
+    private List<String> imagePublicIdList;
     private Boolean isFixed;
     private Boolean isLiked;
     private int likeCount;
@@ -41,10 +44,13 @@ public class FeaturedGripesModel implements Parcelable {
         this.category = in.readString();
         this.createdAt = in.readString();
         this.createdBy = in.readString();
-        this.imageUrl = in.readString();
+//        this.imageUrlList = in.createStringArrayList();
+        in.readList(imageUrlList, FeaturedGripesModel.class.getClassLoader());
         this.baseUrl = in.readString();
-        this.baseUrlPostFix = in.readString();
-        this.imagePublicId = in.readString();
+//        this.baseUrlPostFixList = in.createStringArrayList();
+//        this.imagePublicIdList = in.createStringArrayList();
+        in.readList(baseUrlPostFixList, FeaturedGripesModel.class.getClassLoader());
+        in.readList(imagePublicIdList, FeaturedGripesModel.class.getClassLoader());
         this.isFixed = in.readInt() == 1;
         this.isLiked = in.readInt() == 1;
         this.likeCount = in.readInt();
@@ -62,10 +68,15 @@ public class FeaturedGripesModel implements Parcelable {
         desciption = responseParser.getDescription();
         title = responseParser.getTitle();
         category = responseParser.getCategory();
-        imageUrl = responseParser.getPhoto().getImageUrl();
+        imageUrlList = new ArrayList<>();
+        baseUrlPostFixList = new ArrayList<>();
+        imagePublicIdList = new ArrayList<>();
+        for (int i = 0; i < responseParser.getGripePhotos().size(); i++) {
+            imageUrlList.add(responseParser.getGripePhotos().get(i).getImageUrl());
+            baseUrlPostFixList.add(responseParser.getGripePhotos().get(i).getVersion());
+            imagePublicIdList.add(responseParser.getGripePhotos().get(i).getPublicId());
+        }
         baseUrl = responseParser.getMeta().getPublicHost();
-        baseUrlPostFix = responseParser.getPhoto().getVersion();
-        imagePublicId = responseParser.getPhoto().getPublicId();
         isFixed = responseParser.getIsFixed();
         isLiked = responseParser.getLiked();
         likeCount = responseParser.getLikeCount();
@@ -102,10 +113,13 @@ public class FeaturedGripesModel implements Parcelable {
         parcel.writeString(this.createdBy);
         parcel.writeString(this.createdAt);
         parcel.writeString(this.category);
-        parcel.writeString(this.imageUrl);
+//        parcel.writeStringList(this.imageUrlList);
+        parcel.writeList(this.imageUrlList);
         parcel.writeString(this.baseUrl);
-        parcel.writeString(this.baseUrlPostFix);
-        parcel.writeString(this.imagePublicId);
+//        parcel.writeStringList(this.baseUrlPostFixList);
+//        parcel.writeStringList(this.imagePublicIdList);
+        parcel.writeList(this.baseUrlPostFixList);
+        parcel.writeList(this.imagePublicIdList);
         parcel.writeInt(isFixed ? 1 : 0);
         parcel.writeInt(isLiked ? 1 : 0);
         parcel.writeInt(likeCount);
@@ -192,14 +206,6 @@ public class FeaturedGripesModel implements Parcelable {
         this.createdAt = createdAt;
     }
 
-    public String getImageUrl() {
-        return imageUrl;
-    }
-
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
-    }
-
     public String getBaseUrl() {
         return baseUrl;
     }
@@ -208,20 +214,28 @@ public class FeaturedGripesModel implements Parcelable {
         this.baseUrl = baseUrl;
     }
 
-    public String getBaseUrlPostFix() {
-        return baseUrlPostFix;
+    public List<String> getImageUrlList() {
+        return imageUrlList;
     }
 
-    public void setBaseUrlPostFix(String baseUrlPostFix) {
-        this.baseUrlPostFix = baseUrlPostFix;
+    public void setImageUrlList(List<String> imageUrlList) {
+        this.imageUrlList = imageUrlList;
     }
 
-    public String getImagePublicId() {
-        return imagePublicId;
+    public List<String> getBaseUrlPostFixList() {
+        return baseUrlPostFixList;
     }
 
-    public void setImagePublicId(String imagePublicId) {
-        this.imagePublicId = imagePublicId;
+    public void setBaseUrlPostFixList(List<String> baseUrlPostFixList) {
+        this.baseUrlPostFixList = baseUrlPostFixList;
+    }
+
+    public List<String> getImagePublicIdList() {
+        return imagePublicIdList;
+    }
+
+    public void setImagePublicIdList(List<String> imagePublicIdList) {
+        this.imagePublicIdList = imagePublicIdList;
     }
 
     public Boolean getFixed() {

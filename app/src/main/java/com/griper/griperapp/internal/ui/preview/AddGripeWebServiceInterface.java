@@ -28,6 +28,6 @@ public interface AddGripeWebServiceInterface {
 
 }
 
-//@Part("photo_file\"; filename=\"pp.jpg") RequestBody file         MultipartBody.Part[] files
+//@Part("photo_file\"; filename=\"pp.jpg") RequestBody file
 
 

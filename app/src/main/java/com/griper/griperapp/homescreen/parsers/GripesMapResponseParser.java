@@ -48,9 +48,9 @@ public class GripesMapResponseParser {
     @SerializedName("__v")
     @Expose
     private Integer v;
-    @SerializedName("photo")
+    @SerializedName("gripePhotos")
     @Expose
-    private GripesMapPhotoResponseParser photo;
+    private List<GripesMapPhotoResponseParser> gripePhotos;
     @SerializedName("_meta")
     @Expose
     private GripesMapMetaResponseParser meta;
@@ -141,12 +141,12 @@ public class GripesMapResponseParser {
         this.v = v;
     }
 
-    public GripesMapPhotoResponseParser getPhoto() {
-        return photo;
+    public List<GripesMapPhotoResponseParser> getGripePhotos() {
+        return gripePhotos;
     }
 
-    public void setPhoto(GripesMapPhotoResponseParser photo) {
-        this.photo = photo;
+    public void setGripePhotos(List<GripesMapPhotoResponseParser> gripePhotos) {
+        this.gripePhotos = gripePhotos;
     }
 
     public GripesMapMetaResponseParser getMeta() {
@@ -196,4 +196,6 @@ public class GripesMapResponseParser {
     public void setFixed(Boolean fixed) {
         isFixed = fixed;
     }
+
+
 }

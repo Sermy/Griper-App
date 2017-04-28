@@ -9,10 +9,13 @@ import com.griper.griperapp.homescreen.interfaces.ShowMyPostsContract;
 import com.griper.griperapp.homescreen.models.GripesDataModel;
 import com.griper.griperapp.homescreen.models.GripesMetaDataModel;
 import com.griper.griperapp.homescreen.models.MyPostsMetaDataModel;
+import com.griper.griperapp.homescreen.models.PhotosDataModel;
+import com.griper.griperapp.homescreen.parsers.GripesMapPhotoResponseParser;
 import com.griper.griperapp.homescreen.parsers.GripesNearbyResponseParser;
 import com.griper.griperapp.utils.Utils;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -92,9 +95,15 @@ public class ShowMyPostsPresenter implements ShowMyPostsContract.Presenter {
             dataModel.setGripeId(responseParser.getItems().get(i).getId());
             dataModel.setTitle(responseParser.getItems().get(i).getTitle());
             dataModel.setLocation(responseParser.getItems().get(i).getAddress());
-            dataModel.setImageBaseUrl(responseParser.getItems().get(i).getMeta().getPublicHost());
-            dataModel.setImagePublicId(responseParser.getItems().get(i).getPhoto().getPublicId());
-            dataModel.setImagePostFixId(responseParser.getItems().get(i).getPhoto().getVersion());
+            List<PhotosDataModel> photosDataModels = new ArrayList<>();
+            List<GripesMapPhotoResponseParser> listPhotos = responseParser.getItems().get(i).getGripePhotos();
+            for (int j = 0; j < responseParser.getItems().get(i).getGripePhotos().size(); j++) {
+                PhotosDataModel model = new PhotosDataModel(listPhotos.get(j).getPublicId(),
+                        responseParser.getItems().get(i).getMeta().getPublicHost(),
+                        listPhotos.get(j).getVersion());
+                photosDataModels.add(model);
+            }
+            dataModel.setPhotosList(photosDataModels);
             dataModel.setDescription(responseParser.getItems().get(i).getDescription());
             dataModel.setLongitude(responseParser.getItems().get(i).getLoc().get(0));
             dataModel.setLatitude(responseParser.getItems().get(i).getLoc().get(1));

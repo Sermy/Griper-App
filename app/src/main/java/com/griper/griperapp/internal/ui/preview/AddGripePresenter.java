@@ -74,32 +74,21 @@ public class AddGripePresenter implements AddGripeContract.Presenter {
     public void callAddGripeApi(String filePath, AddGripeRequestParser requestParser) {
         //Configure Stuff beforing pushing to server
         view.showProgressBar(true);
-        MultipartBody.Builder builder = new MultipartBody.Builder();
-        builder.setType(MultipartBody.FORM);
-        MultipartBody requestBody = null;
-        RequestBody requestFile = null;
-        MultipartBody.Part[] imagesParts = new MultipartBody.Part[ImagePreviewList.previewImagesList.size()];
         Map<String, RequestBody> map = new HashMap<>();
         if (ImagePreviewList.previewImagesList.size() > 1) {
 
             for (int i = 0; i < ImagePreviewList.previewImagesList.size(); i++) {
                 File file = new File(ImagePreviewList.previewImagesList.get(i));
                 RequestBody fileBody = RequestBody.create(MediaType.parse("multipart/form-data"), file);
-//                builder.addFormDataPart("photo_files", file.getName(), fileBody);
-                imagesParts[i] = MultipartBody.Part.createFormData("photo_files", file.getName(), fileBody);
                 map.put("photo_file\"; filename=\"" + file.getName(), fileBody);
             }
-//            requestBody = builder.build();
         } else {
             Uri newUri = Uri.parse(filePath);
             Timber.i("new Uri: " + newUri.toString());
             Timber.i("new filepath:" + filePath);
             File newFile = new File(filePath);
-            requestFile =
+            RequestBody requestFile =
                     RequestBody.create(MediaType.parse("multipart/form-data"), newFile);
-            imagesParts[0] = MultipartBody.Part.createFormData("photo_files", newFile.getName(), requestFile);
-//            builder.addFormDataPart("photo_files", newFile.getName(), requestFile);
-//            requestBody = builder.build();
             map.put("photo_file\"; filename=\"" + newFile.getName(), requestFile);
         }
 

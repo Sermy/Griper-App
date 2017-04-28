@@ -11,6 +11,10 @@ interface ShowGripeDetailsScreenContract {
         fun setUpRecyclerViewFirebase();
 
         fun setGripeImage()
+
+        fun showLeftAction(visibility: Boolean)
+
+        fun showRightAction(visibility: Boolean)
     }
 
     interface Presenter {

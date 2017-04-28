@@ -47,8 +47,8 @@ public class LikesFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         int userIconRadius = Utils.convertDpToPixel(context,
                 (int) context.getResources().getDimension(R.dimen.dimen_50dp));
         cloudinaryImageUrl = Utils.getCircularCloudinaryImageUrl(
-                dataModelList.get(position).getImageBaseUrl(), dataModelList.get(position).getImagePostFixId(),
-                dataModelList.get(position).getImagePublicId(), userIconRadius);
+                dataModelList.get(position).getPhotosList().get(0).getImageBaseUrl(), dataModelList.get(position).getPhotosList().get(0).getImagePostFixId(),
+                dataModelList.get(position).getPhotosList().get(0).getImagePublicId(), userIconRadius);
         if (!TextUtils.isEmpty(cloudinaryImageUrl)) {
             Picasso.with(context)
                     .load(cloudinaryImageUrl)

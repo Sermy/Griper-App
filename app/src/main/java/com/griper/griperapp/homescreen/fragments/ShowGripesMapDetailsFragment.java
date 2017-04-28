@@ -54,6 +54,7 @@ public class ShowGripesMapDetailsFragment extends Fragment implements ShowGripes
     private static final String EXTRA_GRIPE_LAT = "gripe_lat";
     private static final String EXTRA_GRIPE_LON = "gripe_lon";
     private static final String EXTRA_GRIPE_DESCRIPTION = "gripe_description";
+    private static final String EXTRA_GRIPE_IMAGE_COUNT = "gripe_image_count";
     private static final String EXTRA_GRIPE_POSITION = "gripe_position";
 
     @Bind(R.id.viewHighlight)
@@ -134,8 +135,8 @@ public class ShowGripesMapDetailsFragment extends Fragment implements ShowGripes
                 if (availableWidth > 0 && availableHeight > 0) {
                     imageViewGripe.getViewTreeObserver().removeOnGlobalLayoutListener(this);
                     //save height here
-                    CloudinaryImageUrl imageUrl = new CloudinaryImageUrl.Builder(gripesModel.getBaseUrl(), gripesModel.getImagePublicId(),
-                            availableWidth, availableHeight, gripesModel.getBaseUrlPostFix())
+                    CloudinaryImageUrl imageUrl = new CloudinaryImageUrl.Builder(gripesModel.getBaseUrl(), gripesModel.getImagePublicIdList().get(0),
+                            availableWidth, availableHeight, gripesModel.getBaseUrlPostFixList().get(0))
                             .cornerRadius(Utils.convertDpToPixel(getActivity(), (int) getResources().getDimension(R.dimen.dimen_2dp)))
                             .build();
 
@@ -174,11 +175,15 @@ public class ShowGripesMapDetailsFragment extends Fragment implements ShowGripes
         intent.putExtra(EXTRA_GRIPE_TITLE, gripesModel.getTitle());
         intent.putExtra(EXTRA_GRIPE_ADDRESS, gripesModel.getAddress());
         intent.putExtra(EXTRA_GRIPE_DESCRIPTION, gripesModel.getDesciption());
-        ArrayList<String> arrayList = new ArrayList<>();
-        arrayList.add(gripesModel.getBaseUrl());
-        arrayList.add(gripesModel.getImagePublicId());
-        arrayList.add(gripesModel.getBaseUrlPostFix());
-        intent.putExtra(EXTRA_GRIPE_IMAGE, arrayList);
+        for (int i = 0; i < gripesModel.getImageUrlList().size(); i++) {
+            ArrayList<String> arrayList = new ArrayList<>();
+            arrayList.clear();
+            arrayList.add(gripesModel.getBaseUrl());
+            arrayList.add(gripesModel.getImagePublicIdList().get(i));
+            arrayList.add(gripesModel.getBaseUrlPostFixList().get(i));
+            intent.putExtra(EXTRA_GRIPE_IMAGE + "[" + i + "]", arrayList);
+        }
+        intent.putExtra(EXTRA_GRIPE_IMAGE_COUNT, gripesModel.getImageUrlList().size());
         intent.putExtra(GRIPE_ID, gripesModel.getId());
         intent.putExtra(EXTRA_GRIPE_LAT, gripesModel.getLatitude());
         intent.putExtra(EXTRA_GRIPE_LON, gripesModel.getLongitude());

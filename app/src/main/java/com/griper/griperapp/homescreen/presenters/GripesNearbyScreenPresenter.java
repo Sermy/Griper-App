@@ -9,12 +9,16 @@ import com.griper.griperapp.homescreen.interfaces.GripesNearbyScreenContract;
 import com.griper.griperapp.homescreen.interfaces.HomeScreenWebServiceInterface;
 import com.griper.griperapp.homescreen.models.GripesDataModel;
 import com.griper.griperapp.homescreen.models.GripesMetaDataModel;
+import com.griper.griperapp.homescreen.models.PhotosDataModel;
+import com.griper.griperapp.homescreen.parsers.GripesMapMetaResponseParser;
+import com.griper.griperapp.homescreen.parsers.GripesMapPhotoResponseParser;
 import com.griper.griperapp.homescreen.parsers.GripesNearbyLikeResponseParser;
 import com.griper.griperapp.homescreen.parsers.GripesNearbyResponseParser;
 import com.griper.griperapp.utils.AppConstants;
 import com.griper.griperapp.utils.Utils;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -96,9 +100,15 @@ public class GripesNearbyScreenPresenter implements GripesNearbyScreenContract.P
             dataModel.setGripeId(gripesNearbyResponseParser.getItems().get(i).getId());
             dataModel.setTitle(gripesNearbyResponseParser.getItems().get(i).getTitle());
             dataModel.setLocation(gripesNearbyResponseParser.getItems().get(i).getAddress());
-            dataModel.setImageBaseUrl(gripesNearbyResponseParser.getItems().get(i).getMeta().getPublicHost());
-            dataModel.setImagePublicId(gripesNearbyResponseParser.getItems().get(i).getPhoto().getPublicId());
-            dataModel.setImagePostFixId(gripesNearbyResponseParser.getItems().get(i).getPhoto().getVersion());
+            List<PhotosDataModel> photosDataModels = new ArrayList<>();
+            List<GripesMapPhotoResponseParser> listPhotos = gripesNearbyResponseParser.getItems().get(i).getGripePhotos();
+            for (int j = 0; j < gripesNearbyResponseParser.getItems().get(i).getGripePhotos().size(); j++) {
+                PhotosDataModel model = new PhotosDataModel(listPhotos.get(j).getPublicId(),
+                        gripesNearbyResponseParser.getItems().get(i).getMeta().getPublicHost(),
+                        listPhotos.get(j).getVersion());
+                photosDataModels.add(model);
+            }
+            dataModel.setPhotosList(photosDataModels);
             dataModel.setDescription(gripesNearbyResponseParser.getItems().get(i).getDescription());
             dataModel.setLongitude(gripesNearbyResponseParser.getItems().get(i).getLoc().get(0));
             dataModel.setLatitude(gripesNearbyResponseParser.getItems().get(i).getLoc().get(1));
