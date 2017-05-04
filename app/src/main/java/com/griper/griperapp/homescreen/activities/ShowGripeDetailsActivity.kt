@@ -130,6 +130,7 @@ class ShowGripeDetailsActivity : SwipeBackActivity(), ShowGripeDetailsScreenCont
             showLeftAction(false)
             showRightAction(true)
         }
+        showPhotoGalleryPagerAdapter!!.notifyDataSetChanged()
 
         viewPagerGallery.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
             override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {}
@@ -176,7 +177,7 @@ class ShowGripeDetailsActivity : SwipeBackActivity(), ShowGripeDetailsScreenCont
                             preferencesData.gripeLargeImageWidth = availableWidth
                             Timber.i(availableHeight.toString().plus(" ").plus(availableWidth.toString()))
                             if (availableHeight > 0 && availableWidth > 0) {
-                                imageDetailGripe.viewTreeObserver.removeOnGlobalLayoutListener(this)
+                                viewPagerGallery.viewTreeObserver.removeOnGlobalLayoutListener(this)
                                 val imageUrl = CloudinaryImageUrl.Builder(gripeImage.get(0), gripeImage.get(1),
                                         availableWidth, availableHeight, gripeImage.get(2)).build()
 
@@ -214,6 +215,7 @@ class ShowGripeDetailsActivity : SwipeBackActivity(), ShowGripeDetailsScreenCont
 //
 //                                                    }
 //                                                })
+                                        setUpViewPager()
                                     }
                                 }
                             }
@@ -249,8 +251,9 @@ class ShowGripeDetailsActivity : SwipeBackActivity(), ShowGripeDetailsScreenCont
                     }
                 }
             }
+            setUpViewPager()
         }
-        setUpViewPager()
+
     }
 
     override fun setUpRecyclerViewFirebase() {

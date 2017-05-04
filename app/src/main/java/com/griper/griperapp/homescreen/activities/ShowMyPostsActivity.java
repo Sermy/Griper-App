@@ -1,5 +1,6 @@
 package com.griper.griperapp.homescreen.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -24,7 +25,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import timber.log.Timber;
 
-public class ShowMyPostsActivity extends BaseActivity implements ShowMyPostsContract.View {
+public class ShowMyPostsActivity extends BaseActivity implements ShowMyPostsContract.View, GripesFeedAdapter.OnFeedItemClickListener {
 
     @Bind(R.id.progressBarLoadMore)
     protected CustomProgressBar progressBarLoadMore;
@@ -58,6 +59,7 @@ public class ShowMyPostsActivity extends BaseActivity implements ShowMyPostsCont
         getApiComponent().inject((ShowMyPostsPresenter) presenter);
         feedAdapter = new GripesFeedAdapter(this, myPostsModelList, presenter);
 //        gripesFeedAdapter.setHasStableIds(true);
+        feedAdapter.setOnFeedItemClickListener(this);
         linearLayoutManager = new LinearLayoutManager(this);
         recyclerViewFeed.setLayoutManager(linearLayoutManager);
         recyclerViewFeed.setAdapter(feedAdapter);
@@ -150,5 +152,18 @@ public class ShowMyPostsActivity extends BaseActivity implements ShowMyPostsCont
     public void onBackPressed() {
         finish();
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
+    }
+
+    @Override
+    public void onYesClick(int position, boolean incrementLike, int likeCount) {
+
+    }
+
+    @Override
+    public void onCommentsClick(int position) {
+        Intent intent = new Intent(this, CommentsActivity.class);
+        intent.putExtra(CommentsActivity.GRIPE_ID, myPostsModelList.get(position).getGripeId());
+        startActivity(intent);
+        overridePendingTransition(0, 0);
     }
 }

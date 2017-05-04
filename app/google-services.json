@@ -1,35 +1,27 @@
 {
   "project_info": {
-    "project_number": "642381820988",
-    "firebase_url": "https://griper-1489557037494.firebaseio.com",
-    "project_id": "griper-1489557037494",
-    "storage_bucket": "griper-1489557037494.appspot.com"
+    "project_number": "385979375290",
+    "firebase_url": "https://griper-99d5e.firebaseio.com",
+    "project_id": "griper-99d5e",
+    "storage_bucket": "griper-99d5e.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:642381820988:android:1ab5d027f7e65694",
+        "mobilesdk_app_id": "1:385979375290:android:1ab5d027f7e65694",
         "android_client_info": {
           "package_name": "com.griper.griperapp"
         }
       },
       "oauth_client": [
         {
-          "client_id": "642381820988-gsqoq7tsecv70m66ip6i2dt52hnkr93c.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.griper.griperapp",
-            "certificate_hash": "f6e8153bb90df08e44de9a13c76041e3a1326779"
-          }
-        },
-        {
-          "client_id": "642381820988-7tn5jg059u32ihbra42bfdnanblancs1.apps.googleusercontent.com",
+          "client_id": "385979375290-vjen18p7irg2m00g8aeur350i1sfcrfp.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDV1Ib5Yh0OcbWxZ-8MDiqoIuUAVvPjO7U"
+          "current_key": "AIzaSyCK5-sZnQZpFaOgm7NknKJWY4CgEJIxbR0"
         }
       ],
       "services": {
@@ -37,13 +29,8 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 2,
-          "other_platform_oauth_client": [
-            {
-              "client_id": "642381820988-7tn5jg059u32ihbra42bfdnanblancs1.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
+          "status": 1,
+          "other_platform_oauth_client": []
         },
         "ads_service": {
           "status": 2
