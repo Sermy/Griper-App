@@ -91,6 +91,4 @@ MinSDK : 16
 TargetSDK : 25
 
 ```
-
-Made with :green_heart: from Sarthak Arora
  
